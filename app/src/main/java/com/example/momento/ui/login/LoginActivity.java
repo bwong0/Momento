@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,19 +24,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
-import com.example.momento.ui.login.LoginViewModel;
-import com.example.momento.ui.login.LoginViewModelFactory;
 import com.example.momento.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
+    private Button next;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -45,7 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+//        final Button next = binding.next;
         final ProgressBar loadingProgressBar = binding.loading;
+
+//
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -114,16 +117,34 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         loginButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+
+//                loginViewModel.login(usernameEditText.getText().toString(),
+//                        passwordEditText.getText().toString());
             }
         });
-    }
+        next =(Button) findViewById(R.id.next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                openHome();
+
+            }
+        });
+
+
+    }
+    public void openHome(){
+        Intent intent = new Intent(this, Home.class);
+        startActivity(intent);
+    }
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
