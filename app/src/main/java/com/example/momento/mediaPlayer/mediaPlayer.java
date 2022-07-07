@@ -1,6 +1,7 @@
 package com.example.momento.mediaPlayer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.momento.R;
 
 import android.os.Bundle;
 
