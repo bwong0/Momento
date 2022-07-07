@@ -12,4 +12,6 @@ public class mediaPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
     }
+
+    // TODO: add code here
 }
