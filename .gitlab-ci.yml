@@ -1,0 +1,25 @@
+stages: 
+    - deploy
+    - build 
+    - test
+
+build-job: #runs first
+    stage: build
+    script:
+        - echo "Compiling the Application..."
+        #- mkdir build/
+        - echo "Compile is Complete."
+    
+unit-test-job:
+    stage: test
+    script:
+        - echo "Running Unit Tests..."
+        #- cat $CI_PROJECT_DIR/build
+        - echo "Testing is Complete."
+
+deploy-job:
+    stage: deploy
+    script: 
+        - echo "Deploying Application..."
+        - echo "Application Deployed."
+
