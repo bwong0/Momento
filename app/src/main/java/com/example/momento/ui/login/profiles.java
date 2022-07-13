@@ -3,6 +3,7 @@ package com.example.momento.ui.login;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -44,5 +45,7 @@ public class profiles extends AppCompatActivity {
 
     private void openVidPlayer(){
         // TODO: add code to launch video player activity
+        Intent intent = new Intent(this, com.example.momento.mediaPlayer.mediaPlayerActivity.class);
+        startActivity(intent);
     }
 }
