@@ -1,11 +1,16 @@
 package com.example.momento.ui.login;
 
+import android.Manifest;
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -31,6 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private Button next;
+
+    // Constants; arbitrary numbers, but must be unique
+    private static final int INTERNET_PERMISSION_CODE = 100;
+    private static final int ACCESS_NETWORK_STATE_PERMISSION_CODE = 101;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,8 +148,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Check App Permissions
+        checkPermission(Manifest.permission.INTERNET, INTERNET_PERMISSION_CODE);
+        checkPermission(Manifest.permission.ACCESS_NETWORK_STATE, ACCESS_NETWORK_STATE_PERMISSION_CODE);
 
     }
+    // end of onCreate()
+
+
     public void openHome(){
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
@@ -153,5 +168,47 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    // Function to check and request permission
+    public void checkPermission(String permission, int requestCode)
+    {
+        // Checking if permission is not granted
+        if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, new String[] { permission }, requestCode);
+        }
+        else {
+            Toast.makeText(this, "Permission already granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // This function is called when the user accepts or decline the permission.
+    // Request Code is used to check which permission called this function.
+    // This request code is provided when the user is prompt for permission.
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode,
+                permissions,
+                grantResults);
+
+        if (requestCode == INTERNET_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Internet Permission Granted", Toast.LENGTH_SHORT) .show();
+            }
+            else {
+                Toast.makeText(this, "Internet Permission Denied", Toast.LENGTH_SHORT) .show();
+            }
+        }
+        else if (requestCode == ACCESS_NETWORK_STATE_PERMISSION_CODE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "ACCESS_NETWORK_STATE Permission Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "ACCESS_NETWORK_STATE Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
