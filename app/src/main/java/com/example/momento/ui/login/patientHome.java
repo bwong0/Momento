@@ -68,6 +68,7 @@ public class patientHome extends AppCompatActivity {
             if(person.getName().getText() == null || person.getName().getText() == ""){
                 person.getImage().setVisibility(View.GONE);
             }
+
         }
 
 
