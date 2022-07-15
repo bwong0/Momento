@@ -7,77 +7,89 @@
     android:layout_height="match_parent"
     tools:context=".ui.login.patientHome">
 
-    <ImageView
-        android:id="@+id/person1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+    <ImageButton
+        android:id="@+id/patientProfile1"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="120dp"
-        android:src="@drawable/ic_launcher_background"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-    <ImageView
-        android:id="@+id/person2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/patientProfile2"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:layout_marginTop="120dp"
-        android:layout_marginEnd="60dp"
-        android:src="@drawable/ic_launcher_background"
+        android:layout_marginEnd="45dp"
+
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/person3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
+    <ImageButton
+        android:id="@+id/patientProfile3"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/person1"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile1"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/person1"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile1"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/person4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
+    <ImageButton
+        android:id="@+id/patientProfile4"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/person2"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile2"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/person2"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/person5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/patientProfile5"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
         android:layout_marginBottom="120dp"
-        android:src="@drawable/ic_launcher_background"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/person3"
-        app:layout_constraintStart_toStartOf="@+id/person3" />
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile3"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile3" />
 
-    <ImageView
-        android:id="@+id/person6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/patientProfile6"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
         android:layout_marginBottom="120dp"
-        android:src="@drawable/ic_launcher_background"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/person4"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile4"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/person5"
-        app:layout_constraintStart_toStartOf="@+id/person4" />
+        app:layout_constraintStart_toEndOf="@+id/patientProfile5"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile4" />
 
     <TextView
-        android:id="@+id/Title"
+        android:id="@+id/patientHomeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textSize="30sp"
-        android:text="Choose a Person"
+        android:text="Create or Edit a Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -86,60 +98,59 @@
         app:layout_constraintVertical_bias="0.054" />
 
     <TextView
-        android:id="@+id/personName1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="John"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/person1"
-        app:layout_constraintStart_toStartOf="@+id/person1"
-        app:layout_constraintTop_toBottomOf="@+id/person1" />
-
-    <TextView
-        android:id="@+id/personName2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sam"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/person2"
-        app:layout_constraintStart_toStartOf="@+id/person2"
-        app:layout_constraintTop_toBottomOf="@+id/person2" />
-    <TextView
-        android:id="@+id/personName3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="daniel"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/person3"
-        app:layout_constraintStart_toStartOf="@+id/person3"
-        app:layout_constraintTop_toBottomOf="@+id/person3" />
-    <TextView
-        android:id="@+id/personName4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="lester"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/person4"
-        app:layout_constraintStart_toStartOf="@+id/person4"
-        app:layout_constraintTop_toBottomOf="@+id/person4" />
-    <TextView
-        android:id="@+id/personName5"
+        android:id="@+id/patientName1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/person5"
-        app:layout_constraintStart_toStartOf="@+id/person5"
-        app:layout_constraintTop_toBottomOf="@+id/person5" />
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile1"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile1"
+        app:layout_constraintTop_toBottomOf="@+id/patientProfile1" />
+
     <TextView
-        android:id="@+id/personName6"
+        android:id="@+id/patientName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/person6"
-        app:layout_constraintStart_toStartOf="@+id/person6"
-        app:layout_constraintTop_toBottomOf="@+id/person6" />
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile2"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile2"
+        app:layout_constraintTop_toBottomOf="@+id/patientProfile2" />
+    <TextView
+        android:id="@+id/patientName3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile3"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile3"
+        app:layout_constraintTop_toBottomOf="@+id/patientProfile3" />
+    <TextView
+        android:id="@+id/patientName4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile4"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile4"
+        app:layout_constraintTop_toBottomOf="@+id/patientProfile4" />
+    <TextView
+        android:id="@+id/patientName5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile5"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile5"
+        app:layout_constraintTop_toBottomOf="@+id/patientProfile5" />
+    <TextView
+        android:id="@+id/patientName6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientProfile6"
+        app:layout_constraintStart_toStartOf="@+id/patientProfile6"
+        app:layout_constraintTop_toBottomOf="@+id/patientProfile6" />
 
     <!--    <androidx.constraintlayout.widget.Barrier-->
     <!--        android:id="@+id/barrier2"-->

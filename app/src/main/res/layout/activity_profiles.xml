@@ -7,12 +7,13 @@
     tools:context=".ui.login.profiles">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/profileImageView"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="456dp"
-        android:src="@drawable/ic_launcher_background"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

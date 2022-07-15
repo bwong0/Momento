@@ -2,17 +2,163 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.familyHome">
+    tools:context=".ui.login.patientHome">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="FamilyHome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageButton
+        android:id="@+id/familyProfile1"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="120dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/familyProfile2"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="45dp"
+
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/familyProfile3"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/familyProfile4"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/familyProfile5"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:layout_marginBottom="120dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile3"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile3" />
+
+    <ImageButton
+        android:id="@+id/familyProfile6"
+        android:layout_width="130sp"
+        android:layout_height="130sp"
+        android:layout_marginBottom="120dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/familyProfile5"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile4" />
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:text="Create or Edit a Profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054" />
+
+    <TextView
+        android:id="@+id/familyName1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile1"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile1"
+        app:layout_constraintTop_toBottomOf="@+id/familyProfile1" />
+
+    <TextView
+        android:id="@+id/familyName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile2"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile2"
+        app:layout_constraintTop_toBottomOf="@+id/familyProfile2" />
+    <TextView
+        android:id="@+id/familyName3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile3"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile3"
+        app:layout_constraintTop_toBottomOf="@+id/familyProfile3" />
+    <TextView
+        android:id="@+id/familyName4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile4"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile4"
+        app:layout_constraintTop_toBottomOf="@+id/familyProfile4" />
+    <TextView
+        android:id="@+id/familyName5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile5"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile5"
+        app:layout_constraintTop_toBottomOf="@+id/familyProfile5" />
+    <TextView
+        android:id="@+id/familyName6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyProfile6"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile6"
+        app:layout_constraintTop_toBottomOf="@+id/familyProfile6" />
+
+    <!--    <androidx.constraintlayout.widget.Barrier-->
+    <!--        android:id="@+id/barrier2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:barrierDirection="top"-->
+    <!--        app:constraint_referenced_ids="imageView1" />-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
