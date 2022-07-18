@@ -1,16 +1,14 @@
-package com.example.momento.ui.login;
+package com.example.momento.patient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
-import com.example.momento.ui.login.patientHome;
-import android.content.Intent;
+import com.example.momento.ui.login.Persons;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 public class profiles extends AppCompatActivity {
 

@@ -1,12 +1,10 @@
-package com.example.momento.ui.login;
+package com.example.momento.patient;
 
-import android.app.Person;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.momento.ui.login.Persons;
 

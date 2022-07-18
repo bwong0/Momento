@@ -1,18 +1,15 @@
-package com.example.momento.ui.login;
+package com.example.momento.family;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
+
 import com.example.momento.ui.login.Persons;
-import android.app.Activity;
-import com.example.momento.ui.login.Home;
+
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.Serializable;
