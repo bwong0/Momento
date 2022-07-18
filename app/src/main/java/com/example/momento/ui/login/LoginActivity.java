@@ -164,7 +164,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                openHome();
+               // openHome();
+                openRegisterType();
 
             }
         });
@@ -184,12 +185,18 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser){
         //here to manage next move after successfully login
-        if(currentUser.getUid() == null){
+        //if(currentUser.getUid() == null){
             //jump to registration page
-        }
+         openRegisterType();
+        //}
         //another condition to see which group of user the current user belongs, not sure how to get the data from server yet
-        openHome(); //testing
+        // openHome(); //testing
 
+    }
+
+    public void openRegisterType(){
+        Intent intent = new Intent(this, registerType.class);
+        startActivity(intent);
     }
 
     public void openHome(){
