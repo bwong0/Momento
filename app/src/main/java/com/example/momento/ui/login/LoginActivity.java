@@ -38,15 +38,13 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private Button next;
-    private FirebaseAuth mAuth;
     private static final String TAG = "LoginActivity";
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //initializing need to be inside onCreate
-        mAuth = FirebaseAuth.getInstance();
+
         setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -131,32 +129,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-//                all ignored
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
-                mAuth.signInWithEmailAndPassword(usernameEditText.getText().toString(), passwordEditText.getText().toString())
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    updateUI(user);
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                    updateUI(null);
-                                }
-                            }
-                        });
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loginViewModel.login(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString());
             }
         });
         next =(Button) findViewById(R.id.next);
@@ -173,27 +150,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            reload();
-        }
-    }
-
-    private void updateUI(FirebaseUser currentUser){
-        //here to manage next move after successfully login
-        //if(currentUser.getUid() == null){
-            //jump to registration page
-         openRegisterType();
-        //}
-        //another condition to see which group of user the current user belongs, not sure how to get the data from server yet
-        // openHome(); //testing
-
-    }
-
     public void openRegisterType(){
         Intent intent = new Intent(this, registerType.class);
         startActivity(intent);
@@ -206,12 +162,15 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
+        openRegisterType();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        // Recreate this Activity upon failed login
+        finish();
+        startActivity(getIntent());
     }
 
-    private void reload(){}
 }
