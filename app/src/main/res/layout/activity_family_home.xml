@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:textSize="30sp"
-        android:text="Create or Edit a Profile"
+        android:text="@string/Create_or_Edit_a_Profile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

@@ -49,7 +49,6 @@ class Persons implements Serializable {
     public String getName() {
         return this.name;
     }
-
     public String getImage() {
         return this.uri;
     }

@@ -34,4 +34,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name ="Choose_a_Profile">Choose a Profile</string>
+    <string name="Create_or_Edit_a_Profile">Create or Edit a Profile</string>
 </resources>
