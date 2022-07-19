@@ -48,6 +48,9 @@ public class LoginRepository {
         dataSource.login(email, password, result -> {
             if (result instanceof Result.Success) {
                 setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+            }else if(result instanceof Result.newUser){
+                setLoggedInUser(((Result.newUser<LoggedInUser>) result).getNewUser());
+
             }
             callback.onLogin(result);
         });

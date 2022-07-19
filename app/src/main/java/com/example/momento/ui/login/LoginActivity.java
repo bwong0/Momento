@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.data.Result;
 import com.example.momento.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -89,6 +90,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
                 }
+                if (loginResult.getNewUser() != null){
+                    //go to register page
+                    openHome();
+                }
+
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
