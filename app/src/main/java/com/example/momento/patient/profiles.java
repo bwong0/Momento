@@ -1,11 +1,14 @@
-package com.example.momento.ui.login;
+package com.example.momento.patient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
+import com.example.momento.ui.login.Persons;
 
+import android.graphics.drawable.Drawable;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class profiles extends AppCompatActivity {
@@ -18,6 +21,16 @@ public class profiles extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
+
+        Persons person = (Persons) getIntent().getSerializableExtra("person");
+
+        ImageView profileImageView = (ImageView) findViewById(R.id.profileImageView);
+        TextView profileName = (TextView) findViewById(R.id.profileName);
+
+        profileName.setText(person.getName());
+        int profilePicture = getResources().getIdentifier(person.getImage(),null,getPackageName());
+        Drawable res = getResources().getDrawable(profilePicture);
+        profileImageView.setImageDrawable(res);
 
         // Initialize TextView objects
         prompt1 = findViewById((R.id.prompt_1));
