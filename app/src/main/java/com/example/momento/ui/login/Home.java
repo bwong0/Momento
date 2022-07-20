@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import com.example.momento.R;
 import com.example.momento.family.familyHome;
@@ -40,7 +41,7 @@ public class Home extends AppCompatActivity implements Serializable {
        familyB = (Button) findViewById(R.id.f);
        adminB = (Button) findViewById(R.id.a);
 
-        person1 = new Persons("@drawable/lebron_james","Lebron James",true);
+        person1 = new Persons( "@drawable/lebron_james" ,"Lebron James",true);
         person2 = new Persons();
         person3 = new Persons();
         person4 = new Persons();

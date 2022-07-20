@@ -9,10 +9,10 @@
 
     <ImageButton
         android:id="@+id/familyProfile1"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
 
-        android:layout_marginStart="45dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="120dp"
         android:adjustViewBounds="true"
         android:maxWidth="130sp"
@@ -23,10 +23,10 @@
 
     <ImageButton
         android:id="@+id/familyProfile2"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_marginTop="120dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginEnd="30dp"
 
         android:adjustViewBounds="true"
         android:maxWidth="130sp"
@@ -37,66 +37,71 @@
 
     <ImageButton
         android:id="@+id/familyProfile3"
-        android:layout_width="130sp"
-        android:layout_height="130sp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="236dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/familyProfile1"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/familyProfile1"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/familyName1"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/familyProfile4"
-        android:layout_width="130sp"
-        android:layout_height="130sp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/familyProfile2"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="@+id/familyProfile2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/familyName2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/familyProfile5"
-        android:layout_width="130sp"
-        android:layout_height="130sp"
-        android:layout_marginBottom="120dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="28dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/familyProfile3"
-        app:layout_constraintStart_toStartOf="@+id/familyProfile3" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/familyProfile3"
+        app:layout_constraintTop_toBottomOf="@+id/familyName3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/familyProfile6"
-        android:layout_width="130sp"
-        android:layout_height="130sp"
-        android:layout_marginBottom="120dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="28dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/familyProfile4"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/familyProfile5"
-        app:layout_constraintStart_toStartOf="@+id/familyProfile4" />
+        app:layout_constraintStart_toStartOf="@+id/familyProfile4"
+        app:layout_constraintTop_toBottomOf="@+id/familyName4"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textSize="30sp"
         android:text="@string/Create_or_Edit_a_Profile"
+        android:textSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.468"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintVertical_bias="0.032" />
 
     <TextView
         android:id="@+id/familyName1"
@@ -117,6 +122,7 @@
         app:layout_constraintEnd_toEndOf="@+id/familyProfile2"
         app:layout_constraintStart_toStartOf="@+id/familyProfile2"
         app:layout_constraintTop_toBottomOf="@+id/familyProfile2" />
+
     <TextView
         android:id="@+id/familyName3"
         android:layout_width="wrap_content"
@@ -126,6 +132,7 @@
         app:layout_constraintEnd_toEndOf="@+id/familyProfile3"
         app:layout_constraintStart_toStartOf="@+id/familyProfile3"
         app:layout_constraintTop_toBottomOf="@+id/familyProfile3" />
+
     <TextView
         android:id="@+id/familyName4"
         android:layout_width="wrap_content"
@@ -135,6 +142,7 @@
         app:layout_constraintEnd_toEndOf="@+id/familyProfile4"
         app:layout_constraintStart_toStartOf="@+id/familyProfile4"
         app:layout_constraintTop_toBottomOf="@+id/familyProfile4" />
+
     <TextView
         android:id="@+id/familyName5"
         android:layout_width="wrap_content"
@@ -144,6 +152,7 @@
         app:layout_constraintEnd_toEndOf="@+id/familyProfile5"
         app:layout_constraintStart_toStartOf="@+id/familyProfile5"
         app:layout_constraintTop_toBottomOf="@+id/familyProfile5" />
+
     <TextView
         android:id="@+id/familyName6"
         android:layout_width="wrap_content"

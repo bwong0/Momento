@@ -8,52 +8,55 @@
 
     <ImageView
         android:id="@+id/profileImageView"
-        android:layout_width="130sp"
-        android:layout_height="130sp"
+        android:layout_width="200sp"
+        android:layout_height="200sp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="456dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.88" />
 
-    <TextView
+    <Button
         android:id="@+id/prompt_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="Prompt #1"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginTop="300dp"
+        android:text="@string/prompt_1"
+        android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/prompt_2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread" />
 
-    <TextView
+    <Button
         android:id="@+id/prompt_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Prompt #2"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:text="@string/prompt_2"
+        android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/prompt_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt_1" />
 
-    <TextView
+    <Button
         android:id="@+id/prompt_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
         android:layout_marginBottom="84dp"
-        android:text="Prompt #3"
+        android:text="@string/prompt_3"
+        android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/prompt_2" />
 
@@ -61,10 +64,12 @@
         android:id="@+id/profileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/profileImageView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.633" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
