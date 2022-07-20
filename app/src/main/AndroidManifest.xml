@@ -16,6 +16,15 @@
         android:theme="@style/Theme.Momento"
         tools:targetApi="31">
         <activity
+            android:name=".ui.login.familyRegister"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.register"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.adminRegister"
+            android:exported="false" />
+        <activity
             android:name=".family.ProfileCreation"
             android:exported="false" />
         <activity

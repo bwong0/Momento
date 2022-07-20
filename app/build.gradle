@@ -42,6 +42,10 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    // Declare the dependency for the Firebase Authentication library
+    implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.exoplayer:exoplayer:2.18.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

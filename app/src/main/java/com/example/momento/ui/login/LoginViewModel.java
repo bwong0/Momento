@@ -31,14 +31,17 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+        loginRepository.login(username, password, result -> {
+            if (result instanceof Result.Success) {
+                LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+                loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            } else if(result instanceof Result.newUser){
+                loginResult.setValue(new LoginResult(new String("new user, switch to registration page.")));
+            }
+            else {
+                loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
+        });
     }
 
     public void loginDataChanged(String username, String password) {

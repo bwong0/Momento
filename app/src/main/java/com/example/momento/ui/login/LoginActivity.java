@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -29,13 +30,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.data.Result;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private Button next;
+    private static final String TAG = "LoginActivity";
+
 
     // Constants; arbitrary numbers, but must be unique
     private static final int INTERNET_PERMISSION_CODE = 100;
@@ -44,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -88,6 +95,11 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
                 }
+                if (loginResult.getNewUser() != null) {
+                    //go to register page
+                    openHome();
+                }
+
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
@@ -128,22 +140,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
                 loadingProgressBar.setVisibility(View.VISIBLE);
-
-//                loginViewModel.login(usernameEditText.getText().toString(),
-//                        passwordEditText.getText().toString());
+                loginViewModel.login(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString());
             }
         });
-        next =(Button) findViewById(R.id.next);
+        next = (Button) findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                openHome();
+                // openHome();
+                openRegister();
 
             }
         });
@@ -151,10 +161,14 @@ public class LoginActivity extends AppCompatActivity {
         // Check App Permissions
         checkPermission(Manifest.permission.INTERNET, INTERNET_PERMISSION_CODE);
         checkPermission(Manifest.permission.ACCESS_NETWORK_STATE, ACCESS_NETWORK_STATE_PERMISSION_CODE);
-
     }
-    // end of onCreate()
 
+
+    //start register page for admin
+    public void openRegister(){
+        Intent intent = new Intent(this, register.class);
+        startActivity(intent);
+    }
 
     public void openHome(){
         Intent intent = new Intent(this, Home.class);
@@ -163,11 +177,15 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
+        openRegister();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        // Recreate this Activity upon failed login
+        finish();
+        startActivity(getIntent());
     }
 
     // Function to check and request permission
@@ -211,4 +229,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
 }
