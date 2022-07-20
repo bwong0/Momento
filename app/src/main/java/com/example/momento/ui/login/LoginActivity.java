@@ -148,16 +148,16 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                // openHome();
-                openRegisterType();
+                openRegister();
 
             }
         });
 
-
     }
 
-    public void openRegisterType(){
-        Intent intent = new Intent(this, registerType.class);
+    //start register page for admin
+    public void openRegister(){
+        Intent intent = new Intent(this, register.class);
         startActivity(intent);
     }
 
@@ -168,7 +168,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        openRegisterType();
+        openRegister();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
