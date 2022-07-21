@@ -53,6 +53,8 @@ public class PatientDB {
     }
 
 
+
+
     // getters
     public void getPatientValue() {
         myRef.child("Patient").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
