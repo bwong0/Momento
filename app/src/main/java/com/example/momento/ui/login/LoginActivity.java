@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = binding.login;
 //        final Button next = binding.next;
         final ProgressBar loadingProgressBar = binding.loading;
+        final Button adminRegister = binding.register;
 
 //
 
@@ -89,10 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-                }
-                if (loginResult.getNewUser() != null){
-                    //go to register page
-                    openHome();
                 }
 
                 setResult(Activity.RESULT_OK);
@@ -142,13 +139,20 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.getText().toString());
             }
         });
+
+        adminRegister.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openRegister();
+            }
+        });
+
         next =(Button) findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               // openHome();
-                openRegister();
+                openHome();
 
             }
         });
@@ -165,10 +169,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
+
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        openRegister();
+        openHome();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
