@@ -3,10 +3,12 @@ package com.example.momento.ui.login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,6 +43,19 @@ public class register extends AppCompatActivity {
         final EditText ID = binding.editTextID;
         final EditText email = binding.editTextEmail;
         final EditText password = binding.editTextPassword;
+
+        // hides keyboard when not editing text
+        EditText[] editFields = {first, last, address, ID, email, password};
+        for (EditText eachField : editFields) {
+            eachField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+        }
 
         next.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -105,4 +120,13 @@ public class register extends AppCompatActivity {
         openAdminHome();
     }
 
+    /**
+     * Hides Software Keyboard
+     * */
+    public void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
