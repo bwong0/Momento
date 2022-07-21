@@ -38,11 +38,6 @@ public class LoginDataSource {
                         if (task.isSuccessful()) {
                             //here to check if the user is new or not, if new, set result to newUser
                             boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
-                            if(isNewUser){
-                                Log.d(TAG, "data source running");
-
-                                callback.onLogin(new Result.newUser("No existing user, switch to registration page."));
-                            }
                             firebaseUser = mAuth.getCurrentUser();
                             String uid = firebaseUser.getUid();
                             String name = firebaseUser.getDisplayName();

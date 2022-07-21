@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -63,8 +65,20 @@ public class LoginActivity extends AppCompatActivity {
         final Button loginButton = binding.login;
 //        final Button next = binding.next;
         final ProgressBar loadingProgressBar = binding.loading;
+        final Button adminRegister = binding.register;
 
-//
+        // hides keyboard when not editing text
+        EditText[] editFields = {usernameEditText, passwordEditText};
+        for (EditText eachField : editFields) {
+            eachField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+        }
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -94,10 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
-                }
-                if (loginResult.getNewUser() != null) {
-                    //go to register page
-                    openHome();
                 }
 
                 setResult(Activity.RESULT_OK);
@@ -147,13 +157,20 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.getText().toString());
             }
         });
-        next = (Button) findViewById(R.id.next);
+
+        adminRegister.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openRegister();
+            }
+        });
+
+        next =(Button) findViewById(R.id.next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                // openHome();
-                openRegister();
+                openHome();
 
             }
         });
@@ -174,10 +191,11 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
+
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        openRegister();
+        openHome();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
@@ -230,4 +248,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

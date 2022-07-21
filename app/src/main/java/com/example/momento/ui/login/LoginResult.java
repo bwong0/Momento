@@ -21,8 +21,6 @@ class LoginResult {
         this.success = success;
     }
 
-    LoginResult(@Nullable String newUser) {this.newUser = newUser;}
-
     @Nullable
     LoggedInUserView getSuccess() {
         return success;
@@ -33,6 +31,4 @@ class LoginResult {
         return error;
     }
 
-    @Nullable
-    String getNewUser() {return newUser;}
 }

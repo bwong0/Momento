@@ -13,9 +13,6 @@ public class Result<T> {
         if (this instanceof Result.Success) {
             Result.Success success = (Result.Success) this;
             return "Success[data=" + success.getData().toString() + "]";
-        } else if (this instanceof Result.newUser){
-            Result.newUser newUser = (Result.newUser) this;
-            return "No existing user, switch to registration page.";
         }
         else if (this instanceof Result.Error) {
             Result.Error error = (Result.Error) this;
@@ -35,12 +32,6 @@ public class Result<T> {
         public T getData() {
             return this.data;
         }
-    }
-
-    public final static class newUser<T> extends Result {
-        private T newUser;
-        public newUser(T newUser) {this.newUser =  newUser;}
-        public T getNewUser() {return this.newUser;}
     }
 
     // Error sub-class
