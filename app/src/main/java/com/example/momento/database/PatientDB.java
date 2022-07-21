@@ -62,7 +62,7 @@ public class PatientDB {
                     Log.e("firebase", "Error getting data", task.getException());
                 }
                 else {
-                    Log.d("Successes", String.valueOf(task.getResult().getValue()));
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
 
                 }
             }
