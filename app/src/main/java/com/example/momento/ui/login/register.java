@@ -123,7 +123,7 @@ public class register extends AppCompatActivity {
     /**
      * Hides Software Keyboard
      * */
-    public void hideKeyboard(View view) {
+    private void hideKeyboard(View view) {
         InputMethodManager manager =
                 (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
                 );
