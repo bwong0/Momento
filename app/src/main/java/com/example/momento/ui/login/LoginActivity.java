@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -60,7 +62,18 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressBar loadingProgressBar = binding.loading;
         final Button adminRegister = binding.register;
 
-//
+        // hides keyboard when not editing text
+        EditText[] editFields = {usernameEditText, passwordEditText};
+        for (EditText eachField : editFields) {
+            eachField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (!hasFocus) {
+                        hideKeyboard(v);
+                    }
+                }
+            });
+        }
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -184,4 +197,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
