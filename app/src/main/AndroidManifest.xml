@@ -19,7 +19,7 @@
             android:name=".ui.login.familyRegister"
             android:exported="false" />
         <activity
-            android:name=".ui.login.register"
+            android:name=".ui.login.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".ui.login.adminRegister"
