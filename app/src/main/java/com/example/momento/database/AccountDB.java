@@ -43,8 +43,8 @@ public class AccountDB {
     private String address;
     private Boolean isActive;
 
-    private final String ACCOUNT_NODE = "Accounts";
-    private DatabaseReference mDatabase;
+    protected final String ACCOUNT_NODE = "Accounts";
+    protected DatabaseReference mDatabase;
     // TODO: Test Listener
     private final ValueEventListener accountListener = new ValueEventListener() {
         @Override
