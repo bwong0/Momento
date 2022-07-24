@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -45,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText ID = binding.editTextID;
         final EditText email = binding.editTextEmail;
         final EditText password = binding.editTextPassword; // TODO: Should use a **** Password field
+        password.setTransformationMethod(new PasswordTransformationMethod());
         EditText[] editFields = {first, last, address, ID, email, password}; // TODO: Keep this updated.
 
         // hides keyboard when not editing text
