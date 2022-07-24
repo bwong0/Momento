@@ -35,6 +35,8 @@ import java.util.Map;
 
 public class AccountDB {
 
+    private final String TAG = "AccountDB";
+
     private String uid;
     private String accType;
     private String firstName;
@@ -45,7 +47,6 @@ public class AccountDB {
 
     protected final String ACCOUNT_NODE = "Accounts";
     protected DatabaseReference mDatabase;
-    // TODO: Test Listener
     private final ValueEventListener accountListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -57,12 +58,13 @@ public class AccountDB {
             AccountDB.this.email = info.get("email").toString();
             AccountDB.this.address = info.get("address").toString();
             AccountDB.this.isActive = (Boolean) info.get("isActive");
+            Log.d(TAG, "ValueEventListener called: " + info.toString());
         }
 
         @Override
         public void onCancelled(DatabaseError databaseError) {
             // Reading database failed, log a message
-            Log.w("AccountDB", "loadPost:onCancelled", databaseError.toException());
+            Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
         }
     };
 
@@ -104,7 +106,7 @@ public class AccountDB {
 //                            mDatabase.child(ACCOUNT_NODE).child(uid).setValue(blankInfo);
                         }
                     } else {
-                        Log.d("reg", "failed: " + String.valueOf(task.getResult().getValue()));
+                        Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
                     }
                 }
             }
