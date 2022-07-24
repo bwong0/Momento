@@ -1,20 +1,33 @@
 package com.example.momento.database;
 
+import android.provider.MediaStore;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Video Class
  */
-public class VideoInfo {
+public class VideoInfo extends Object {
 
     public String url;
     private int playCount;
 
-    // Constructor
+    // Constructors
+    VideoInfo() {
+        this.url = "";
+        playCount = 0;
+    }
+
     VideoInfo(String url) {
         this.url = url;
         playCount = 0;
+    }
+
+    // Deep Copy Constructor
+    VideoInfo(VideoInfo that) {
+        this.url = that.url;
+        this.playCount = that.playCount;
     }
 
     public int getPlayCount() { return playCount; }
