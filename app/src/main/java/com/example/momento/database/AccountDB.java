@@ -10,8 +10,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
@@ -43,13 +45,28 @@ public class AccountDB {
 
     private final String ACCOUNT_NODE = "Accounts";
     private DatabaseReference mDatabase;
+    // TODO: Test Listener
+    private final ValueEventListener accountListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // Get Map and use the values to update the class
+            Map<String, Object> info = (Map<String, Object>) dataSnapshot.getValue();
+            AccountDB.this.accType = info.get("accountType").toString();
+            AccountDB.this.firstName = info.get("firstName").toString();
+            AccountDB.this.lastName = info.get("lastName").toString();
+            AccountDB.this.email = info.get("email").toString();
+            AccountDB.this.address = info.get("address").toString();
+            AccountDB.this.isActive = (Boolean) info.get("isActive");
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Reading database failed, log a message
+            Log.w("AccountDB", "loadPost:onCancelled", databaseError.toException());
+        }
+    };
 
     /* Constructors */
-
-    // Default Constructor
-    private AccountDB() {
-        // Default constructor required for calls to DataSnapshot.getValue(AccountDB.class)
-    }
 
     /**
      * Constructor for AccountDB. Use this constructor when there is already an Account on Firebase.
@@ -78,6 +95,8 @@ public class AccountDB {
                             AccountDB.this.email = info.get("email").toString();
                             AccountDB.this.address = info.get("address").toString();
                             AccountDB.this.isActive = (Boolean) info.get("isActive");
+                            // Initiate Listener to the Account
+                            mDatabase.child(ACCOUNT_NODE).child(uid).addValueEventListener(accountListener);
                         } else {
                             // add the UID to Firebase and instantiate a blank Account?
                             // TODO: Decide on this with team.
@@ -120,7 +139,7 @@ public class AccountDB {
         // Initialize database reference point
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // push to mDatabase.child("Accounts")
-        mDatabase.child(ACCOUNT_NODE).child(this.uid).setValue(info)
+        mDatabase.child(ACCOUNT_NODE).child(uid).setValue(info)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -131,6 +150,8 @@ public class AccountDB {
                     AccountDB.this.email = email;
                     AccountDB.this.address = address;
                     AccountDB.this.isActive = true;
+                    // Initiate Listener to the Account
+                    mDatabase.child(ACCOUNT_NODE).child(uid).addValueEventListener(accountListener);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
