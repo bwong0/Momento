@@ -1,11 +1,15 @@
 package com.example.momento.database;
 
+import android.util.Log;
 import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -40,12 +44,60 @@ public class AccountDB {
     private final String ACCOUNT_NODE = "Accounts";
     private DatabaseReference mDatabase;
 
+    /* Constructors */
+
+    // Default Constructor
     private AccountDB() {
         // Default constructor required for calls to DataSnapshot.getValue(AccountDB.class)
     }
 
     /**
-     * Constructor for AccountDB Class.
+     * Constructor for AccountDB. Use this constructor when there is already an Account on Firebase.
+     * If the account UID is not found on Firebase, an entry is created on the Database.
+     * @param uid
+     */
+    public AccountDB(String uid) {
+        this.uid = uid;
+        // Initialize database reference point
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Get values from Firebase and update class members
+        mDatabase.child(ACCOUNT_NODE).child(uid).get()
+            .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        // fetch value and store into a Map
+                        DataSnapshot snapshot = task.getResult();
+                        Map<String, Object> info = (Map<String, Object>) snapshot.getValue();
+                        // if the UID is already in Firebase, fetch data members
+                        if (snapshot.exists()) {
+                            // update Class members after success
+                            AccountDB.this.accType = info.get("accountType").toString();
+                            AccountDB.this.firstName = info.get("firstName").toString();
+                            AccountDB.this.lastName = info.get("lastName").toString();
+                            AccountDB.this.email = info.get("email").toString();
+                            AccountDB.this.address = info.get("address").toString();
+                            AccountDB.this.isActive = (Boolean) info.get("isActive");
+                        } else {
+                            // add the UID to Firebase and instantiate a blank Account?
+                            // TODO: Decide on this with team.
+//                            Map<String, Object> blankInfo = AccountDB.this.toMap();
+//                            mDatabase.child(ACCOUNT_NODE).child(uid).setValue(blankInfo);
+                        }
+                    } else {
+                        Log.d("reg", "failed: " + String.valueOf(task.getResult().getValue()));
+                    }
+                }
+            }
+        );
+    }
+
+
+    /**
+     * Constructor used to create a new AccountDB object, and update Firebase.
+     * <p>
+     *     Use to add a new account on Firebase. If the UID is already there, this constructor will update the fields on Firebase.
+     * </p>
      * @param uid Should match UID from Firebase Authentication. Will be used as primary key.
      * @param type Should use ENUM from AccountType
      * @param firstName
@@ -105,6 +157,34 @@ public class AccountDB {
         return info;
     }
 
+    /* other method */
+
+    /**
+     * Removes this account from Firebase.
+     */
+    public void removeAccount() {
+        mDatabase.child(ACCOUNT_NODE).child(uid).removeValue()
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // update Class members after success
+                AccountDB.this.accType = null;
+                AccountDB.this.firstName = null;
+                AccountDB.this.lastName = null;
+                AccountDB.this.email = null;
+                AccountDB.this.address = null;
+                AccountDB.this.isActive = false;
+            }
+        })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Write failed
+                    // ...
+                }
+            });
+    }
+
 
     /* Getters and Setters */
 
@@ -123,8 +203,8 @@ public class AccountDB {
         return AccountType.valueOf(this.accType);
     }
     /**
-     * Set Account's user type: ADMIN, PATIENT, or FAMILY.
-     * Data in the class is not updated until success callback.
+     * Set Account's user type: ADMIN, PATIENT, or FAMILY. Update Firebase.
+     * Data in the class is not updated until success callback from Firebase.
      */
     public void setAccType(AccountType type) {
         mDatabase.child(ACCOUNT_NODE).child(uid).child("accountType").setValue(type.toString())
