@@ -39,8 +39,10 @@ import java.util.Map;
  */
 public class PatientDB extends AccountDB {
 
-    // Constants matching the keys in Firebase
     private static final String TAG = "PatientDB";
+
+    // Constants matching the keys in Firebase
+    public final String PATIENT_NODE = "Patients";
     private static final String HEALTHCARDNUM = "healthCardNum";
     private static final String BIRTHDATE = "birthDate";
     private static final String FAMILYLIST = "familyList";
@@ -55,7 +57,6 @@ public class PatientDB extends AccountDB {
     private Date dateLastOpened;
     private int usageStreak; // TODO: implement usage logic
 
-    public final String PATIENT_NODE = "Patients";
     private final ValueEventListener patientListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {

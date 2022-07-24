@@ -19,18 +19,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A Class for syncing data with "Families" on Firebase.
+ */
 public class FamilyDB extends AccountDB {
 
     private static final String TAG = "FamilyDB";
+
+    // Constants for matching keys on Firebase
+    public final static String FAMILY_NODE = "Families";
+    public final static String VIDEO_LIST = "videoList";
+
+
     private final int MAX_NUM_VIDEOS = 3;
     private List<VideoInfo> videoList = new ArrayList<>(MAX_NUM_VIDEOS);
 
-    public final String FAMILY_NODE = "Families";
     private final ValueEventListener familyListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             Map<String, List<VideoInfo>> data = (Map<String, List<VideoInfo>>) snapshot.getValue();
-            FamilyDB.this.videoList = data.get("videoList");
+            FamilyDB.this.videoList = data.get(VIDEO_LIST);
         }
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
@@ -61,7 +69,7 @@ public class FamilyDB extends AccountDB {
                    if (snapshot.exists()) {
                        // update Class members after success
                        Map<String, List<VideoInfo>> data = (Map<String, List<VideoInfo>>) snapshot.getValue();
-                       FamilyDB.this.videoList = data.get("videoList");
+                       FamilyDB.this.videoList = data.get(VIDEO_LIST);
                        // Initiate Listener to the Account
                        mDatabase.child(FAMILY_NODE).child(uid).addValueEventListener(familyListener);
                    } else {
@@ -93,7 +101,7 @@ public class FamilyDB extends AccountDB {
         super(uid, type, firstName, lastName, email, address);
         // Creates an entry in "Families" on Firebase
         Map<String, List<VideoInfo>> videos = new HashMap<>();
-        videos.put("videoList", this.videoList);
+        videos.put(VIDEO_LIST, this.videoList);
         mDatabase.child(FAMILY_NODE).child(this.getUid()).setValue(videos)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -158,6 +166,7 @@ public class FamilyDB extends AccountDB {
         VideoInfo backup = new VideoInfo(this.videoList.get(index)); // deepCopy if needing reversal
         this.videoList.get(index).incrementPlayCount();
         updateFirebase(index, backup);
+        // TODO: implement atomic server-side increment?
     }
 
     /**
@@ -167,7 +176,7 @@ public class FamilyDB extends AccountDB {
      */
     private void updateFirebase(int index, VideoInfo backup) {
         Map<String, List<VideoInfo>> videos = new HashMap<>();
-        videos.put("videoList", this.videoList);
+        videos.put(VIDEO_LIST, this.videoList);
         mDatabase.child(FAMILY_NODE).child(this.getUid()).setValue(videos)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

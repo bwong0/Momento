@@ -11,7 +11,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -19,19 +18,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class for syncing data with "Admins" on Firebase.
+ * <p>
+ *     Structure on Firebase:
+ *     uid : {
+ *         "patientList" : List<String>
+ *     }
+ * </p>
+ */
 public class AdminDB extends AccountDB {
+    private final static String TAG = "AdminDB";
 
-    private final String TAG = "AdminDB";
+    // Constants to match the keys on Firebase
+    private final static String ADMIN_NODE = "Admins";
+    private final static String PATIENT_LIST = "patientList";
 
     private final int MAX_PATIENT_COUNT = 6;
     private List<String> patientList = new ArrayList<>(MAX_PATIENT_COUNT);
 
-    private final String ADMIN_NODE = "Admins";
     private final ValueEventListener adminListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             Map<String, List<String>> data = (Map<String, List<String>>) snapshot.getValue();
-            AdminDB.this.patientList = data.get("patientList");
+            AdminDB.this.patientList = data.get(PATIENT_LIST);
         }
 
         @Override
@@ -64,7 +74,7 @@ public class AdminDB extends AccountDB {
                         if (snapshot.exists()) {
                             // update Class members after success
                             Map<String, List<String>> data = (Map<String, List<String>>) snapshot.getValue();
-                            AdminDB.this.patientList = data.get("patientList");
+                            AdminDB.this.patientList = data.get(PATIENT_LIST);
                             // Initiate Listener to the Account
                             mDatabase.child(ADMIN_NODE).child(uid).addValueEventListener(adminListener);
                         } else {
@@ -77,8 +87,7 @@ public class AdminDB extends AccountDB {
                         Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
                     }
                 }
-                }
-            );
+            });
     }
 
 
@@ -97,7 +106,7 @@ public class AdminDB extends AccountDB {
         super(uid, type, firstName, lastName, email, address);
         // Creates an entry in "Admins" on Firebase
         Map<String, List<String>> patients = new HashMap<>();
-        patients.put("patientList", this.patientList);
+        patients.put(PATIENT_LIST, this.patientList);
         mDatabase.child(ADMIN_NODE).child(this.getUid()).setValue(patients)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -135,7 +144,7 @@ public class AdminDB extends AccountDB {
             patientList.add(patientUid);
             // Update Firebase
             Map<String, List<String>> patients = new HashMap<>();
-            patients.put("patientList", patientList);
+            patients.put(PATIENT_LIST, patientList);
             mDatabase.child(ADMIN_NODE).child(this.getUid()).setValue(patients)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -167,17 +176,18 @@ public class AdminDB extends AccountDB {
      * @param patientUid
      */
     public void removePatient(String patientUid) {
-        this.patientList.remove(patientUid);
-        // Update Firebase
-        Map<String, List<String>> patients = new HashMap<>();
-        patients.put("patientList", this.patientList);
-        mDatabase.child(ADMIN_NODE).child(this.getUid()).setValue(patients)
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // Write failed, revert changes
-                    AdminDB.this.patientList.add(patientUid);
-                }
-            });
+        if (this.patientList.remove(patientUid)) {
+            // Update Firebase
+            Map<String, List<String>> patients = new HashMap<>();
+            patients.put(PATIENT_LIST, this.patientList);
+            mDatabase.child(ADMIN_NODE).child(this.getUid()).setValue(patients)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Write failed, revert local changes
+                        AdminDB.this.patientList.add(patientUid);
+                    }
+                });
+        }
     }
 }
