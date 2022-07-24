@@ -20,6 +20,8 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
 
 /**
+ * Class for syncing with "Account" on Firebase.
+ * <p>
  * The Structure on Firebase Database is
  * Accounts : {
  *     uid : {
@@ -31,11 +33,21 @@ import java.util.Map;
  *     },
  *     uid : { ... },
  * }
+ * </p>
  */
 
 public class AccountDB {
 
-    private final String TAG = "AccountDB";
+    private final static String TAG = "AccountDB";
+
+    // Constants matching the keys on Firebase
+    protected final static String ACCOUNT_NODE = "Accounts";
+    private final static String ACCOUNT_TYPE = "accountType";
+    private final static String FIRSTNAME = "firstName";
+    private final static String LASTNAME = "lastName";
+    private final static String EMAIL = "email";
+    private final static String ADDRESS = "address";
+    private final static String ISACTIVE = "isActive";
 
     private String uid;
     private String accType;
@@ -45,19 +57,18 @@ public class AccountDB {
     private String address;
     private Boolean isActive;
 
-    protected final String ACCOUNT_NODE = "Accounts";
     protected DatabaseReference mDatabase;
     private final ValueEventListener accountListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             // Get Map and use the values to update the class
-            Map<String, Object> info = (Map<String, Object>) dataSnapshot.getValue();
-            AccountDB.this.accType = info.get("accountType").toString();
-            AccountDB.this.firstName = info.get("firstName").toString();
-            AccountDB.this.lastName = info.get("lastName").toString();
-            AccountDB.this.email = info.get("email").toString();
-            AccountDB.this.address = info.get("address").toString();
-            AccountDB.this.isActive = (Boolean) info.get("isActive");
+            Map<String, Object> info =  (Map<String, Object>) dataSnapshot.getValue();
+            AccountDB.this.accType = info.get(ACCOUNT_TYPE).toString();
+            AccountDB.this.firstName = info.get(FIRSTNAME).toString();
+            AccountDB.this.lastName = info.get(LASTNAME).toString();
+            AccountDB.this.email = info.get(EMAIL).toString();
+            AccountDB.this.address = info.get(ADDRESS).toString();
+            AccountDB.this.isActive = (Boolean) info.get(ISACTIVE);
             Log.d(TAG, "ValueEventListener called: " + info.toString());
         }
 
@@ -91,12 +102,12 @@ public class AccountDB {
                         // if the UID is already in Firebase, fetch data members
                         if (snapshot.exists()) {
                             // update Class members after success
-                            AccountDB.this.accType = info.get("accountType").toString();
-                            AccountDB.this.firstName = info.get("firstName").toString();
-                            AccountDB.this.lastName = info.get("lastName").toString();
-                            AccountDB.this.email = info.get("email").toString();
-                            AccountDB.this.address = info.get("address").toString();
-                            AccountDB.this.isActive = (Boolean) info.get("isActive");
+                            AccountDB.this.accType = info.get(ACCOUNT_TYPE).toString();
+                            AccountDB.this.firstName = info.get(FIRSTNAME).toString();
+                            AccountDB.this.lastName = info.get(LASTNAME).toString();
+                            AccountDB.this.email = info.get(EMAIL).toString();
+                            AccountDB.this.address = info.get(ADDRESS).toString();
+                            AccountDB.this.isActive = (Boolean) info.get(ISACTIVE);
                             // Initiate Listener to the Account
                             mDatabase.child(ACCOUNT_NODE).child(uid).addValueEventListener(accountListener);
                         } else {
@@ -132,12 +143,12 @@ public class AccountDB {
         this.uid = uid;
         // Organize the children nodes into a map
         Map<String, Object> info = new HashMap<>();
-        info.put("accountType", type.toString());
-        info.put("firstName", firstName);
-        info.put("lastName", lastName);
-        info.put("email", email);
-        info.put("address", address);
-        info.put("isActive", (Boolean) true);
+        info.put(ACCOUNT_TYPE, type.toString());
+        info.put(FIRSTNAME, firstName);
+        info.put(LASTNAME, lastName);
+        info.put(EMAIL, email);
+        info.put(ADDRESS, address);
+        info.put(ISACTIVE, (Boolean) true);
         // Initialize database reference point
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // push to mDatabase.child("Accounts")
@@ -171,12 +182,12 @@ public class AccountDB {
      */
     public Map<String, Object> toMap() {
         Map<String, Object> info = new HashMap<>();
-        info.put("accountType", accType);
-        info.put("firstName", firstName);
-        info.put("lastName", lastName);
-        info.put("email", email);
-        info.put("address", address);
-        info.put("isActive", isActive);
+        info.put(ACCOUNT_TYPE, accType);
+        info.put(FIRSTNAME, firstName);
+        info.put(LASTNAME, lastName);
+        info.put(EMAIL, email);
+        info.put(ADDRESS, address);
+        info.put(ISACTIVE, isActive);
         return info;
     }
 
@@ -185,7 +196,7 @@ public class AccountDB {
     /**
      * Removes this account from Firebase.
      */
-    public void removeAccount() {
+    public void removeThisAccount() {
         mDatabase.child(ACCOUNT_NODE).child(uid).removeValue()
             .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -225,12 +236,17 @@ public class AccountDB {
     public AccountType getAccType() {
         return AccountType.valueOf(this.accType);
     }
+
     /**
-     * Set Account's user type: ADMIN, PATIENT, or FAMILY. Update Firebase.
-     * Data in the class is not updated until success callback from Firebase.
+     * Set Account's user type: ADMIN, PATIENT, or FAMILY, and update Firebase.
+     * <p>
+     *     Pre-Condition: Account must already be in "Accounts" on Firebase.
+     *     Post-Condition: Data in the class is not updated until success callback from Firebase.
+     * </p>
+     * @param type AccountType Enum
      */
     public void setAccType(AccountType type) {
-        mDatabase.child(ACCOUNT_NODE).child(uid).child("accountType").setValue(type.toString())
+        mDatabase.child(ACCOUNT_NODE).child(uid).child(ACCOUNT_TYPE).setValue(type.toString())
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -246,9 +262,21 @@ public class AccountDB {
             });
     }
 
+    /**
+     * Get first name of the Account.
+     * @return First name
+     */
     public String getFirstName() { return this.firstName; }
+
+    /**
+     * Set first name of the Account, and update Firebase.
+     * <p>
+     *     Pre-Condition: Account must already be in "Accounts" of Firebase.
+     * </p>
+     * @param firstName
+     */
     public void setFirstName(String firstName) {
-        mDatabase.child(ACCOUNT_NODE).child(uid).child("firstName").setValue(firstName)
+        mDatabase.child(ACCOUNT_NODE).child(uid).child(FIRSTNAME).setValue(firstName)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -264,10 +292,22 @@ public class AccountDB {
             });
     }
 
+    /**
+     * Get last name of the Account.
+     * @return Last name.
+     */
     public String getLastName() { return this.lastName; }
+
+    /**
+     * Set last name of the Account, and update Firebase.
+     * <p>
+     *     Pre-Condition: The Account must already be in "Accounts" on Firebase.
+     * </p>
+     * @param lastName
+     */
     public void setLastName(String lastName) {
         AccountDB.this.lastName = lastName;
-        mDatabase.child(ACCOUNT_NODE).child(uid).child("lastName").setValue(lastName)
+        mDatabase.child(ACCOUNT_NODE).child(uid).child(LASTNAME).setValue(lastName)
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
@@ -283,10 +323,23 @@ public class AccountDB {
             });
     }
 
+    /**
+     * Get the email for the Account.
+     * @return email String
+     */
     public String getEmail() { return this.email; }
+
+    /**
+     * Set the email for the Account, and update Firebase.
+     * @param email String
+     * <p>
+     *     Pre-Condition: The Account must already be in "Accounts" on Firebase.
+     * </p>
+     * @throws InvalidPropertiesFormatException
+     */
     public void setEmail(String email) throws InvalidPropertiesFormatException {
         if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mDatabase.child(ACCOUNT_NODE).child(uid).child("email").setValue(email)
+            mDatabase.child(ACCOUNT_NODE).child(uid).child(EMAIL).setValue(email)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -305,40 +358,64 @@ public class AccountDB {
         }
     }
 
+    /**
+     * Get the Address of the Account.
+     * @return Address. String.
+     */
     public String getAddress() { return this.address; }
+
+    /**
+     * Set the Address for the Account, and update Firebase.
+     * <p>
+     *     Pre-Condition: The Account must already be in "Accounts" on Firebase.
+     * </p>
+     * @param address
+     */
     public void setAddress(String address) {
-        mDatabase.child(ACCOUNT_NODE).child(uid).child("address").setValue(address)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        AccountDB.this.address = address;
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Write failed
-                        // ...
-                    }
-                });
+        mDatabase.child(ACCOUNT_NODE).child(uid).child(ADDRESS).setValue(address)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    AccountDB.this.address = address;
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Write failed
+                    // ...
+                }
+            });
     }
 
+    /**
+     * Get isActive flag of the Account.
+     * @return Boolean.
+     */
     public Boolean getIsActive() { return this.isActive; }
+
+    /**
+     * Set isActive flag for the Account, and update Firebase.
+     * <p>
+     *     Pre-Condition: The Account must already be in "Accounts" on Firebase.
+     * </p>
+     * @param boo
+     */
     public void setIsActive(Boolean boo) {
-        mDatabase.child(ACCOUNT_NODE).child(uid).child("isActive").setValue(boo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        AccountDB.this.isActive = boo;
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Write failed
-                        // ...
-                    }
-                });
+        mDatabase.child(ACCOUNT_NODE).child(uid).child(ISACTIVE).setValue(boo)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    AccountDB.this.isActive = boo;
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Write failed
+                    // ...
+                }
+            });
     }
 
 
