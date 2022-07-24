@@ -130,20 +130,6 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    // TODO: Not necessary? Delete
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            reload();
-        }
-    }
-
-    // TODO: Clean up if unused.
-    public void reload(){}
-
     public void updateUI(FirebaseUser user){
         // TODO: redirect back to LoginActivity. Make sure mAuth is not signed in after create().
         openAdminHome();
