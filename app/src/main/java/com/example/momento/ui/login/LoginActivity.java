@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -32,10 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
-import com.example.momento.data.Result;
 import com.example.momento.databinding.ActivityLoginBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -206,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
      * Navigate to "Register" Activity
      */
     private void openRegister() {
-        Intent intent = new Intent(this, register.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
