@@ -39,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final Button next = binding.proceedToAdmin;
+        final Button register = binding.proceedToAdmin;
         final EditText first = binding.editTextFirstName;
         final EditText last = binding.editTextLastName;
         final EditText address = binding.editTextAddress;
@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
             });
         }
         // TODO: Change "Next" to "Register" button.
-        next.setOnClickListener(new View.OnClickListener(){
+        register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Context context = getApplicationContext();
@@ -103,8 +103,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // TODO: Delete this. We will add email verification.
-    public void openAdminHome(){
-        Intent intent = new Intent(this, adminHome.class);
+    public void openLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -134,7 +134,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void updateUI(FirebaseUser user){
         // TODO: redirect back to LoginActivity. Make sure mAuth is not signed in after create().
-        openAdminHome();
+        sendVerificationEmail(user);
+        openLoginActivity();
     }
 
     /**
@@ -145,5 +146,27 @@ public class RegisterActivity extends AppCompatActivity {
                 (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
                 );
         manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void sendVerificationEmail(FirebaseUser user){
+        user.sendEmailVerification()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // email sent
+                            // after email is sent just logout the user
+                            FirebaseAuth.getInstance().signOut();
+                        }
+                        else
+                        {
+                            // email not sent, so display message and restart the activity
+                            overridePendingTransition(0, 0);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(getIntent());
+                        }
+                    }
+                });
     }
 }
