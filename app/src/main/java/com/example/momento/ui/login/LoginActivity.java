@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,7 +32,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.data.Result;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private Button next;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener authStateListener;
     private static final String TAG = "LoginActivity";
 
 
@@ -57,6 +63,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         /************** UI/UX **************/
+
+        //this keeps the first login user, redirect to home page for testing
+        //TODO: add log out button to revoke current user
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null) {
+                    openHome();
+                }
+            }
+        };
 
         setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
@@ -234,6 +251,12 @@ public class LoginActivity extends AppCompatActivity {
         // Recreate this Activity upon failed login
         finish();
         startActivity(getIntent());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authStateListener);
     }
 
     /**
