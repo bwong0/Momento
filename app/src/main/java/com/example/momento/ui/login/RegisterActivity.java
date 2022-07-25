@@ -23,7 +23,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// TODO: Add persistent text beside each EditText, so once the grey hint is gone, User can still know which field is for what.
 // TODO: Add margin around the whole interactable area
 public class RegisterActivity extends AppCompatActivity {
     private Button next;
@@ -45,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         final EditText address = binding.editTextAddress;
         final EditText ID = binding.editTextID;
         final EditText email = binding.editTextEmail;
-        final EditText password = binding.editTextPassword; // TODO: Should use a **** Password field
+        final EditText password = binding.editTextPassword;
         password.setTransformationMethod(new PasswordTransformationMethod());
         EditText[] editFields = {first, last, address, ID, email, password}; // TODO: Keep this updated.
 
@@ -60,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         }
-        // TODO: Change "Next" to "Register" button.
         register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -87,7 +85,25 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    // TODO: Go back to LoginActivity. Add email verification. Then they can sign in from Login.
+                                    user.sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // email sent
+                                                        // after email is sent just logout the user
+                                                        FirebaseAuth.getInstance().signOut();
+                                                    }
+                                                    else
+                                                    {
+                                                        // email not sent, so display message and restart the activity
+                                                        overridePendingTransition(0, 0);
+                                                        finish();
+                                                        overridePendingTransition(0, 0);
+                                                        startActivity(getIntent());
+                                                    }
+                                                }
+                                            });
                                     updateUI(user);
                                 } else {
                                     // If sign in fails, display a message to the user.
@@ -102,7 +118,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: Delete this. We will add email verification.
     public void openLoginActivity(){
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
@@ -133,8 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void updateUI(FirebaseUser user){
-        // TODO: redirect back to LoginActivity. Make sure mAuth is not signed in after create().
-        sendVerificationEmail(user);
+        // TODO: update all received user info
         openLoginActivity();
     }
 
@@ -146,27 +160,5 @@ public class RegisterActivity extends AppCompatActivity {
                 (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
                 );
         manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    private void sendVerificationEmail(FirebaseUser user){
-        user.sendEmailVerification()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            // email sent
-                            // after email is sent just logout the user
-                            FirebaseAuth.getInstance().signOut();
-                        }
-                        else
-                        {
-                            // email not sent, so display message and restart the activity
-                            overridePendingTransition(0, 0);
-                            finish();
-                            overridePendingTransition(0, 0);
-                            startActivity(getIntent());
-                        }
-                    }
-                });
     }
 }
