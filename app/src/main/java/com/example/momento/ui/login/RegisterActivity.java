@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.database.AccountDB;
+import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button next;
     private ActivityRegisterBinding binding;
     private FirebaseAuth mAuth;
+    private AccountType admin = AccountType.ADMIN;
     private static String TAG = "register process: ";
 
     @Override
@@ -73,8 +76,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(context, "Invalid Email.",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    // create admin account here, and go to admin home after successfully created
-                    // email/password validation WIP
+                    // create admin account here
+                    // email password validation WIP
                     String emailString = email.getText().toString();
                     String passwordString = password.getText().toString();
                     mAuth.createUserWithEmailAndPassword( emailString, passwordString)
@@ -90,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        // email sent
+                                                        // email sent, and account created with info from EditText array
                                                         // after email is sent just logout the user
                                                         FirebaseAuth.getInstance().signOut();
                                                     }
@@ -104,7 +107,9 @@ public class RegisterActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                    updateUI(user);
+                                    AccountDB newAdmin = new AccountDB(user.getUid(), admin, first.getText().toString(),
+                                            last.getText().toString(), email.getText().toString(), address.getText().toString());
+                                    updateUI();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -147,8 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    public void updateUI(FirebaseUser user){
-        // TODO: update all received user info
+    public void updateUI(){
         openLoginActivity();
     }
 
