@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.momento.R;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
+import com.example.momento.database.AdminDB;
 import com.example.momento.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -107,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                    AccountDB newAdmin = new AccountDB(user.getUid(), admin, first.getText().toString(),
+                                    AdminDB newAdmin = new AdminDB(user.getUid(), admin, first.getText().toString(),
                                             last.getText().toString(), email.getText().toString(), address.getText().toString());
                                     updateUI();
                                 } else {
