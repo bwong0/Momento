@@ -1,7 +1,10 @@
 package com.example.momento.family;
 
+import android.app.Activity;
 import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +12,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.momento.R;
 import com.example.momento.ui.login.Persons;
@@ -19,11 +23,17 @@ import java.util.ArrayList;
 
 public class ProfileCreation extends AppCompatActivity implements Serializable {
     ArrayList<Persons> ArrayListProfiles;
+    int SELECT_VIDEO = 200;
+
     EditText title;
     EditText relationship;
     Persons profile;
     Button update;
     Button clear;
+    Button prompt_1_upload;
+    Button prompt_2_upload;
+    Button prompt_3_upload;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +43,9 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
         relationship = (EditText) findViewById(R.id.editRelationship);
+        prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
+        prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
+        prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
 
         profile = (Persons) getIntent().getSerializableExtra("person");
 
@@ -89,6 +102,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 }
             }
         });
+
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +111,24 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             }
         });
 
-
+        prompt_1_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoChooser();
+            }
+        });
+        prompt_2_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoChooser();
+            }
+        });
+        prompt_3_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoChooser();
+            }
+        });
 
     }
     public void update (Persons persons){
@@ -111,4 +142,24 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         intent.putExtra("person", persons);
         startActivity(intent);
     }
+
+    // this function is triggered when the Select Prompt 1 Video Button is clicked
+    public void videoChooser() {
+        String v = "video/*";
+        launchGallery.launch(v); // pass the constant to compare it with the returned requestCode
+    }
+
+    public void imageChooser() {
+        String i = "image/*";
+        launchGallery.launch(i);
+    }
+
+    ActivityResultLauncher<String> launchGallery = registerForActivityResult(
+        new ActivityResultContracts.GetContent(),
+        resultUri -> {
+            // Do something with resultUri
+        }
+    );
+
+
 }
