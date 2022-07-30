@@ -37,10 +37,10 @@ public class LoginDataSource {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //if email not verified, log out current user and display error message
-                            if(!mAuth.getCurrentUser().isEmailVerified()){
-                                logout();
-                                callback.onLogin(new Result.Error(new IOException("Failed to sign in.")));
-                            }
+                            //if(!mAuth.getCurrentUser().isEmailVerified()){
+                            //    logout();
+                            //    callback.onLogin(new Result.Error(new IOException("Failed to sign in.")));
+                            //}
                             firebaseUser = mAuth.getCurrentUser();
                             String uid = firebaseUser.getUid();
                             String name = firebaseUser.getDisplayName();

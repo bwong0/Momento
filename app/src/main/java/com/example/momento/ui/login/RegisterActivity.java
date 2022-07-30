@@ -2,6 +2,8 @@ package com.example.momento.ui.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +30,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 // TODO: Add margin around the whole interactable area
 public class RegisterActivity extends AppCompatActivity {
-    private Button next;
     private ActivityRegisterBinding binding;
     private FirebaseAuth mAuth;
     private AccountType admin = AccountType.ADMIN;

@@ -33,9 +33,16 @@ import android.widget.Toast;
 
 import com.example.momento.R;
 import com.example.momento.data.Result;
+import com.example.momento.database.AccountDB;
+import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -45,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button next;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseDatabase currentDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabase = currentDatabase.getReference();
     private static final String TAG = "LoginActivity";
 
 
@@ -232,13 +241,51 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Navigate to "adminHome" Activity
+     */
+    private void openAdminHome(){
+        Intent intent = new Intent(this, adminHome.class);
+        startActivity(intent);
+    }
+
+    private void openFamilyHome(){
+        //Intent intent = new Intent(this, familyHome.class);
+        //startActivity(intent);
+    }
+
+    private void openPatientHome(){
+        //Intent intent = new Intent(this, patientHome.class);
+        //startActivity(intent);
+    }
+
+    /**
      * Action after successful account authentication.
      * @param model LoggedInUserView
      */
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        openHome();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String currentUID = user.getUid();
+        Log.d(TAG, currentUID);
+        String currentType = model.getAccountType().toString();
+        Log.d(TAG, currentType);
+
+        //AccountType currentType = currentUser.getAccType();
+        //Log.d(TAG, currentType.toString());
+
+        if(currentType.equalsIgnoreCase("ADMIN")){
+            Log.d(TAG, "admin type");
+            openAdminHome();
+        }
+        else if(currentType.equalsIgnoreCase("FAMILY")) {
+            Log.d(TAG, "family type");
+            openFamilyHome();
+        }
+        else{
+            Log.d(TAG, "patient type");
+            openPatientHome();
+        }
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
@@ -253,6 +300,10 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(getIntent());
     }
 
+    /** Check for current user
+     *  if current user exists, directly goes to the correct page
+     *  currently set to home page for testing
+     */
     @Override
     protected void onStart() {
         super.onStart();
