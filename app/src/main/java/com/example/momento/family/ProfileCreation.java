@@ -145,28 +145,21 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     // this function is triggered when the Select Prompt 1 Video Button is clicked
     public void videoChooser() {
-
-        Intent i = new Intent();// creating an instance of the intent of the type image
-        i.setType("video/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        launchSomeActivity.launch(i); // pass the constant to compare it with the returned requestCode
+        String v = "video/*";
+        launchGallery.launch(v); // pass the constant to compare it with the returned requestCode
     }
 
-     ActivityResultLauncher<Intent> launchSomeActivity = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    // do your operation from here....
-                    if (data != null
-                            && data.getData() != null) {
-                        Uri selectedVideoUri = data.getData(); //TODO: @Peter for the upload
+    public void imageChooser() {
+        String i = "image/*";
+        launchGallery.launch(i);
+    }
 
-                    }
-                }
-            });
+    ActivityResultLauncher<String> launchGallery = registerForActivityResult(
+        new ActivityResultContracts.GetContent(),
+        resultUri -> {
+            // Do something with resultUri
+        }
+    );
 
 
 }
