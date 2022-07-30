@@ -12,8 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.momento.R;
@@ -32,6 +31,8 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button update;
     Button clear;
     Button prompt_1_upload;
+    Button prompt_2_upload;
+    Button prompt_3_upload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
         relationship = (EditText) findViewById(R.id.editRelationship);
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
+        prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
+        prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
 
         profile = (Persons) getIntent().getSerializableExtra("person");
 
@@ -114,6 +117,18 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 videoChooser();
             }
         });
+        prompt_2_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoChooser();
+            }
+        });
+        prompt_3_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoChooser();
+            }
+        });
 
     }
     public void update (Persons persons){
@@ -131,43 +146,13 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     // this function is triggered when the Select Prompt 1 Video Button is clicked
     public void videoChooser() {
 
-        // creating an instance of the
-        // intent of the type image
-        Intent i = new Intent();
+        Intent i = new Intent();// creating an instance of the intent of the type image
         i.setType("video/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
 
-        // pass the constant to compare it with the returned requestCode
-        //try 1: startActivityForResult(Intent.createChooser(i, "Select Media"), SELECT_VIDEO);
-        //try 2:
-        launchSomeActivity.launch(i);
-
-        //try 3:
-        /*int result_launcher = registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // parse result and perform action
-            }*/
+        launchSomeActivity.launch(i); // pass the constant to compare it with the returned requestCode
     }
 
-    //try 1
-    /*public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-            // compare the resultCode with the SELECT_PICTURE constant
-            if (requestCode == SELECT_VIDEO) {
-                // Get the url of the image from data
-                Uri selectedVideoUri = data.getData();
-                if (null != selectedVideoUri) {
-                    // Gets the uri //TODO for upload to database: what happens with the returned video?
-
-                }
-            }
-        }
-    }*/ // NOT WORKING
-
-    //try 2:
      ActivityResultLauncher<Intent> launchSomeActivity = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -183,6 +168,5 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 }
             });
 
-     //try 3:
 
 }
