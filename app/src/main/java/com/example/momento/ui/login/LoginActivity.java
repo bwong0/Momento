@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,7 +32,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.database.AccountDB;
+import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private Button next;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener authStateListener;
     private static final String TAG = "LoginActivity";
 
 
@@ -57,6 +71,17 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         /************** UI/UX **************/
+
+        //this keeps the first login user, redirect to home page for testing
+        //TODO: add log out button to revoke current user
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser() != null) {
+                    //openHome();
+                }
+            }
+        };
 
         setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
@@ -151,7 +176,9 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    getAccountType(accType -> {
+                        updateUiWithUser(loginResult.getSuccess(), accType);
+                    });
                 }
 
                 setResult(Activity.RESULT_OK);
@@ -215,13 +242,79 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Navigate to "adminHome" Activity
+     */
+    private void openAdminHome(){
+        Intent intent = new Intent(this, adminHome.class);
+        startActivity(intent);
+    }
+
+    private void openFamilyHome(){
+        //Intent intent = new Intent(this, familyHome.class);
+        //startActivity(intent);
+    }
+
+    private void openPatientHome(){
+        //Intent intent = new Intent(this, patientHome.class);
+        //startActivity(intent);
+    }
+
+    /**
+     * Callback function to get AccountType using currently logged in user
+     * @param accountCb Callback to return AccountType
+     */
+    private void getAccountType(LoginUICallbacks accountCb) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String currentUID = user.getUid();
+        // Initialize database reference point
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Get accountType from Firebase
+        mDatabase.child(AccountDB.ACCOUNT_NODE).child(currentUID).get()
+            .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+               @Override
+               public void onComplete(@NonNull Task<DataSnapshot> task) {
+                   if (task.isSuccessful()) {
+                       // fetch value and store into a Map
+                       DataSnapshot snapshot = task.getResult();
+                       Map<String, Object> info = (Map<String, Object>) snapshot.getValue();
+                       // if the UID is already in Firebase, fetch data members
+                       if (snapshot.exists()) {
+                           // Return accountType by Callback
+                           accountCb.getAccType(
+                                AccountType.valueOf(info.get(AccountDB.ACCOUNT_TYPE).toString())
+                           );
+                       } else {
+                           // What if the uid does not exist?
+                           // TODO: Decide on this with team.
+                       }
+                   } else {
+                       Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
+                   }
+               }
+            });
+    }
+
+    /**
      * Action after successful account authentication.
      * @param model LoggedInUserView
      */
-    private void updateUiWithUser(LoggedInUserView model) {
+    private void updateUiWithUser(LoggedInUserView model, AccountType accountType) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        openHome();
+        Log.d(TAG, accountType.toString());
+
+        if(accountType == AccountType.ADMIN){
+            Log.d(TAG, "admin type");
+            openAdminHome();
+        }
+        else if(accountType == AccountType.FAMILY) {
+            Log.d(TAG, "family type");
+            openFamilyHome();
+        }
+        else{
+            Log.d(TAG, "patient type");
+            openPatientHome();
+        }
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
@@ -234,6 +327,16 @@ public class LoginActivity extends AppCompatActivity {
         // Recreate this Activity upon failed login
         finish();
         startActivity(getIntent());
+    }
+
+    /** Check for current user
+     *  if current user exists, directly goes to the correct page
+     *  currently set to home page for testing
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authStateListener);
     }
 
     /**

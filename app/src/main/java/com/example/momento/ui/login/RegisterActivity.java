@@ -2,10 +2,13 @@ package com.example.momento.ui.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -15,6 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.database.AccountDB;
+import com.example.momento.database.AccountType;
+import com.example.momento.database.AdminDB;
 import com.example.momento.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,12 +28,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// TODO: Add persistent text beside each EditText, so once the grey hint is gone, User can still know which field is for what.
 // TODO: Add margin around the whole interactable area
 public class RegisterActivity extends AppCompatActivity {
-    private Button next;
     private ActivityRegisterBinding binding;
     private FirebaseAuth mAuth;
+    private AccountType admin = AccountType.ADMIN;
     private static String TAG = "register process: ";
 
     @Override
@@ -38,13 +43,14 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final Button next = binding.proceedToAdmin;
+        final Button register = binding.proceedToAdmin;
         final EditText first = binding.editTextFirstName;
         final EditText last = binding.editTextLastName;
         final EditText address = binding.editTextAddress;
         final EditText ID = binding.editTextID;
         final EditText email = binding.editTextEmail;
-        final EditText password = binding.editTextPassword; // TODO: Should use a **** Password field
+        final EditText password = binding.editTextPassword;
+        password.setTransformationMethod(new PasswordTransformationMethod());
         EditText[] editFields = {first, last, address, ID, email, password}; // TODO: Keep this updated.
 
         // hides keyboard when not editing text
@@ -58,8 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         }
-        // TODO: Change "Next" to "Register" button.
-        next.setOnClickListener(new View.OnClickListener(){
+        register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Context context = getApplicationContext();
@@ -73,8 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(context, "Invalid Email.",
                             Toast.LENGTH_LONG).show();
                 } else {
-                    // create admin account here, and go to admin home after successfully created
-                    // email/password validation WIP
+                    // create admin account here
+                    // email password validation WIP
                     String emailString = email.getText().toString();
                     String passwordString = password.getText().toString();
                     mAuth.createUserWithEmailAndPassword( emailString, passwordString)
@@ -85,8 +90,28 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    // TODO: Go back to LoginActivity. Add email verification. Then they can sign in from Login.
-                                    updateUI(user);
+                                    user.sendEmailVerification()
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // email sent, and account created with info from EditText array
+                                                        // after email is sent just logout the user
+                                                        FirebaseAuth.getInstance().signOut();
+                                                    }
+                                                    else
+                                                    {
+                                                        // email not sent, so display message and restart the activity
+                                                        overridePendingTransition(0, 0);
+                                                        finish();
+                                                        overridePendingTransition(0, 0);
+                                                        startActivity(getIntent());
+                                                    }
+                                                }
+                                            });
+                                    AdminDB newAdmin = new AdminDB(user.getUid(), admin, first.getText().toString(),
+                                            last.getText().toString(), email.getText().toString(), address.getText().toString());
+                                    updateUI();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -100,9 +125,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: Delete this. We will add email verification.
-    public void openAdminHome(){
-        Intent intent = new Intent(this, adminHome.class);
+    public void openLoginActivity(){
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
@@ -130,23 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    // TODO: Not necessary? Delete
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            reload();
-        }
-    }
-
-    // TODO: Clean up if unused.
-    public void reload(){}
-
-    public void updateUI(FirebaseUser user){
-        // TODO: redirect back to LoginActivity. Make sure mAuth is not signed in after create().
-        openAdminHome();
+    public void updateUI(){
+        openLoginActivity();
     }
 
     /**

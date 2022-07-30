@@ -1,6 +1,7 @@
 package com.example.momento.data;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -21,7 +22,7 @@ public class LoginDataSource {
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
-    private static final String TAG = "data source running";
+    private String Tag = "LoginDataSource: ";
 
     // Constructor
     public LoginDataSource() {
@@ -34,10 +35,12 @@ public class LoginDataSource {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         if (task.isSuccessful()) {
-                            //here to check if the user is new or not, if new, set result to newUser
-                            boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                            //if email not verified, log out current user and display error message
+                            //if(!mAuth.getCurrentUser().isEmailVerified()){
+                            //    logout();
+                            //    callback.onLogin(new Result.Error(new IOException("Failed to sign in.")));
+                            //}
                             firebaseUser = mAuth.getCurrentUser();
                             String uid = firebaseUser.getUid();
                             String name = firebaseUser.getDisplayName();
@@ -51,9 +54,10 @@ public class LoginDataSource {
                         }
                     }
                 });
-    }
+        }
 
     public void logout() {
         mAuth.signOut();
     }
+
 }
