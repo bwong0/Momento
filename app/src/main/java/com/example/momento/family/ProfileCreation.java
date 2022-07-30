@@ -140,7 +140,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         // pass the constant to compare it with the returned requestCode
         //try 1: startActivityForResult(Intent.createChooser(i, "Select Media"), SELECT_VIDEO);
         //try 2:
-        launchSomeActivity(i);
+        launchSomeActivity.launch(i);
 
         //try 3:
         /*int result_launcher = registerForActivityResult(
