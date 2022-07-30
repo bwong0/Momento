@@ -7,18 +7,14 @@ import com.example.momento.database.AccountType;
  */
 class LoggedInUserView {
     private String displayName;
-    private AccountType accountType;
     //... other data fields that may be accessible to the UI
 
-    LoggedInUserView(String displayName, AccountType type) {
+    LoggedInUserView(String displayName) {
         this.displayName = displayName;
-        this.accountType = type;
     }
 
     String getDisplayName() {
         return displayName;
     }
-
-    AccountType getAccountType() { return accountType; }
 
 }
