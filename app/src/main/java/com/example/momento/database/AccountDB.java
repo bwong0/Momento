@@ -41,13 +41,13 @@ public class AccountDB {
     private final static String TAG = "AccountDB";
 
     // Constants matching the keys on Firebase
-    protected final static String ACCOUNT_NODE = "Accounts";
-    private final static String ACCOUNT_TYPE = "accountType";
-    private final static String FIRSTNAME = "firstName";
-    private final static String LASTNAME = "lastName";
-    private final static String EMAIL = "email";
-    private final static String ADDRESS = "address";
-    private final static String ISACTIVE = "isActive";
+    public final static String ACCOUNT_NODE = "Accounts";
+    public final static String ACCOUNT_TYPE = "accountType";
+    public final static String FIRSTNAME = "firstName";
+    public final static String LASTNAME = "lastName";
+    public final static String EMAIL = "email";
+    public final static String ADDRESS = "address";
+    public final static String ISACTIVE = "isActive";
 
     private String uid;
     private String accType;

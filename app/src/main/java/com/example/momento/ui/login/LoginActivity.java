@@ -32,7 +32,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
-import com.example.momento.data.Result;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
@@ -44,6 +43,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
 
     /* Class Variables: */
@@ -52,8 +53,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button next;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseDatabase currentDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference mDatabase = currentDatabase.getReference();
     private static final String TAG = "LoginActivity";
 
 
@@ -177,7 +176,9 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    getAccountType(accType -> {
+                        updateUiWithUser(loginResult.getSuccess(), accType);
+                    });
                 }
 
                 setResult(Activity.RESULT_OK);
@@ -259,26 +260,54 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Callback function to get AccountType using currently logged in user
+     * @param accountCb Callback to return AccountType
+     */
+    private void getAccountType(LoginUICallbacks accountCb) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String currentUID = user.getUid();
+        // Initialize database reference point
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Get accountType from Firebase
+        mDatabase.child(AccountDB.ACCOUNT_NODE).child(currentUID).get()
+            .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+               @Override
+               public void onComplete(@NonNull Task<DataSnapshot> task) {
+                   if (task.isSuccessful()) {
+                       // fetch value and store into a Map
+                       DataSnapshot snapshot = task.getResult();
+                       Map<String, Object> info = (Map<String, Object>) snapshot.getValue();
+                       // if the UID is already in Firebase, fetch data members
+                       if (snapshot.exists()) {
+                           // Return accountType by Callback
+                           accountCb.getAccType(
+                                AccountType.valueOf(info.get(AccountDB.ACCOUNT_TYPE).toString())
+                           );
+                       } else {
+                           // What if the uid does not exist?
+                           // TODO: Decide on this with team.
+                       }
+                   } else {
+                       Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
+                   }
+               }
+            });
+    }
+
+    /**
      * Action after successful account authentication.
      * @param model LoggedInUserView
      */
-    private void updateUiWithUser(LoggedInUserView model) {
+    private void updateUiWithUser(LoggedInUserView model, AccountType accountType) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
-        FirebaseUser user = mAuth.getCurrentUser();
-        String currentUID = user.getUid();
-        Log.d(TAG, currentUID);
-        String currentType = model.getAccountType().toString();
-        Log.d(TAG, currentType);
+        Log.d(TAG, accountType.toString());
 
-        //AccountType currentType = currentUser.getAccType();
-        //Log.d(TAG, currentType.toString());
-
-        if(currentType.equalsIgnoreCase("ADMIN")){
+        if(accountType == AccountType.ADMIN){
             Log.d(TAG, "admin type");
             openAdminHome();
         }
-        else if(currentType.equalsIgnoreCase("FAMILY")) {
+        else if(accountType == AccountType.FAMILY) {
             Log.d(TAG, "family type");
             openFamilyHome();
         }
