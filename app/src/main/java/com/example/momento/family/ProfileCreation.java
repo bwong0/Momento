@@ -24,6 +24,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Persons profile;
     Button update;
     Button clear;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,13 +32,13 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
 
         ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
+
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
         relationship = (EditText) findViewById(R.id.editRelationship);
-
         profile = (Persons) getIntent().getSerializableExtra("person");
-
         update = (Button) findViewById((R.id.updateButton));
         clear =(Button) findViewById(R.id.clearButton);
+
         String uri = "@drawable/empty";
         if(profile.profilePresent == true){
             title.setText(profile.getName());
