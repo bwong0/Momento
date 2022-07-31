@@ -96,7 +96,7 @@ public class StorageDB {
      * @param fileUri Uri of the file to be uploaded.
      * @param uriCb Callback after completing uploadTask. Usage: uriCb -> { // do something with uriCb }. Null if failed. Uri object is successful.
      */
-    public void setProfilePic(Context context, Uri fileUri, DatabaseCallbacks uriCb) {
+    public void setProfilePic(Context context, Uri fileUri, DatabaseCallbacks cb) {
         // Determine MIME type is of /image and get file size (byte), file name
         String mimeType = getMimeType(context, fileUri);
         boolean isImage = MimeTypeFilter.matches(mimeType, "image/*");
@@ -116,14 +116,14 @@ public class StorageDB {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // TODO: Handle unsuccessful uploads
-                    uriCb.uriCallback(null);
+                    cb.uriCallback(null);
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    cb.progressCallback(progress);
                     Log.d(TAG, "Upload is " + progress + "% done");
-                    // TODO: Callback to show progress?
                 }
             }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -158,7 +158,7 @@ public class StorageDB {
                         // Also store Uri in the class for faster access
                         StorageDB.this.profilePicDownloadUri = downloadUri;
                         // Callback to return URI
-                        uriCb.uriCallback(downloadUri);
+                        cb.uriCallback(downloadUri);
                     } else {
                         // Handle failures
                         // ...

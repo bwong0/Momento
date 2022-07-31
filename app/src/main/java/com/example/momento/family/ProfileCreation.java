@@ -245,8 +245,12 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                         }
                     }
                     @Override
-                    public void fileCallback(File aFile) {
-                        // Not used but have to keep it here.
+                    public void fileCallback(File aFile) {// Not used but have to keep it here.
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        // do something with the percentage
+                        Log.d(TAG, "Upload is " + progress + "% done");
                     }
                 });
             }

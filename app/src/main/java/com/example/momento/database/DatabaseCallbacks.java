@@ -11,5 +11,6 @@ import java.io.File;
 public interface DatabaseCallbacks {
     void uriCallback(Uri uri);
     void fileCallback(File file);
+    void progressCallback(double percentage);
 }
 
