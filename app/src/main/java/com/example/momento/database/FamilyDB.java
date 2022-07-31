@@ -101,6 +101,10 @@ public class FamilyDB extends AccountDB {
         super(uid, type, firstName, lastName, email, address);
         // Creates an entry in "Families" on Firebase
         Map<String, List<VideoInfo>> videos = new HashMap<>();
+        // populate videoList with default Videos
+        this.videoList.add(new VideoInfo());
+        this.videoList.add(new VideoInfo());
+        this.videoList.add(new VideoInfo());
         videos.put(VIDEO_LIST, this.videoList);
         mDatabase.child(FAMILY_NODE).child(this.getUid()).setValue(videos)
             .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -15,7 +15,7 @@ public class VideoInfo extends Object {
 
     // Constructors
     VideoInfo() {
-        this.url = "";
+        this.url = "placeholder"; // TODO: have a default video
         playCount = 0;
     }
 
