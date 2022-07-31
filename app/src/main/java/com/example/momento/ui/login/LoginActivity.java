@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(firebaseAuth.getCurrentUser() != null) {
                     //openHome();
                 }
+
             }
         };
 

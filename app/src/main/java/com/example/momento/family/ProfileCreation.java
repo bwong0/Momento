@@ -169,7 +169,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     public void imageChooser() {
         String i = "image/*";
-        //launchGalleryPhoto.launch(i);
+        launchGalleryPhoto.launch(i);
     }
 
     ActivityResultLauncher<String> launchGalleryVideo1 = registerForActivityResult( //Launch for Videos
