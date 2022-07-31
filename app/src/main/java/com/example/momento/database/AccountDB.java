@@ -79,6 +79,8 @@ public class AccountDB {
         }
     };
 
+    public StorageDB storage;
+
     /* Constructors */
 
     /**
@@ -110,6 +112,8 @@ public class AccountDB {
                             AccountDB.this.isActive = (Boolean) info.get(ISACTIVE);
                             // Initiate Listener to the Account
                             mDatabase.child(ACCOUNT_NODE).child(uid).addValueEventListener(accountListener);
+                            // Initiate StorageDB
+                            storage = new StorageDB(AccountDB.this.uid);
                         } else {
                             // add the UID to Firebase and instantiate a blank Account?
                             // TODO: Decide on this with team.
@@ -165,6 +169,8 @@ public class AccountDB {
                     AccountDB.this.isActive = true;
                     // Initiate Listener to the Account
                     mDatabase.child(ACCOUNT_NODE).child(uid).addValueEventListener(accountListener);
+                    // Initiate StorageDB
+                    storage = new StorageDB(AccountDB.this.uid);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
