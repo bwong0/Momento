@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
+    ImageButton profileCreationImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
+        profileCreationImage = (ImageButton) findViewById((R.id.profileCreationImage));
 
         profile = (Persons) getIntent().getSerializableExtra("person");
 
@@ -114,20 +117,24 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_1_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                videoChooser();
+                videoChooser(1);
             }
         });
         prompt_2_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                videoChooser();
+                videoChooser(2);
             }
         });
         prompt_3_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                videoChooser();
+                videoChooser(3);
             }
+        });
+        profileCreationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { imageChooser(); }
         });
 
     }
@@ -144,22 +151,53 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     }
 
     // this function is triggered when the Select Prompt 1 Video Button is clicked
-    public void videoChooser() {
+    public void videoChooser(int n) {
         String v = "video/*";
-        launchGallery.launch(v); // pass the constant to compare it with the returned requestCode
+        switch(n)
+        {
+            case 1:
+                launchGalleryVideo1.launch(v); // pass the constant to compare it with the returned requestCode
+                break;
+            case 2:
+                launchGalleryVideo2.launch(v); // pass the constant to compare it with the returned requestCode
+                break;
+            case 3:
+                launchGalleryVideo3.launch(v); // pass the constant to compare it with the returned requestCode
+                break;
+        }
     }
 
     public void imageChooser() {
         String i = "image/*";
-        launchGallery.launch(i);
+        //launchGalleryPhoto.launch(i);
     }
 
-    ActivityResultLauncher<String> launchGallery = registerForActivityResult(
-        new ActivityResultContracts.GetContent(),
-        resultUri -> {
-            // Do something with resultUri
-        }
+    ActivityResultLauncher<String> launchGalleryVideo1 = registerForActivityResult( //Launch for Videos
+            new ActivityResultContracts.GetContent(),
+            resultUri -> {
+                // Do something with resultUri
+            }
     );
 
+    ActivityResultLauncher<String> launchGalleryVideo2 = registerForActivityResult( //Launch for Videos
+            new ActivityResultContracts.GetContent(),
+            resultUri -> {
+                // Do something with resultUri
+            }
+    );
+
+    ActivityResultLauncher<String> launchGalleryVideo3 = registerForActivityResult( //Launch for Videos
+            new ActivityResultContracts.GetContent(),
+            resultUri -> {
+                // Do something with resultUri
+            }
+    );
+
+    ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
+            new ActivityResultContracts.GetContent(),
+            resultUri -> {
+                // Do something with resultUri
+            }
+    );
 
 }
