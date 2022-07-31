@@ -331,6 +331,7 @@ public class LoginActivity extends AppCompatActivity {
      *  if current user exists, directly goes to the correct page
      *  currently set to home page for testing
      */
+    //TODO: no onStart appears in activity, the use of this function is replaced by authStateChangeListener
     @Override
     protected void onStart() {
         super.onStart();
