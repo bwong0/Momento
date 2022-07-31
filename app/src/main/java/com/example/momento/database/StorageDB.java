@@ -96,10 +96,10 @@ public class StorageDB {
      * @param fileUri Uri of the file to be uploaded.
      * @param uriCb Callback after completing uploadTask. Usage: uriCb -> { // do something with uriCb }. Null if failed. Uri object is successful.
      */
-    void setProfilePic(Context context, Uri fileUri, DatabaseCallbacks uriCb) {
+    public void setProfilePic(Context context, Uri fileUri, DatabaseCallbacks uriCb) {
         // Determine MIME type is of /image and get file size (byte), file name
         String mimeType = getMimeType(context, fileUri);
-        boolean isImage = MimeTypeFilter.matches(mimeType, "image");
+        boolean isImage = MimeTypeFilter.matches(mimeType, "image/*");
         long fileSize = getFileSize(context, fileUri);
         //
         if (!isImage) {
