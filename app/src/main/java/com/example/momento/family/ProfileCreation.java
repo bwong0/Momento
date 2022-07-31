@@ -1,6 +1,5 @@
 package com.example.momento.family;
 
-import android.app.Activity;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -14,14 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.momento.R;
-import com.example.momento.data.Result;
-import com.example.momento.data.model.LoggedInUser;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.ui.login.Persons;
@@ -32,7 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -234,22 +229,28 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Do something with resultUri
                 // Upload profile picture for a Family account
-                familyDb.storage.setProfilePic(this, resultUri, new DatabaseCallbacks() {
+                familyDb.storage.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void failureCallback(boolean hasFailed, String msg) {
+                        if (hasFailed) {
+                            // TODO: Frontend. Do something if upload fails.
+                            Log.d(TAG, "Upload failed. " + msg);
+                        }
+                    }
                     @Override
                     public void uriCallback(Uri uri) {
-                        // do something with the Uri on Firebase
+                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
                         if (uri != null) {
                             Log.d(TAG, "Uri after upload: " + uri.toString());
                         }
                     }
                     @Override
-                    public void fileCallback(File aFile) {// Not used but have to keep it here.
+                    public void fileCallback(File aFile) { // Not used but have to keep it here.
                     }
                     @Override
                     public void progressCallback(double progress) {
-                        // do something with the percentage
+                        // TODO: do something with the percentage. Display a busy spinning overlay?
                         Log.d(TAG, "Upload is " + progress + "% done");
                     }
                 });
