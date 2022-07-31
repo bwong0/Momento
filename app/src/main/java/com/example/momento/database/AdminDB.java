@@ -75,8 +75,10 @@ public class AdminDB extends AccountDB {
                             // update Class members after success
                             Map<String, List<String>> data = (Map<String, List<String>>) snapshot.getValue();
                             AdminDB.this.patientList = data.get(PATIENT_LIST);
-                            // Initiate Listener to the Account
-                            mDatabase.child(ADMIN_NODE).child(uid).addValueEventListener(adminListener);
+                            // Initiate Listener to the Account if the data is not null
+                            if (AdminDB.this.patientList != null && AdminDB.this.patientList.size() > 0 ) {
+                                mDatabase.child(ADMIN_NODE).child(uid).addValueEventListener(adminListener);
+                            }
                         } else {
                             // add the UID to Firebase and instantiate a blank Admin?
                             // TODO: Decide on this with team.
@@ -104,24 +106,24 @@ public class AdminDB extends AccountDB {
                    String email, String address) {
         // Creates an entry in "Accounts" on Firebase
         super(uid, type, firstName, lastName, email, address);
-        // Creates an entry in "Admins" on Firebase
-        Map<String, List<String>> patients = new HashMap<>();
-        patients.put(PATIENT_LIST, this.patientList);
-        mDatabase.child(ADMIN_NODE).child(this.getUid()).setValue(patients)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Initiate Listener
-                        mDatabase.child(ADMIN_NODE).child(uid).addValueEventListener(adminListener);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Write failed
-                        // TODO: Handle write failure?
-                    }
-                });
+//        // Creates an entry in "Admins" on Firebase
+//        Map<String, List<String>> patients = new HashMap<>();
+//        patients.put(PATIENT_LIST, this.patientList);
+//        mDatabase.child(ADMIN_NODE).child(this.getUid()).setValue(patients)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        // Initiate Listener
+//                        mDatabase.child(ADMIN_NODE).child(uid).addValueEventListener(adminListener);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        // Write failed
+//                        // TODO: Handle write failure?
+//                    }
+//                });
     }
 
 
