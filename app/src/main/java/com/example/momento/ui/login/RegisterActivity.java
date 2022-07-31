@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
@@ -28,12 +30,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.w3c.dom.Text;
+
 // TODO: Add margin around the whole interactable area
 public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private FirebaseAuth mAuth;
     private AccountType admin = AccountType.ADMIN;
     private static String TAG = "register process: ";
+    private boolean allFieldsPassed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,188 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         }
+
+        first.setError("Enter first name.");
+        first.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()==0){
+                    first.setError("First name can not be empty.");
+                    allFieldsPassed = true;
+                }else {
+                    first.setError(null);
+                    allFieldsPassed = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(first.getText().toString().isEmpty()){
+                    first.setError("First name can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    first.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+        });
+
+        last.setError("Enter last name.");
+        last.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()==0){
+                    last.setError("Last name can not be empty.");
+                    allFieldsPassed = false;
+                }else {
+                    last.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //ignore
+            }
+        });
+
+        address.setError("Enter address.");
+        address.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()==0){
+                    address.setError("Address can not be empty.");
+                    allFieldsPassed = false;
+                }else {
+                    address.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(address.getText().toString().isEmpty()){
+                    address.setError("Address can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    address.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+        });
+
+        ID.setError("Enter User ID");
+        ID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()==0){
+                    ID.setError("User ID can not be empty.");
+                    allFieldsPassed = false;
+                }else
+                    allFieldsPassed = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(ID.getText().toString().isEmpty()){
+                    ID.setError("User ID can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    ID.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+        });
+
+        email.setError("Enter email.");
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() == 0){
+                    email.setError("Email can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    email.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(email.getText().toString().isEmpty()){
+                    email.setError("Email can not be empty.");
+                    allFieldsPassed = false;
+                }else if(!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches()){
+                    email.setError("Email invalid.");
+                    allFieldsPassed = false;
+                }else{
+                    email.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+        });
+
+        password.setError("Enter password.");
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()==0) {
+                    password.setError("Password can not be empty.");
+                    allFieldsPassed = false;
+                }
+                else if(charSequence.length() > 0 && charSequence.length() <= 5) {
+                    password.setError("Password must be longer than 5 characters.");
+                    allFieldsPassed = false;
+                }else
+                    allFieldsPassed = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(password.getText().toString().isEmpty()){
+                    first.setError("Password can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    password.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+        });
+
+
+
         register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -77,7 +264,11 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches()) {
                     Toast.makeText(context, "Invalid Email.",
                             Toast.LENGTH_LONG).show();
-                } else {
+                // if any fields does not meet requirement
+                } else if(!allFieldsPassed){
+                    Toast.makeText(context, "All fields must fulfill their conditions.",
+                            Toast.LENGTH_LONG).show();
+                } else{
                     // create admin account here
                     // email password validation WIP
                     String emailString = email.getText().toString();
@@ -167,4 +358,5 @@ public class RegisterActivity extends AppCompatActivity {
                 );
         manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
 }

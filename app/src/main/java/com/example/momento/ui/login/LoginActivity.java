@@ -147,7 +147,6 @@ public class LoginActivity extends AppCompatActivity {
         );
 
 
-
         /************** LOGIN MODEL **************/
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -299,7 +298,6 @@ public class LoginActivity extends AppCompatActivity {
      * @param model LoggedInUserView
      */
     private void updateUiWithUser(LoggedInUserView model, AccountType accountType) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Log.d(TAG, accountType.toString());
 
@@ -315,7 +313,6 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "patient type");
             openPatientHome();
         }
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     /**
