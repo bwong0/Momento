@@ -2,10 +2,13 @@ package com.example.momento.family;
 
 import android.app.Activity;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +20,19 @@ import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Int
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.momento.R;
+import com.example.momento.data.Result;
+import com.example.momento.data.model.LoggedInUser;
+import com.example.momento.database.DatabaseCallbacks;
+import com.example.momento.database.FamilyDB;
 import com.example.momento.ui.login.Persons;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -36,11 +50,35 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button prompt_3_upload;
     ImageButton profileCreationImage;
 
+    FamilyDB familyDb;
+
+    /****DEBUG****/
+    FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
+    private final static String TAG = "ProfileCreation";
+    /****DEBUG****/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
 
+        /**Temporary Authentication for Development ***/
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword("peterfan01@gmail.com", "test123")
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            firebaseUser = mAuth.getCurrentUser();
+                            familyDb = new FamilyDB(firebaseUser.getUid());
+                        } else {
+                            //
+                        }
+                    }
+                });
+
+        /*****/
 
         ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
@@ -169,7 +207,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     public void imageChooser() {
         String i = "image/*";
-        //launchGalleryPhoto.launch(i);
+        launchGalleryPhoto.launch(i);
     }
 
     ActivityResultLauncher<String> launchGalleryVideo1 = registerForActivityResult( //Launch for Videos
@@ -197,6 +235,20 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             new ActivityResultContracts.GetContent(),
             resultUri -> {
                 // Do something with resultUri
+                // Upload profile picture for a Family account
+                familyDb.storage.setProfilePic(this, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        // do something with the Uri on Firebase
+                        if (uri != null) {
+                            Log.d(TAG, "Uri after upload: " + uri.toString());
+                        }
+                    }
+                    @Override
+                    public void fileCallback(File aFile) {
+                        // Not used but have to keep it here.
+                    }
+                });
             }
     );
 
