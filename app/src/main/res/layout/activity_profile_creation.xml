@@ -113,6 +113,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="@+id/profileCreationImage"
         app:layout_constraintEnd_toEndOf="@+id/profileCreationImage"
         app:layout_constraintStart_toStartOf="@+id/profileCreationImage"
