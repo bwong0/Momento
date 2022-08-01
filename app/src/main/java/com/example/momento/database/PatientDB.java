@@ -80,7 +80,7 @@ public class PatientDB extends AccountDB {
      * Use this constructor when there is already an Account on Firebase.
      * @param uid Should match UID for the account on Firebase Authentication.
      */
-    public PatientDB(String uid) {
+    public PatientDB(String uid, ServerCallback cb) {
         // Retrieve "Account" info
         super(uid);
         // Check if "Patient" entry exists, if so, update class members
@@ -97,14 +97,14 @@ public class PatientDB extends AccountDB {
                                 usePatientSnapshot(snapshot);
                                 // Initiate Listener to the Account
                                 thisPatientRef.addValueEventListener(patientListener);
+                                cb.isReadyCallback(true);
                             } else {
-                                // add the UID to Firebase and instantiate a blank Admin?
-                                // TODO: Decide on this with team.
-                                // Map<String, Object> blankInfo =
-                                // mDatabase.child(ADMIN_NODE).child(uid).setValue(blankInfo);
+                                // No Patient entry in Realtime Database
+                                cb.isReadyCallback(false);
                             }
                     } else {
                         Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
+                        cb.isReadyCallback(false);
                     }
                 }
             });
@@ -123,7 +123,8 @@ public class PatientDB extends AccountDB {
      * @param birthDate
      */
     public PatientDB(String uid, AccountType type, String firstName, String lastName,
-                    String email, String address, String healthCardNum, Date birthDate) {
+                    String email, String address, String healthCardNum, Date birthDate,
+                    ServerCallback cb) {
         // Creates an entry in "Accounts" on Firebase
         super(uid, type, firstName, lastName, email, address);
         // Creates a Map entry of "Patient"
@@ -142,6 +143,7 @@ public class PatientDB extends AccountDB {
                 public void onSuccess(Void aVoid) {
                     // Initiate Listener
                     thisPatientRef.addValueEventListener(patientListener);
+                    cb.isReadyCallback(true);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -149,6 +151,7 @@ public class PatientDB extends AccountDB {
                 public void onFailure(@NonNull Exception e) {
                     // Write failed
                     // TODO: Handle write failure?
+                    cb.isReadyCallback(false);
                 }
             });
     }

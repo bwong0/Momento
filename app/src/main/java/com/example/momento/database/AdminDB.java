@@ -59,7 +59,7 @@ public class AdminDB extends AccountDB {
      * Use this constructor when there is already an Account on Firebase.
      * @param uid Should match UID for the account on Firebase Authentication.
      */
-    public AdminDB(String uid) {
+    public AdminDB(String uid, ServerCallback cb) {
         // Retrieve "Account" info
         super(uid);
         // Check if "Admin" entry exists, if so, update patientList
@@ -79,14 +79,14 @@ public class AdminDB extends AccountDB {
                             if (AdminDB.this.patientList != null && AdminDB.this.patientList.size() > 0 ) {
                                 mDatabase.child(ADMIN_NODE).child(uid).addValueEventListener(adminListener);
                             }
+                            cb.isReadyCallback(true);
                         } else {
-                            // add the UID to Firebase and instantiate a blank Admin?
-                            // TODO: Decide on this with team.
-                            // Map<String, Object> blankInfo =
-                            // mDatabase.child(ADMIN_NODE).child(uid).setValue(blankInfo);
+                            // Data does not exists on Firebase Realtime Database
+                            cb.isReadyCallback(false);
                         }
                     } else {
                         Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
+                        cb.isReadyCallback(false);
                     }
                 }
             });
@@ -103,9 +103,10 @@ public class AdminDB extends AccountDB {
      * @param address
      */
     public AdminDB(String uid, AccountType type, String firstName, String lastName,
-                   String email, String address) {
+                   String email, String address, ServerCallback cb) {
         // Creates an entry in "Accounts" on Firebase
         super(uid, type, firstName, lastName, email, address);
+        cb.isReadyCallback(true);
 //        // Creates an entry in "Admins" on Firebase
 //        Map<String, List<String>> patients = new HashMap<>();
 //        patients.put(PATIENT_LIST, this.patientList);

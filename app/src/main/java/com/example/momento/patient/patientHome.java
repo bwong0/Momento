@@ -35,7 +35,12 @@ public class patientHome extends AppCompatActivity implements Serializable {
         // with method findViewById()
 
         uid = getIntent().getStringExtra("uid");
-        PatientDB patient = new PatientDB(uid);
+        PatientDB patient = new PatientDB(uid, new ServerCallback() {
+            @Override
+            public void isReadyCallback(boolean isReady) {
+
+            }
+        });
         List<String> profileUids = patient.getFamilyList();
 
         ArrayList<FamilyDB> familyDBArrayList = new ArrayList<>();

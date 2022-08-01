@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
 import com.example.momento.database.AdminDB;
 import com.example.momento.database.PatientDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.ui.login.patientRegister;
 
 import android.content.Intent;
@@ -53,7 +54,12 @@ public class patientCreation extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_patient_creation);
         String uid;
         uid = getIntent().getStringExtra("uid");
-        admin = new AdminDB(uid);
+        admin = new AdminDB(uid, new ServerCallback() {
+            @Override
+            public void isReadyCallback(boolean isReady) {
+
+            }
+        });
         patientUids = admin.getPatientList();
         ArrayList<PatientDB> patientDBArrayList = new ArrayList<>();
 
@@ -94,7 +100,12 @@ public class patientCreation extends AppCompatActivity implements Serializable {
 
         for (int i = 0; i < size; i++) {
             String cur = patientUids.get(i);
-            PatientDB temp = new PatientDB(cur);
+            PatientDB temp = new PatientDB(cur, new ServerCallback() {
+                @Override
+                public void isReadyCallback(boolean isReady) {
+                    //
+                }
+            });
             patientDBArrayList.add(temp);
 
             NamesArrayList.get(i).setText(temp.getFirstName() + " " + temp.getLastName());

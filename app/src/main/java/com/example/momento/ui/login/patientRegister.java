@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.momento.R;
 import com.example.momento.database.AccountType;
 import com.example.momento.database.PatientDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.databinding.ActivityPatientRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -331,7 +332,12 @@ public class patientRegister extends AppCompatActivity {
                                         Log.d(TAG, "patient uid is : " + uid);
                                         PatientDB newPatient = new PatientDB(uid, patient, first.getText().toString(),
                                                 last.getText().toString(), emailString, address.getText().toString(),
-                                                healthCard.getText().toString(), birth);
+                                                healthCard.getText().toString(), birth, new ServerCallback() {
+                                            @Override
+                                            public void isReadyCallback(boolean isReady) {
+
+                                            }
+                                        });
                                         updateUI();
                                     }else{
                                             // If sign in fails, display a message to the user.
