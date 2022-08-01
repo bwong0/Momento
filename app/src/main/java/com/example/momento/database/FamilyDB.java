@@ -66,7 +66,7 @@ public class FamilyDB extends AccountDB {
      * Use this constructor when there is already an Account on Firebase.
      * @param uid Should match UID for the account on Firebase Authentication.
      */
-    public FamilyDB(String uid) {
+    public FamilyDB(String uid, ServerCallback cb) {
         // Retrieve "Account" info
         super(uid);
         // Check if "Family" entry exists, if so, update patientList
@@ -91,6 +91,7 @@ public class FamilyDB extends AccountDB {
                        }
                        // Initiate Listener to the Account
                        mDatabase.child(FAMILY_NODE).child(uid).addValueEventListener(familyListener);
+                       cb.isReadyCallback(true);
                    } else {
                        // if no data in Firebase Realtime Database, populate with default VideoInfo
                        // Creates an entry in "Families" on Firebase
@@ -106,6 +107,7 @@ public class FamilyDB extends AccountDB {
                                public void onSuccess(Void aVoid) {
                                    // Initiate Listener
                                    mDatabase.child(FAMILY_NODE).child(uid).addValueEventListener(familyListener);
+                                   cb.isReadyCallback(true);
                                }
                            })
                            .addOnFailureListener(new OnFailureListener() {
@@ -113,11 +115,13 @@ public class FamilyDB extends AccountDB {
                                public void onFailure(@NonNull Exception e) {
                                    // Write failed
                                    // TODO: Handle write failure?
+                                   cb.isReadyCallback(false);
                                }
                            });
                    }
                 } else {
                    Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
+                   cb.isReadyCallback(false);
                 }
                 }
            }
@@ -134,7 +138,7 @@ public class FamilyDB extends AccountDB {
      * @param address
      */
     public FamilyDB(String uid, AccountType type, String firstName, String lastName,
-                   String email, String address) {
+                   String email, String address, ServerCallback cb) {
         // Creates an entry in "Accounts" on Firebase
         super(uid, type, firstName, lastName, email, address);
         // Creates an entry in "Families" on Firebase
@@ -150,6 +154,7 @@ public class FamilyDB extends AccountDB {
                 public void onSuccess(Void aVoid) {
                     // Initiate Listener
                     mDatabase.child(FAMILY_NODE).child(uid).addValueEventListener(familyListener);
+                    cb.isReadyCallback(true);
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -157,6 +162,7 @@ public class FamilyDB extends AccountDB {
                 public void onFailure(@NonNull Exception e) {
                     // Write failed
                     // TODO: Handle write failure?
+                    cb.isReadyCallback(false);
                 }
             });
     }

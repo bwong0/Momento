@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.ui.login.Persons;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -62,10 +63,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_profile_creation);
 
         uid = getIntent().getStringExtra("uid");
-        profile = new FamilyDB(uid);
 
 
-        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
+
+//        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
         relationship = (EditText) findViewById(R.id.editRelationship);
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
@@ -76,66 +77,91 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         update = (Button) findViewById((R.id.updateButton));
         clear =(Button) findViewById(R.id.clearButton);
 
-        title.setText(profile.getFirstName() + " " + profile.getLastName());
+
         String uri = "@drawable/empty";
-        if(profile.profilePresent == true){
-            title.setText(profile.getName());
-            if(profile.getImage() != ""){
-                int profilePicture = getResources().getIdentifier(profile.getImage(),null,getPackageName());
-                Drawable res = getResources().getDrawable(profilePicture);
-                pictureProfileCreation.setImageDrawable(res);
-            }
-            else{
-                int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
-                Drawable res = getResources().getDrawable(defaultImage);
-                pictureProfileCreation.setImageDrawable(res);
-            }
-        }
 
-
-        else {
-            title.setText("New Profile");
-
-            int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
-            Drawable res = getResources().getDrawable(defaultImage);
-            pictureProfileCreation.setImageDrawable(res);
-        }
-
-        update.setOnClickListener(new View.OnClickListener() {
+        profile = new FamilyDB(uid, new ServerCallback() {
             @Override
-            public void onClick(View view) {
-                boolean titleIS = true;
-                boolean relationshipIS = true;
-                if(title.getText().toString().trim() == "" || title.getText().toString() == "New Profile"){
-                    titleIS = false;
-                }
-
-                if(relationship.getText().toString().trim() == "" || relationship.getText().toString() == "Relationship"){
-                    titleIS = false;
-                }
-
-                if (titleIS == true && relationshipIS == true){
-                    profile.setName(title.getText().toString());
-                    profile.setRelationship(relationship.getText().toString());
-                    profile.setProfilePresent(true);
-                    update(profile);
-                }
-                else if(titleIS == false){
-                    title.setError("Please enter a name");
-                }
-                else if(relationshipIS == false){
-                    relationship.setError("Please enter a relationship");
+            public void isReadyCallback(boolean isReady) {
+                if (isReady) {
+                    title.setText(profile.getFirstName() + " " + profile.getLastName());
+                    profile.getProfilePicFile(new DatabaseCallbacks() {
+                        @Override
+                        public void uriCallback(Uri uri) {
+                        }
+                        @Override
+                        public void fileCallback(File file) {
+                            profileCreationImage.setImageDrawable(Drawable.createFromPath(file.getAbsolutePath()));
+                        }
+                        @Override
+                        public void progressCallback(double percentage) {
+                        }
+                        @Override
+                        public void failureCallback(boolean hasFailed, String message) {
+                            // TODO: read my FamilyDB
+                        }
+                    });
                 }
             }
         });
+//        if(profile.profilePresent == true){
+//            title.setText(profile.getName());
+//            if(profile.getImage() != ""){
+//                int profilePicture = getResources().getIdentifier(profile.getImage(),null,getPackageName());
+//                Drawable res = getResources().getDrawable(profilePicture);
+//                pictureProfileCreation.setImageDrawable(res);
+//            }
+//            else{
+//                int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
+//                Drawable res = getResources().getDrawable(defaultImage);
+//                pictureProfileCreation.setImageDrawable(res);
+//            }
+//        }
+//
+//
+//        else {
+//            title.setText("New Profile");
+//
+//            int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
+//            Drawable res = getResources().getDrawable(defaultImage);
+//            pictureProfileCreation.setImageDrawable(res);
+//        }
 
-        clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                profile = new Persons();
-                clear(profile);
-            }
-        });
+//        update.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                boolean titleIS = true;
+//                boolean relationshipIS = true;
+//                if(title.getText().toString().trim() == "" || title.getText().toString() == "New Profile"){
+//                    titleIS = false;
+//                }
+//
+//                if(relationship.getText().toString().trim() == "" || relationship.getText().toString() == "Relationship"){
+//                    titleIS = false;
+//                }
+//
+//                if (titleIS == true && relationshipIS == true){
+//                    profile.setName(title.getText().toString());
+//                    profile.setRelationship(relationship.getText().toString());
+//                    profile.setProfilePresent(true);
+//                    update(profile);
+//                }
+//                else if(titleIS == false){
+//                    title.setError("Please enter a name");
+//                }
+//                else if(relationshipIS == false){
+//                    relationship.setError("Please enter a relationship");
+//                }
+//            }
+//        });
+
+//        clear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                profile = new Persons();
+//                clear(profile);
+//            }
+//        });
 
         prompt_1_upload.setOnClickListener(new View.OnClickListener() {
             @Override

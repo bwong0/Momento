@@ -3,6 +3,7 @@ package com.example.momento.patient;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
 import com.example.momento.database.FamilyDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.ui.login.Persons;
 
 import android.graphics.drawable.Drawable;
@@ -24,7 +25,12 @@ public class profiles extends AppCompatActivity {
         setContentView(R.layout.activity_profiles);
 
         String uid = getIntent().getStringExtra("uid");
-        FamilyDB profile = new FamilyDB(uid);
+        FamilyDB profile = new FamilyDB(uid, new ServerCallback() {
+            @Override
+            public void isReadyCallback(boolean isReady) {
+
+            }
+        });
 
         ImageView profileImageView = (ImageView) findViewById(R.id.profileImageView);
         TextView profileName = (TextView) findViewById(R.id.profileName);

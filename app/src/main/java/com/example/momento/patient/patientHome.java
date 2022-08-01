@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.PatientDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.ui.login.Persons;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,7 +76,12 @@ public class patientHome extends AppCompatActivity implements Serializable {
 
       for (int i = 0; i < size; i++){
           String cur = profileUids.get(i);
-          FamilyDB temp = new FamilyDB(cur);
+          FamilyDB temp = new FamilyDB(cur, new ServerCallback() {
+              @Override
+              public void isReadyCallback(boolean isReady) {
+
+              }
+          });
           familyDBArrayList.add(temp);
           patientNameArrayList.get(i).setVisibility(View.VISIBLE);
           patientNameArrayList.get(i).setText(temp.getFirstName() + " " + temp.getLastName());

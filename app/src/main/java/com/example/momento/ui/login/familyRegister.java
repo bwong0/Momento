@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.momento.R;
 import com.example.momento.database.AccountType;
 import com.example.momento.database.FamilyDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.databinding.ActivityFamilyHomeBinding;
 import com.example.momento.databinding.ActivityFamilyRegisterBinding;
 import com.example.momento.databinding.ActivityPatientRegisterBinding;
@@ -245,7 +246,13 @@ public class familyRegister extends AppCompatActivity {
                                         String uid = mAuth.getCurrentUser().getUid();
                                         Log.d(TAG, "family account created, uid is : " + uid);
                                         FamilyDB newFamily = new FamilyDB(uid, family, first.getText().toString(),
-                                                last.getText().toString(), emailFamily, address.getText().toString());
+                                                last.getText().toString(), emailFamily, address.getText().toString(),
+                                                new ServerCallback() {
+                                                    @Override
+                                                    public void isReadyCallback(boolean isReady) {
+                                                        //
+                                                    }
+                                                });
                                         updateUI();
                                     }
                                 }
