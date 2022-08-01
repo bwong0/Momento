@@ -339,7 +339,7 @@ public class patientCreation extends AppCompatActivity {
     public void openPatientProfileEdit(String uid) {
         // TODO: Make an Activity based on ProfileCreation for "Register New Family" (to familyRegister form), and
         // "Manage Family" (display all 6 family, no action for now)
-        Intent intent = new Intent(this, ProfileCreation.class);
+        Intent intent = new Intent(this, patientProfile.class);
         intent.putExtra("patientUid", uid);
         startActivity(intent);
     }
