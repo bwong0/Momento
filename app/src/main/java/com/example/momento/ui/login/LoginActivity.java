@@ -32,9 +32,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.admin.admin.patientCreation;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.example.momento.family.ProfileCreation;
+import com.example.momento.patient.patientHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -244,18 +247,24 @@ public class LoginActivity extends AppCompatActivity {
      * Navigate to "adminHome" Activity
      */
     private void openAdminHome(){
-        Intent intent = new Intent(this, adminHome.class);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, patientCreation.class);
+        intent.putExtra("uid",uid);
         startActivity(intent);
     }
 
     private void openFamilyHome(){
-        //Intent intent = new Intent(this, familyHome.class);
-        //startActivity(intent);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, ProfileCreation.class);
+        intent.putExtra("uid",uid);
+        startActivity(intent);
     }
 
     private void openPatientHome(){
-        //Intent intent = new Intent(this, patientHome.class);
-        //startActivity(intent);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, patientHome.class);
+        intent.putExtra("uid",uid);
+        startActivity(intent);
     }
 
     /**
