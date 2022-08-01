@@ -110,7 +110,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
-            android:text="change languages" />
+            android:text="@string/change_languages" />
 
 
 
