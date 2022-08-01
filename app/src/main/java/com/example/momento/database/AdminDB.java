@@ -82,7 +82,7 @@ public class AdminDB extends AccountDB {
                             cb.isReadyCallback(true);
                         } else {
                             // Data does not exists on Firebase Realtime Database
-                            cb.isReadyCallback(false);
+                            cb.isReadyCallback(true);
                         }
                     } else {
                         Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
