@@ -23,6 +23,7 @@ import com.example.momento.R;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.database.AdminDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -299,7 +300,13 @@ public class RegisterActivity extends AppCompatActivity {
                                                 }
                                             });
                                     AdminDB newAdmin = new AdminDB(user.getUid(), admin, first.getText().toString(),
-                                            last.getText().toString(), email.getText().toString(), address.getText().toString());
+                                            last.getText().toString(), email.getText().toString(), address.getText().toString(),
+                                            new ServerCallback() {
+                                                @Override
+                                                public void isReadyCallback(boolean isReady) {
+
+                                                }
+                                            });
                                     updateUI();
                                 } else {
                                     // If sign in fails, display a message to the user.

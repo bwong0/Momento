@@ -48,7 +48,12 @@ public class familyCreation extends AppCompatActivity {
         setContentView(R.layout.activity_family_creation);
 
         uid = getIntent().getStringExtra("uid");
-        patient = new PatientDB(uid);
+        patient = new PatientDB(uid, new ServerCallback() {
+            @Override
+            public void isReadyCallback(boolean isReady) {
+
+            }
+        });
         familyUids = patient.getFamilyList();
         ArrayList<FamilyDB> familyDBArrayList = new ArrayList<>();
 
