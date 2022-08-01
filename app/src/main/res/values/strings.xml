@@ -57,7 +57,8 @@
     <string name="upload_prompt_2">Upload Prompt 2</string>
     <string name="upload_prompt_3">Upload Prompt 3</string>
     <string name="clear">clear</string>
-    <string name="update_profile">Update Profile</string>
+    <string name="update_profileName" translatable="false">Update Name</string>
+    <string name="update_profilePicutre" translatable="false">Update Picture</string>
     <string name="patient">Patient</string>
     <string name="family">Family</string>
     <string name="admin">Admin</string>

@@ -95,6 +95,7 @@ public class patientCreation extends AppCompatActivity implements Serializable {
 
 //        String uri = "@drawable/empty";
 //        int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
+//
 
         int size = patientUids.size();
 
