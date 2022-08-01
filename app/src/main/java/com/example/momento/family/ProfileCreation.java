@@ -17,6 +17,7 @@ import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Int
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.momento.R;
+import com.example.momento.database.FamilyDB;
 import com.example.momento.ui.login.Persons;
 
 import java.io.Serializable;
@@ -28,7 +29,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     EditText title;
     EditText relationship;
-    Persons profile;
     Button update;
     Button clear;
     Button prompt_1_upload;
@@ -36,10 +36,16 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button prompt_3_upload;
     ImageButton profileCreationImage;
 
+    String uid;
+    FamilyDB profile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
+
+        uid = getIntent().getStringExtra("uid");
+        profile = new FamilyDB(uid);
 
 
         ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
@@ -50,10 +56,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
         profileCreationImage = (ImageButton) findViewById((R.id.profileCreationImage));
 
-        profile = (Persons) getIntent().getSerializableExtra("person");
-
         update = (Button) findViewById((R.id.updateButton));
         clear =(Button) findViewById(R.id.clearButton);
+
+        title.setText(profile.getFirstName() + " " + profile.getLastName());
         String uri = "@drawable/empty";
         if(profile.profilePresent == true){
             title.setText(profile.getName());
