@@ -2,8 +2,175 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".data.admin.familyCreation">
+    tools:context=".patient.patientHome">
+
+    <ImageButton
+        android:id="@+id/familyAdmin1"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:background="@drawable/empty"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="120dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/familyAdmin2"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/empty"
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/familyAdmin3"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="236dp"
+        android:background="@drawable/empty"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin1"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin1"
+        app:layout_constraintTop_toBottomOf="@+id/familyNameAdmin1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/familyAdmin4"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin2"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin2"
+        app:layout_constraintTop_toBottomOf="@+id/familyNameAdmin2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/familyAdmin5"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/empty"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin3"
+        app:layout_constraintTop_toBottomOf="@+id/familyNameAdmin3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/familyAdmin6"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/empty"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin4"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin4"
+        app:layout_constraintTop_toBottomOf="@+id/familyNameAdmin4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/familyAdminTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/Create_or_Edit_a_Profile"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <TextView
+        android:id="@+id/familyNameAdmin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin1"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin1"
+        app:layout_constraintTop_toBottomOf="@+id/familyAdmin1" />
+
+    <TextView
+        android:id="@+id/familyNameAdmin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin2"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin2"
+        app:layout_constraintTop_toBottomOf="@+id/familyAdmin2" />
+
+    <TextView
+        android:id="@+id/familyNameAdmin3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin3"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin3"
+        app:layout_constraintTop_toBottomOf="@+id/familyAdmin3" />
+
+    <TextView
+        android:id="@+id/familyNameAdmin4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin4"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin4"
+        app:layout_constraintTop_toBottomOf="@+id/familyAdmin4" />
+
+    <TextView
+        android:id="@+id/familyNameAdmin5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin5"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin5"
+        app:layout_constraintTop_toBottomOf="@+id/familyAdmin5" />
+
+    <TextView
+        android:id="@+id/familyNameAdmin6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/familyAdmin6"
+        app:layout_constraintStart_toStartOf="@+id/familyAdmin6"
+        app:layout_constraintTop_toBottomOf="@+id/familyAdmin6" />
+
+    <!--    <androidx.constraintlayout.widget.Barrier-->
+    <!--        android:id="@+id/barrier2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:barrierDirection="top"-->
+    <!--        app:constraint_referenced_ids="imageView1" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
