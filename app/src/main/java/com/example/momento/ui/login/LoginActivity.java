@@ -66,9 +66,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
 
-    //translate language Variables
-    private Button mBtZhCn;
-    private Button mBtEn;
 
 
     /* Class Constants: */

@@ -37,10 +37,12 @@
     <string name="are_you_a_patient_or_a_caretaker">你是患者还是护理员?</string>
     <string name ="Choose_a_Profile">选择一个文件夹</string>
     <string name="Create_or_Edit_a_Profile">创建或编辑文件夹</string>
+    <string name="Create_or_Edit_a_Patient">Create or Edit a Patient</string>
     <string name="prompt_1">视频 #1</string>
     <string name="prompt_2">视频 #2</string>
     <string name="prompt_3">视频 #3</string>
     <string name="中文">简体中文</string>
+    <string name="english">English</string>
     <string name="admin_register">护理员登录</string>
     <string name="test_without_login">仅测试</string>
     <string name="login">登录</string>
@@ -59,4 +61,7 @@
     <string name="family">家庭</string>
     <string name="admin">护理员</string>
     <string name="relationship">关系</string>
+    <string name="change_languages">切换语言</string>
+    <string name="create_new_patient">创建一个新患者</string>
+    <string name="create_new_profile">创建一个新文件</string>
 </resources>

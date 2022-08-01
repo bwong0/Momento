@@ -111,7 +111,7 @@
         android:id="@+id/patientNameAdmin1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Patient"
+        android:text="@string/create_new_profile"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin1"
         app:layout_constraintStart_toStartOf="@+id/patientAdmin1"
@@ -121,7 +121,7 @@
         android:id="@+id/patientNameAdmin2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Profile"
+        android:text="@string/create_new_profile"
 
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin2"
@@ -132,7 +132,7 @@
         android:id="@+id/patientNameAdmin3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Profile"
+        android:text="@string/create_new_profile"
 
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin3"
@@ -143,7 +143,7 @@
         android:id="@+id/patientNameAdmin4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Profile"
+        android:text="@string/create_new_profile"
 
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin4"
@@ -154,7 +154,7 @@
         android:id="@+id/patientNameAdmin5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Profile"
+        android:text="@string/create_new_profile"
 
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin5"
@@ -165,7 +165,7 @@
         android:id="@+id/patientNameAdmin6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create New Profile"
+        android:text="@string/create_new_profile"
 
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin6"
