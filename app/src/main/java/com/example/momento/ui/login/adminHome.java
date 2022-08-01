@@ -22,6 +22,7 @@ public class adminHome extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         final Button createP = binding.patientRegister;
+        final Button createF = binding.btnFamilyRegister;
 
         createP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -29,10 +30,22 @@ public class adminHome extends AppCompatActivity {
                 openPatientRegister();
             }
         });
+
+        createF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openFamilyRegister();
+            }
+        });
     }
 
     private void openPatientRegister(){
         Intent intent = new Intent(this, patientRegister.class);
+        startActivity(intent);
+    }
+
+    private void openFamilyRegister(){
+        Intent intent = new Intent(this, familyRegister.class);
         startActivity(intent);
     }
 }
