@@ -35,6 +35,8 @@ import com.example.momento.R;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.example.momento.family.familyHome;
+import com.example.momento.patient.patientHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -80,6 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(firebaseAuth.getCurrentUser() != null) {
                     //openHome();
                 }
+
             }
         };
 
@@ -249,13 +252,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openFamilyHome(){
-        //Intent intent = new Intent(this, familyHome.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, familyHome.class);
+        startActivity(intent);
     }
 
     private void openPatientHome(){
-        //Intent intent = new Intent(this, patientHome.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, patientHome.class);
+        startActivity(intent);
     }
 
     /**
@@ -330,6 +333,7 @@ public class LoginActivity extends AppCompatActivity {
      *  if current user exists, directly goes to the correct page
      *  currently set to home page for testing
      */
+    //TODO: no onStart appears in activity, the use of this function is replaced by authStateChangeListener
     @Override
     protected void onStart() {
         super.onStart();
