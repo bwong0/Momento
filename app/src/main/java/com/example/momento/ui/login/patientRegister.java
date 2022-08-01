@@ -19,41 +19,43 @@ import android.widget.Toast;
 
 import com.example.momento.R;
 import com.example.momento.database.AccountType;
-import com.example.momento.database.FamilyDB;
-import com.example.momento.databinding.ActivityFamilyHomeBinding;
-import com.example.momento.databinding.ActivityFamilyRegisterBinding;
+import com.example.momento.database.PatientDB;
 import com.example.momento.databinding.ActivityPatientRegisterBinding;
-import com.example.momento.patient.patientHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class familyRegister extends AppCompatActivity {
-    private ActivityFamilyRegisterBinding binding;
+public class patientRegister extends AppCompatActivity {
+    private ActivityPatientRegisterBinding binding;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private AccountType family = AccountType.FAMILY;
-    private static String TAG = "family register process: ";
+    private AccountType patient = AccountType.PATIENT;
+    private Date birth;
+    private static String TAG = "patient register process: ";
     private boolean allFieldsPassed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_family_register);
+        setContentView(R.layout.activity_patient_register);
 
-        binding = ActivityFamilyRegisterBinding.inflate(getLayoutInflater());
+        binding = ActivityPatientRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final Button familyRegister = binding.btnFamilyRegister;
-        final EditText first = binding.editTextFName;
-        final EditText last = binding.editTextLName;
-        final EditText address = binding.editTextAddressFamily;
-        final EditText email = binding.editTextEmailFamily;
-        final EditText password = binding.editTextPasswordFamily;
+        final Button patientRegister = binding.btnRegister;
+        final EditText first = binding.editTextFirstName;
+        final EditText last = binding.editTextLastName;
+        final EditText address = binding.editTextAddress;
+        final EditText email = binding.editTextEmail;
+        final EditText password = binding.editTextPassword;
+        final EditText healthCard = binding.editTextCardNum;
+        final EditText birthDate = binding.editTextTextBirthDate;
         password.setTransformationMethod(new PasswordTransformationMethod());
-        EditText[] editFields = {first, last, address, email, password};
+        EditText[] editFields = {first, last, address, email, password, healthCard, birthDate};
 
         // hides keyboard when not editing text
         for (EditText eachField : editFields) {
@@ -218,9 +220,85 @@ public class familyRegister extends AppCompatActivity {
             }
         });
 
-        familyRegister.setOnClickListener(new View.OnClickListener() {
+        healthCard.setError("Enter the health card number.");
+        healthCard.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() != 9){
+                    healthCard.setError("Health card number must be a 9 digit number.");
+                    allFieldsPassed = false;
+                }else if(charSequence.toString().matches("[0~9]+")){
+                    healthCard.setError("Health card number must not contain any non integer values.");
+                    allFieldsPassed = false;
+                }else{
+                    healthCard.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(healthCard.getText().toString().length() != 9){
+                    healthCard.setError("Health card number must be a 9 digit number.");
+                    allFieldsPassed = false;
+                }else if(healthCard.getText().toString().matches("[0~9]+")){
+                    healthCard.setError("Health card number must not contain any non integer values.");
+                    allFieldsPassed = false;
+                }else{
+                    healthCard.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+        });
+
+        birthDate.setError("Enter a birth date.");
+        birthDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!dateCheck(charSequence.toString())){
+                    birthDate.setError("Please follow provided syntax for date input.");
+                    allFieldsPassed = false;
+                }else if(charSequence.length() == 0){
+                    birthDate.setError("Birth date can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    birthDate.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!dateCheck(birthDate.getText().toString())){
+                    birthDate.setError("Please follow provided syntax for date input.");
+                    allFieldsPassed = false;
+                }else if(birthDate.getText().toString().length() == 0){
+                    birthDate.setError("Birth date can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    birthDate.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+        });
+
+        patientRegister.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
                 Context context = getApplicationContext();
                 if( !isFormComplete(editFields)){
                     Toast.makeText(context, "All fields must be filled.",
@@ -233,28 +311,52 @@ public class familyRegister extends AppCompatActivity {
                 } else if(!allFieldsPassed){
                     Toast.makeText(context, "All fields must fulfill their conditions.",
                             Toast.LENGTH_LONG).show();
-                } else{
-                    // create family account here
-                    String emailFamily = email.getText().toString();
-                    String passwordFamily = password.getText().toString();
-                    mAuth.createUserWithEmailAndPassword(emailFamily, passwordFamily).addOnCompleteListener(familyRegister.this,
+                }else{
+                    // create patient account here
+                    String emailString = email.getText().toString().trim();
+                    String passwordString = password.getText().toString().trim();
+                    try {
+                        birth = new SimpleDateFormat("MM/dd/yyyy").parse(birthDate.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(patientRegister.this,
                             new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        //TODO: still need email verification for patient?
                                         String uid = mAuth.getCurrentUser().getUid();
-                                        Log.d(TAG, "family account created, uid is : " + uid);
-                                        FamilyDB newFamily = new FamilyDB(uid, family, first.getText().toString(),
-                                                last.getText().toString(), emailFamily, address.getText().toString());
+                                        Log.d(TAG, "patient uid is : " + uid);
+                                        PatientDB newPatient = new PatientDB(uid, patient, first.getText().toString(),
+                                                last.getText().toString(), emailString, address.getText().toString(),
+                                                healthCard.getText().toString(), birth);
                                         updateUI();
+                                    }else{
+                                            // If sign in fails, display a message to the user.
+                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                            Toast.makeText(patientRegister.this, "Authentication failed.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+
+
                 }
-            }
-        });
+            });
+        }
 
 
+    /**
+     * Hides Software Keyboard
+     * */
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
@@ -282,17 +384,22 @@ public class familyRegister extends AppCompatActivity {
     }
 
     /**
-     * Hides Software Keyboard
-     * */
-    private void hideKeyboard(View view) {
-        InputMethodManager manager =
-                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
-                );
-        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+     * Checks for correct date format
+     */
+    public boolean dateCheck(String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(date.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
     }
 
     public void updateUI(){
         Intent intent = new Intent(this, adminHome.class);
         startActivity(intent);
     }
+
 }

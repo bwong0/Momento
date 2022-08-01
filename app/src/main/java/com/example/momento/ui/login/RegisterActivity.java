@@ -250,7 +250,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-
         register.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -270,7 +269,6 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 } else{
                     // create admin account here
-                    // email password validation WIP
                     String emailString = email.getText().toString();
                     String passwordString = password.getText().toString();
                     mAuth.createUserWithEmailAndPassword( emailString, passwordString)

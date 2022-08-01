@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".patient.patientHome">
+
+    <ImageButton
+        android:id="@+id/patientAdmin1"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="120dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:background="@drawable/empty"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/patientAdmin2"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/empty"
+        android:adjustViewBounds="true"
+        android:maxWidth="130sp"
+        android:maxHeight="130sp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/patientAdmin3"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="236dp"
+        android:background="@drawable/empty"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin1"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin1"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameAdmin1"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/patientAdmin4"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin2"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin2"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameAdmin2"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/patientAdmin5"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="28dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin3"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameAdmin3"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/patientAdmin6"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="28dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/empty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin4"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin4"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameAdmin4"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/patientAdminTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/Create_or_Edit_a_Patient"
+        android:textSize="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.032" />
+
+    <TextView
+        android:id="@+id/patientNameAdmin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Patient"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin1"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin1"
+        app:layout_constraintTop_toBottomOf="@+id/patientAdmin1" />
+
+    <TextView
+        android:id="@+id/patientNameAdmin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin2"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin2"
+        app:layout_constraintTop_toBottomOf="@+id/patientAdmin2" />
+
+    <TextView
+        android:id="@+id/patientNameAdmin3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin3"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin3"
+        app:layout_constraintTop_toBottomOf="@+id/patientAdmin3" />
+
+    <TextView
+        android:id="@+id/patientNameAdmin4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin4"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin4"
+        app:layout_constraintTop_toBottomOf="@+id/patientAdmin4" />
+
+    <TextView
+        android:id="@+id/patientNameAdmin5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin5"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin5"
+        app:layout_constraintTop_toBottomOf="@+id/patientAdmin5" />
+
+    <TextView
+        android:id="@+id/patientNameAdmin6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Profile"
+
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/patientAdmin6"
+        app:layout_constraintStart_toStartOf="@+id/patientAdmin6"
+        app:layout_constraintTop_toBottomOf="@+id/patientAdmin6" />
+
+    <!--    <androidx.constraintlayout.widget.Barrier-->
+    <!--        android:id="@+id/barrier2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:barrierDirection="top"-->
+    <!--        app:constraint_referenced_ids="imageView1" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

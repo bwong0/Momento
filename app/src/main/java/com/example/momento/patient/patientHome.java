@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.momento.database.FamilyDB;
+import com.example.momento.database.PatientDB;
 import com.example.momento.ui.login.Persons;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +17,14 @@ import com.example.momento.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class patientHome extends AppCompatActivity implements Serializable {
 
 
 //    public static final String EXTRA_TEXT = "com.example.momento.ui.login.EXTRA_TEXT";
-
+    String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,14 @@ public class patientHome extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_patient_home);
         // initialize imageView
         // with method findViewById()
+
+        uid = getIntent().getStringExtra("uid");
+        PatientDB patient = new PatientDB(uid);
+        List<String> profileUids = patient.getFamilyList();
+
+        ArrayList<FamilyDB> familyDBArrayList = new ArrayList<>();
+
+
         TextView patientName1 = (TextView) findViewById(R.id.patientName1);
         TextView patientName2 = (TextView) findViewById(R.id.patientName2);
         TextView patientName3 = (TextView) findViewById(R.id.patientName3);
@@ -58,22 +70,17 @@ public class patientHome extends AppCompatActivity implements Serializable {
         patientProfileArrayList.add(patientProfile5);
         patientProfileArrayList.add(patientProfile6);
 
-        ArrayList<Persons> ArrayListProfiles = (ArrayList<Persons>) getIntent().getSerializableExtra("ArrayListProfile");
+        int size = profileUids.size();
 
 
-
-      for (int i = 0; i < 6; i++){
-          Persons cur = ArrayListProfiles.get(i);
-          if(cur.profilePresent == false){
-              patientProfileArrayList.get(i).setVisibility(View.GONE);
-              patientNameArrayList.get(i).setVisibility(View.GONE);
-            }
-          else{
-              patientNameArrayList.get(i).setText(cur.getName());
-              int profilePicture = getResources().getIdentifier(ArrayListProfiles.get(i).getImage(),null,getPackageName());
-              Drawable res = getResources().getDrawable(profilePicture);
-              patientProfileArrayList.get(i).setImageDrawable(res);
-          }
+      for (int i = 0; i < size; i++){
+          String cur = profileUids.get(i);
+          FamilyDB temp = new FamilyDB(cur);
+          familyDBArrayList.add(temp);
+          patientNameArrayList.get(i).setVisibility(View.VISIBLE);
+          patientNameArrayList.get(i).setText(temp.getFirstName() + " " + temp.getLastName());
+          patientProfileArrayList.get(i).setVisibility(View.VISIBLE);
+//          patientProfileArrayList.get(i).setImageDrawable(temp.image);
       }
 
 
@@ -81,18 +88,18 @@ public class patientHome extends AppCompatActivity implements Serializable {
 //         Apply OnClickListener  to imageView to
 //         switch from one activity to another
 
-        patientProfile1.setOnClickListener(v -> openProfiles(ArrayListProfiles.get(0)));
-        patientProfile2.setOnClickListener(v -> openProfiles(ArrayListProfiles.get(1)));
-        patientProfile3.setOnClickListener(v -> openProfiles(ArrayListProfiles.get(2)));
-        patientProfile4.setOnClickListener(v -> openProfiles(ArrayListProfiles.get(3)));
-        patientProfile5.setOnClickListener(v -> openProfiles(ArrayListProfiles.get(4)));
-        patientProfile6.setOnClickListener(v -> openProfiles(ArrayListProfiles.get(5)));
+        patientProfile1.setOnClickListener(v -> openProfiles(uid));
+        patientProfile2.setOnClickListener(v -> openProfiles(uid));
+        patientProfile3.setOnClickListener(v -> openProfiles(uid));
+        patientProfile4.setOnClickListener(v -> openProfiles(uid));
+        patientProfile5.setOnClickListener(v -> openProfiles(uid));
+        patientProfile6.setOnClickListener(v -> openProfiles(uid));
 
 
     }
-    public void openProfiles(Persons person){
+    public void openProfiles(String uid){
         Intent intent = new Intent(this, profiles.class);
-        intent.putExtra("person", person );
+        intent.putExtra("uid", uid );
         startActivity(intent);
     }
 //    public void openIV2(){

@@ -1,11 +1,13 @@
 package com.example.momento.family;
 
-import android.app.Activity;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +19,16 @@ import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Int
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.momento.R;
+import com.example.momento.database.DatabaseCallbacks;
+import com.example.momento.database.FamilyDB;
 import com.example.momento.ui.login.Persons;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -28,7 +38,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     EditText title;
     EditText relationship;
-    Persons profile;
     Button update;
     Button clear;
     Button prompt_1_upload;
@@ -36,10 +45,24 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button prompt_3_upload;
     ImageButton profileCreationImage;
 
+    String uid;
+    FamilyDB profile;
+
+    FamilyDB familyDb;
+
+    /****DEBUG****/
+    FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
+    private final static String TAG = "ProfileCreation";
+    /****DEBUG****/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
+
+        uid = getIntent().getStringExtra("uid");
+        profile = new FamilyDB(uid);
 
 
         ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
@@ -50,10 +73,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
         profileCreationImage = (ImageButton) findViewById((R.id.profileCreationImage));
 
-        profile = (Persons) getIntent().getSerializableExtra("person");
-
         update = (Button) findViewById((R.id.updateButton));
         clear =(Button) findViewById(R.id.clearButton);
+
+        title.setText(profile.getFirstName() + " " + profile.getLastName());
         String uri = "@drawable/empty";
         if(profile.profilePresent == true){
             title.setText(profile.getName());
@@ -169,34 +192,115 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     public void imageChooser() {
         String i = "image/*";
-        //launchGalleryPhoto.launch(i);
+        launchGalleryPhoto.launch(i);
     }
 
     ActivityResultLauncher<String> launchGalleryVideo1 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
                 // Do something with resultUri
+                profile.uploadVideo(this, 0, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        Log.d(TAG, "Done. Upload is at " + uri.toString());
+                        // TODO: Stop spinning animation here. This callback happens when upload finishes.
+
+                    }
+                    @Override
+                    public void fileCallback(File file) { }
+                    @Override
+                    public void progressCallback(double progress) {
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                        // TODO: Control spinning animation using this callback
+                        // TODO: Start spinning animation here when progress < 100
+                    }
+                    @Override
+                    public void failureCallback(boolean hasFailed, String message) {
+                        if (hasFailed) {
+                            Log.d(TAG, "Failed: " + message);
+                            // TODO: Stop spinning animation, and display pop-up warning onFailure
+                        }
+                    }
+                });
             }
     );
 
     ActivityResultLauncher<String> launchGalleryVideo2 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Do something with resultUri
+                profile.uploadVideo(this, 1, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        Log.d(TAG, "Done. Upload is at " + uri.toString());
+                    }
+                    @Override
+                    public void fileCallback(File file) { }
+                    @Override
+                    public void progressCallback(double progress) {
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                    @Override
+                    public void failureCallback(boolean hasFailed, String message) {
+                        if (hasFailed) {
+                            Log.d(TAG, "Failed: " + message);
+                        }
+                    }
+                });
             }
     );
 
     ActivityResultLauncher<String> launchGalleryVideo3 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Do something with resultUri
+                profile.uploadVideo(this, 2, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        Log.d(TAG, "Done. Upload is at " + uri.toString());
+                    }
+                    @Override
+                    public void fileCallback(File file) { }
+                    @Override
+                    public void progressCallback(double progress) {
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                    @Override
+                    public void failureCallback(boolean hasFailed, String message) {
+                        if (hasFailed) {
+                            Log.d(TAG, "Failed: " + message);
+                        }
+                    }
+                });
             }
     );
 
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Do something with resultUri
+                // Upload profile picture for a Family account
+                profile.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void failureCallback(boolean hasFailed, String msg) {
+                        if (hasFailed) {
+                            // TODO: Frontend. Do something if upload fails.
+                            Log.d(TAG, "Upload failed. " + msg);
+                        }
+                    }
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
+                        if (uri != null) {
+                            Log.d(TAG, "Uri after upload: " + uri.toString());
+                        }
+                    }
+                    @Override
+                    public void fileCallback(File aFile) { // Not used but must keep it here.
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        // TODO: do something with the percentage. Display a busy spinning overlay?
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                });
             }
     );
 
