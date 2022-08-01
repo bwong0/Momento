@@ -12,6 +12,7 @@
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
+        android:background="@drawable/empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -31,19 +32,19 @@
         app:layout_constraintStart_toStartOf="@+id/profileCreationImage"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editRelationship"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:selectAllOnFocus="true"
-        android:ems="10"
-        android:gravity="center"
-        android:inputType="textPersonName"
-        android:text="@string/relationship"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileCreationImage" />
+<!--    <EditText-->
+<!--        android:id="@+id/editRelationship"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:selectAllOnFocus="true"-->
+<!--        android:ems="10"-->
+<!--        android:gravity="center"-->
+<!--        android:inputType="textPersonName"-->
+<!--        android:text="Relationship"-->
+<!--        android:textSize="25dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/profileCreationImage" />-->
 
     <Button
         android:id="@+id/prompt_1_upload"
@@ -92,17 +93,18 @@
         android:text="@string/update_profile"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/clearButton"
-        android:layout_width="201dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/clear"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/updateButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!--    <Button-->
+<!--        android:id="@+id/clearButton"-->
+<!--        android:layout_width="201dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_marginEnd="9dp"-->
+<!--        android:layout_marginBottom="32dp"-->
+<!--        android:text="clear"-->
+<!--        android:textSize="30dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/updateButton"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>
