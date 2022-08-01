@@ -2,6 +2,8 @@ package com.example.momento.patient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
+import com.example.momento.database.FamilyDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.ui.login.Persons;
 
 import android.graphics.drawable.Drawable;
@@ -22,15 +24,21 @@ public class profiles extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profiles);
 
-        Persons person = (Persons) getIntent().getSerializableExtra("person");
+        String uid = getIntent().getStringExtra("uid");
+        FamilyDB profile = new FamilyDB(uid, new ServerCallback() {
+            @Override
+            public void isReadyCallback(boolean isReady) {
+
+            }
+        });
 
         ImageView profileImageView = (ImageView) findViewById(R.id.profileImageView);
         TextView profileName = (TextView) findViewById(R.id.profileName);
 
-        profileName.setText(person.getName());
-        int profilePicture = getResources().getIdentifier(person.getImage(),null,getPackageName());
-        Drawable res = getResources().getDrawable(profilePicture);
-        profileImageView.setImageDrawable(res);
+        profileName.setText(profile.getFirstName() + " " + profile.getFirstName());
+//        int profilePicture = getResources().getIdentifier(profile.getImage(),null,getPackageName());
+//        Drawable res = getResources().getDrawable(profilePicture);
+//        profileImageView.setImageDrawable(res);
 
         // Initialize TextView objects
         prompt1 = findViewById((R.id.prompt_1));

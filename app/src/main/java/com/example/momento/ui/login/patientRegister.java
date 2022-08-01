@@ -2,8 +2,6 @@ package com.example.momento.ui.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,43 +18,44 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.momento.R;
-import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
-import com.example.momento.database.AdminDB;
-import com.example.momento.databinding.ActivityRegisterBinding;
+import com.example.momento.database.PatientDB;
+import com.example.momento.databinding.ActivityPatientRegisterBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-// TODO: Add margin around the whole interactable area
-public class RegisterActivity extends AppCompatActivity {
-    private ActivityRegisterBinding binding;
-    private FirebaseAuth mAuth;
-    private AccountType admin = AccountType.ADMIN;
-    private static String TAG = "register process: ";
+public class patientRegister extends AppCompatActivity {
+    private ActivityPatientRegisterBinding binding;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private AccountType patient = AccountType.PATIENT;
+    private Date birth;
+    private static String TAG = "patient register process: ";
     private boolean allFieldsPassed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        mAuth = FirebaseAuth.getInstance();
-        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_patient_register);
+
+        binding = ActivityPatientRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final Button register = binding.proceedToAdmin;
+        final Button patientRegister = binding.btnRegister;
         final EditText first = binding.editTextFirstName;
         final EditText last = binding.editTextLastName;
         final EditText address = binding.editTextAddress;
-        final EditText ID = binding.editTextID;
         final EditText email = binding.editTextEmail;
         final EditText password = binding.editTextPassword;
+        final EditText healthCard = binding.editTextCardNum;
+        final EditText birthDate = binding.editTextTextBirthDate;
         password.setTransformationMethod(new PasswordTransformationMethod());
-        EditText[] editFields = {first, last, address, ID, email, password}; // TODO: Keep this updated.
+        EditText[] editFields = {first, last, address, email, password, healthCard, birthDate};
 
         // hides keyboard when not editing text
         for (EditText eachField : editFields) {
@@ -154,34 +153,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        ID.setError("Enter User ID");
-        ID.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()==0){
-                    ID.setError("User ID can not be empty.");
-                    allFieldsPassed = false;
-                }else
-                    allFieldsPassed = true;
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if(ID.getText().toString().isEmpty()){
-                    ID.setError("User ID can not be empty.");
-                    allFieldsPassed = false;
-                }else{
-                    ID.setError(null);
-                    allFieldsPassed = true;
-                }
-            }
-        });
-
         email.setError("Enter email.");
         email.addTextChangedListener(new TextWatcher() {
             @Override
@@ -249,74 +220,143 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-
-        register.setOnClickListener(new View.OnClickListener(){
+        healthCard.setError("Enter the health card number.");
+        healthCard.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() != 9){
+                    healthCard.setError("Health card number must be a 9 digit number.");
+                    allFieldsPassed = false;
+                }else if(charSequence.toString().matches("[0~9]+")){
+                    healthCard.setError("Health card number must not contain any non integer values.");
+                    allFieldsPassed = false;
+                }else{
+                    healthCard.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(healthCard.getText().toString().length() != 9){
+                    healthCard.setError("Health card number must be a 9 digit number.");
+                    allFieldsPassed = false;
+                }else if(healthCard.getText().toString().matches("[0~9]+")){
+                    healthCard.setError("Health card number must not contain any non integer values.");
+                    allFieldsPassed = false;
+                }else{
+                    healthCard.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+        });
+
+        birthDate.setError("Enter a birth date.");
+        birthDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //ignore
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!dateCheck(charSequence.toString())){
+                    birthDate.setError("Please follow provided syntax for date input.");
+                    allFieldsPassed = false;
+                }else if(charSequence.length() == 0){
+                    birthDate.setError("Birth date can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    birthDate.setError(null);
+                    allFieldsPassed = true;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(!dateCheck(birthDate.getText().toString())){
+                    birthDate.setError("Please follow provided syntax for date input.");
+                    allFieldsPassed = false;
+                }else if(birthDate.getText().toString().length() == 0){
+                    birthDate.setError("Birth date can not be empty.");
+                    allFieldsPassed = false;
+                }else{
+                    birthDate.setError(null);
+                    allFieldsPassed = true;
+                }
+
+            }
+        });
+
+        patientRegister.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
                 Context context = getApplicationContext();
-                // TODO: (low priority) Look into how LoginFormState has warning in text box
-                // if not all fields are filled
                 if( !isFormComplete(editFields)){
                     Toast.makeText(context, "All fields must be filled.",
                             Toast.LENGTH_LONG).show();
-                // if email is not an email
+                    // if email is not an email
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email.getText()).matches()) {
                     Toast.makeText(context, "Invalid Email.",
                             Toast.LENGTH_LONG).show();
-                // if any fields does not meet requirement
+                    // if any fields does not meet requirement
                 } else if(!allFieldsPassed){
                     Toast.makeText(context, "All fields must fulfill their conditions.",
                             Toast.LENGTH_LONG).show();
-                } else{
-                    // create admin account here
-                    String emailString = email.getText().toString();
-                    String passwordString = password.getText().toString();
-                    mAuth.createUserWithEmailAndPassword( emailString, passwordString)
-                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    user.sendEmailVerification()
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        // email sent, and account created with info from EditText array
-                                                        // after email is sent just logout the user
-                                                        FirebaseAuth.getInstance().signOut();
-                                                    }
-                                                    else
-                                                    {
-                                                        // email not sent, so display message and restart the activity
-                                                        overridePendingTransition(0, 0);
-                                                        finish();
-                                                        overridePendingTransition(0, 0);
-                                                        startActivity(getIntent());
-                                                    }
-                                                }
-                                            });
-                                    AdminDB newAdmin = new AdminDB(user.getUid(), admin, first.getText().toString(),
-                                            last.getText().toString(), email.getText().toString(), address.getText().toString());
-                                    updateUI();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
+                }else{
+                    // create patient account here
+                    String emailString = email.getText().toString().trim();
+                    String passwordString = password.getText().toString().trim();
+                    try {
+                        birth = new SimpleDateFormat("MM/dd/yyyy").parse(birthDate.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    mAuth.createUserWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(patientRegister.this,
+                            new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+                                        Log.d(TAG, "createUserWithEmail:success");
+                                        //TODO: still need email verification for patient?
+                                        String uid = mAuth.getCurrentUser().getUid();
+                                        Log.d(TAG, "patient uid is : " + uid);
+                                        PatientDB newPatient = new PatientDB(uid, patient, first.getText().toString(),
+                                                last.getText().toString(), emailString, address.getText().toString(),
+                                                healthCard.getText().toString(), birth);
+                                        updateUI();
+                                    }else{
+                                            // If sign in fails, display a message to the user.
+                                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                            Toast.makeText(patientRegister.this, "Authentication failed.",
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             }
-                        });
-                }
-            }
-        });
-    }
 
-    public void openLoginActivity(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+
+                }
+            });
+        }
+
+
+    /**
+     * Hides Software Keyboard
+     * */
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**
@@ -343,18 +383,23 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-    public void updateUI(){
-        openLoginActivity();
+    /**
+     * Checks for correct date format
+     */
+    public boolean dateCheck(String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(date.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Hides Software Keyboard
-     * */
-    private void hideKeyboard(View view) {
-        InputMethodManager manager =
-                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
-                );
-        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    public void updateUI(){
+        Intent intent = new Intent(this, adminHome.class);
+        startActivity(intent);
     }
 
 }
