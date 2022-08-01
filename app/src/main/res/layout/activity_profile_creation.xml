@@ -6,19 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".family.ProfileCreation">
 
-    <ImageButton
+
+    <ImageView
         android:id="@+id/profileCreationImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="280dp"
+        android:layout_height="256dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
         android:background="@drawable/empty"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.139" />
+        app:layout_constraintVertical_bias="0.154" />
 
     <EditText
         android:selectAllOnFocus="true"
@@ -86,15 +87,26 @@
         app:layout_constraintTop_toBottomOf="@+id/prompt_2_upload" />
 
     <Button
-        android:id="@+id/updateButton"
+        android:id="@+id/updateName"
         android:layout_width="201dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/update_profile"
-        android:textSize="30dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/update_profileName"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/updatePicture"
+        android:layout_width="201dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/update_profilePicutre"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/updateName" />
 
     <!--    <Button-->
 <!--        android:id="@+id/clearButton"-->

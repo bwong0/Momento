@@ -36,22 +36,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ProfileCreation extends AppCompatActivity implements Serializable {
-    ArrayList<Persons> ArrayListProfiles;
     int SELECT_VIDEO = 200;
 
     EditText title;
-    EditText relationship;
-    Button update;
-    Button clear;
+
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
-    ImageButton profileCreationImage;
+    ImageView profileCreationImage;
+    Button updateName;
+    Button updatePicture;
 
     String uid;
     FamilyDB profile;
 
-    FamilyDB familyDb;
+
 
     /****DEBUG****/
     FirebaseAuth mAuth;
@@ -65,6 +64,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_profile_creation);
 
         uid = getIntent().getStringExtra("uid");
+        String uri = "@drawable/empty";
+        int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
+        Drawable res = getResources().getDrawable(defaultImage);
+
 
 
 
@@ -74,9 +77,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
-        profileCreationImage = (ImageButton) findViewById((R.id.profileCreationImage));
+        profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage));
 
-        update = (Button) findViewById((R.id.updateButton));
+        updateName = (Button) findViewById((R.id.updateName));
+        updatePicture = (Button) findViewById((R.id.updatePicture));
 //        clear =(Button) findViewById(R.id.clearButton);
 
 
@@ -100,7 +104,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                         }
                         @Override
                         public void failureCallback(boolean hasFailed, String message) {
-                            // TODO: read my FamilyDB
+                            profileCreationImage.setImageDrawable(res);
                         }
                     });
                 }
@@ -108,33 +112,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         });
 
 
-//        if(profile.profilePresent == true){
-//            title.setText(profile.getName());
-//            if(profile.getImage() != ""){
-//                int profilePicture = getResources().getIdentifier(profile.getImage(),null,getPackageName());
-//                Drawable res = getResources().getDrawable(profilePicture);
-//                pictureProfileCreation.setImageDrawable(res);
-//            }
-//            else{
-//                int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
-//                Drawable res = getResources().getDrawable(defaultImage);
-//                pictureProfileCreation.setImageDrawable(res);
-//            }
-//        }
-//
-//
-//        else {
-//            title.setText("New Profile");
-//
-//            int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
-//            Drawable res = getResources().getDrawable(defaultImage);
-//            pictureProfileCreation.setImageDrawable(res);
-//        }
-
-        update.setOnClickListener(new View.OnClickListener() {
+        updateName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String newname = title.getText().toString();
+                final String newname = title.getText().toString().trim();
                 AlertDialog alertDialog = new AlertDialog.Builder(ProfileCreation.this).create();
                 String[] split = newname.split(" ");
                 if (title.getText().toString().trim().isEmpty()){
@@ -147,12 +128,20 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                             });
                     alertDialog.show();
                     return;
-                } else if (split.length <= 2){
-
+                } else if (split.length == 1){
                     profile.setFirstName(split[0]);
-                    if(split.length >= 2) {
-                        profile.setLastName(split[1]);
-                    }
+                    profile.setLastName("");
+                    alertDialog.setMessage("Name has been updated.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                } else if (split.length == 2){
+                    profile.setFirstName(split[0]);
+                    profile.setLastName(split[1]);
                     alertDialog.setMessage("Name has been updated.");
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
@@ -174,14 +163,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             }
         });
 
-//        clear.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                profile = new Persons();
-//                clear(profile);
-//            }
-//        });
-
         prompt_1_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,23 +181,19 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 videoChooser(3);
             }
         });
-        profileCreationImage.setOnClickListener(new View.OnClickListener() {
+        updatePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { imageChooser(); }
         });
 
     }
-    public void update (Persons persons){
-
-        Intent intent = new Intent(this, ProfileCreation.class);
-        intent.putExtra("person", persons);
-        startActivity(intent);
-    }
-//    public void clear(Persons persons){
+//    public void update (Persons persons){
+//
 //        Intent intent = new Intent(this, ProfileCreation.class);
 //        intent.putExtra("person", persons);
 //        startActivity(intent);
 //    }
+
 
     // this function is triggered when the Select Prompt 1 Video Button is clicked
     public void videoChooser(int n) {
