@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Momento</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -36,13 +36,11 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="are_you_a_patient_or_a_caretaker">Are you a patient or a caretaker?</string>
-    <string name="Choose_a_Profile">Choose a Profile</string>
+    <string name ="Choose_a_Profile">Choose a Profile</string>
     <string name="Create_or_Edit_a_Profile">Create or Edit a Profile</string>
-    <string name="Create_or_Edit_a_Patient">Create or Edit a Patient</string>
     <string name="prompt_1">Prompt #1</string>
     <string name="prompt_2">Prompt #2</string>
     <string name="prompt_3">Prompt #3</string>
-    <string name="中文">中文</string>
     <string name="english">English</string>
     <string name="admin_register">Admin Register</string>
     <string name="test_without_login">Test without Login</string>

@@ -16,20 +16,20 @@
             android:id="@+id/p"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Patient" />
+            android:text="@string/patient" />
 
 
         <Button
             android:id="@+id/f"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Family" />
+            android:text="@string/family" />
 
         <Button
             android:id="@+id/a"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:text="Admin" />
+            android:text="@string/admin" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
