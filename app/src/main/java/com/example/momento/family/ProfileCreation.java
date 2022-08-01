@@ -1,8 +1,10 @@
 package com.example.momento.family;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -68,17 +70,17 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
 //        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
-        relationship = (EditText) findViewById(R.id.editRelationship);
+//        relationship = (EditText) findViewById(R.id.editRelationship);
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
         profileCreationImage = (ImageButton) findViewById((R.id.profileCreationImage));
 
         update = (Button) findViewById((R.id.updateButton));
-        clear =(Button) findViewById(R.id.clearButton);
+//        clear =(Button) findViewById(R.id.clearButton);
 
 
-        String uri = "@drawable/empty";
+
 
         profile = new FamilyDB(uid, new ServerCallback() {
             @Override
@@ -104,6 +106,8 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 }
             }
         });
+
+
 //        if(profile.profilePresent == true){
 //            title.setText(profile.getName());
 //            if(profile.getImage() != ""){
@@ -127,33 +131,48 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 //            pictureProfileCreation.setImageDrawable(res);
 //        }
 
-//        update.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                boolean titleIS = true;
-//                boolean relationshipIS = true;
-//                if(title.getText().toString().trim() == "" || title.getText().toString() == "New Profile"){
-//                    titleIS = false;
-//                }
-//
-//                if(relationship.getText().toString().trim() == "" || relationship.getText().toString() == "Relationship"){
-//                    titleIS = false;
-//                }
-//
-//                if (titleIS == true && relationshipIS == true){
-//                    profile.setName(title.getText().toString());
-//                    profile.setRelationship(relationship.getText().toString());
-//                    profile.setProfilePresent(true);
-//                    update(profile);
-//                }
-//                else if(titleIS == false){
-//                    title.setError("Please enter a name");
-//                }
-//                else if(relationshipIS == false){
-//                    relationship.setError("Please enter a relationship");
-//                }
-//            }
-//        });
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String newname = title.getText().toString();
+                AlertDialog alertDialog = new AlertDialog.Builder(ProfileCreation.this).create();
+                String[] split = newname.split(" ");
+                if (title.getText().toString().trim().isEmpty()){
+                    alertDialog.setMessage("Name is empty, Please fill it in.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    return;
+                } else if (split.length <= 2){
+
+                    profile.setFirstName(split[0]);
+                    if(split.length >= 2) {
+                        profile.setLastName(split[1]);
+                    }
+                    alertDialog.setMessage("Name has been updated.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                } else if (split.length > 2){
+                    alertDialog.setMessage("First name and Last name Only.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }
+        });
 
 //        clear.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -193,11 +212,11 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         intent.putExtra("person", persons);
         startActivity(intent);
     }
-    public void clear(Persons persons){
-        Intent intent = new Intent(this, ProfileCreation.class);
-        intent.putExtra("person", persons);
-        startActivity(intent);
-    }
+//    public void clear(Persons persons){
+//        Intent intent = new Intent(this, ProfileCreation.class);
+//        intent.putExtra("person", persons);
+//        startActivity(intent);
+//    }
 
     // this function is triggered when the Select Prompt 1 Video Button is clicked
     public void videoChooser(int n) {
