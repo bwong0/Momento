@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,7 +19,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.momento.R;
+import com.example.momento.admin.admin.patientCreation;
 import com.example.momento.database.AccountType;
+import com.example.momento.database.AdminDB;
 import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.databinding.ActivityPatientRegisterBinding;
@@ -38,6 +41,8 @@ public class patientRegister extends AppCompatActivity {
     private Date birth;
     private static String TAG = "patient register process: ";
     private boolean allFieldsPassed = false;
+    String AdminUid;
+    AdminDB adminDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,9 @@ public class patientRegister extends AppCompatActivity {
 
         binding = ActivityPatientRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        AdminUid = getIntent().getStringExtra("uid");
+
 
         final Button patientRegister = binding.btnRegister;
         final EditText first = binding.editTextFirstName;
@@ -328,17 +336,35 @@ public class patientRegister extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         Log.d(TAG, "createUserWithEmail:success");
                                         //TODO: still need email verification for patient?
+
                                         String uid = mAuth.getCurrentUser().getUid();
+
                                         Log.d(TAG, "patient uid is : " + uid);
                                         PatientDB newPatient = new PatientDB(uid, patient, first.getText().toString(),
                                                 last.getText().toString(), emailString, address.getText().toString(),
                                                 healthCard.getText().toString(), birth, new ServerCallback() {
                                             @Override
                                             public void isReadyCallback(boolean isReady) {
+                                                Log.d(TAG,"before patient is ready");
+                                                if(isReady) {
+                                                    Log.d(TAG,"before admin is ready");
+                                                    Log.d(TAG,AdminUid);
+                                                    adminDB = new AdminDB(AdminUid, new ServerCallback() {
+                                                        @Override
+                                                        public void isReadyCallback(boolean isReady) {
+                                                            Log.d(TAG,"before add is ready");
+                                                            if (isReady) {
+                                                                Log.d("patientRegister" , "before");
+                                                                adminDB.addPatient(uid);
 
+                                                                updateUI();
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                             }
                                         });
-                                        updateUI();
+
                                     }else{
                                             // If sign in fails, display a message to the user.
                                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -404,8 +430,7 @@ public class patientRegister extends AppCompatActivity {
     }
 
     public void updateUI(){
-        Intent intent = new Intent(this, adminHome.class);
-        startActivity(intent);
+        finish();
     }
 
 }
