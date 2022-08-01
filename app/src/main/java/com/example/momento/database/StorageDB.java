@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
@@ -60,15 +61,19 @@ public class StorageDB {
     private static final long VID_SIZE_LIMIT = 1000000000 ; // 1GB
 
     /* Class Members */
-    String uid;
-    FirebaseStorage storage;
-    StorageReference storageRef; // root reference
-    StorageReference accountRef;
-    StorageReference profilePicRef;
-    Uri profilePicDownloadUri;
-    StorageReference vid1Ref;
-    StorageReference vid2Ref;
-    StorageReference vid3Ref;
+    protected Uri profilePicDownloadUri;
+    protected Uri vid1DownloadUri;
+    protected Uri vid2DownloadUri;
+    protected Uri vid3DownloadUri;
+
+    private String uid;
+    private FirebaseStorage storage;
+    private StorageReference storageRef; // root reference
+    private StorageReference accountRef;
+    private StorageReference profilePicRef;
+    private StorageReference vid1Ref;
+    private StorageReference vid2Ref;
+    private StorageReference vid3Ref;
 
 
     /* Constructors */
@@ -94,19 +99,19 @@ public class StorageDB {
      * Set an Account's Profile Picture.
      * @param context Usually "this", Activity or Service
      * @param fileUri Uri of the file to be uploaded.
-     * @param uriCb Callback after completing uploadTask. Usage: uriCb -> { // do something with uriCb }. Null if failed. Uri object is successful.
+     * @param cb Callback after completing uploadTask. Usage: uriCb Null if failed. Uri object is successful.
      */
-    void setProfilePic(Context context, Uri fileUri, DatabaseCallbacks uriCb) {
+    public void uploadProfilePic(Context context, Uri fileUri, DatabaseCallbacks cb) {
         // Determine MIME type is of /image and get file size (byte), file name
         String mimeType = getMimeType(context, fileUri);
-        boolean isImage = MimeTypeFilter.matches(mimeType, "image");
+        boolean isImage = MimeTypeFilter.matches(mimeType, "image/*");
         long fileSize = getFileSize(context, fileUri);
         //
         if (!isImage) {
-            // TODO: Not an image
+            cb.failureCallback(true, "Not an image.");
             Log.w(TAG, "Not an image for ProfilePic.");
         } else if (fileSize > PROFILE_PIC_SIZE_LIMIT ){
-            // TODO: File too large
+            cb.failureCallback(true, "File size > 5MB.");
             Log.w(TAG, "File size exceeds 5 MB");
         } else {
             // Proceed to upload...
@@ -115,15 +120,14 @@ public class StorageDB {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // TODO: Handle unsuccessful uploads
-                    uriCb.uriCallback(null);
+                    cb.failureCallback(true, exception.getMessage());
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                     double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    cb.progressCallback(progress);
                     Log.d(TAG, "Upload is " + progress + "% done");
-                    // TODO: Callback to show progress?
                 }
             }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -134,7 +138,7 @@ public class StorageDB {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
+                    cb.failureCallback(false,"Successful upload!");
                 }
             });
 
@@ -144,6 +148,7 @@ public class StorageDB {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
+                        cb.failureCallback(true, task.getException().getMessage());
                         throw task.getException();
                     }
 
@@ -158,10 +163,11 @@ public class StorageDB {
                         // Also store Uri in the class for faster access
                         StorageDB.this.profilePicDownloadUri = downloadUri;
                         // Callback to return URI
-                        uriCb.uriCallback(downloadUri);
+                        cb.uriCallback(downloadUri);
+                        cb.failureCallback(false, "Download Uri retrieved.");
                     } else {
                         // Handle failures
-                        // ...
+                        cb.failureCallback(false, "Upload successful, but failed to retrieve Uri.");
                     }
                 }
             });
@@ -170,65 +176,194 @@ public class StorageDB {
 
     /**
      * Download the Account's profile picture. File object is returned via Callback.
-     * @param fileCb File callback. Null if download failed.
+     * @param cb File callback. Null if download failed.
      */
-    public void getProfilePic(DatabaseCallbacks fileCb) {
+    public void downloadProfilePic(DatabaseCallbacks cb) {
         // Create a temp file (profilePic.tmp)
         try {
             File localFile = File.createTempFile(PROFILE_PIC, null);
-
             profilePicRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     // Local temp file has been created
-                    fileCb.fileCallback(localFile);
+                    cb.fileCallback(localFile);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    fileCb.fileCallback(null);
+                    cb.failureCallback(true, "Download failed.");
                 }
             });
         } catch (Exception e) {
             if (e instanceof IOException) {
                 Log.w(TAG, "File could not be created.");
+                cb.failureCallback(true, "File could not be created.");
             } else if (e instanceof SecurityException) {
                 Log.w(TAG, "A security manager exists and its " +
                         "SecurityManager.checkWrite(java.lang.String) " +
                         "method does not allow a file to be created");
+                cb.failureCallback(true, "A security manager exists and its " +
+                        "SecurityManager.checkWrite(java.lang.String) " +
+                        "method does not allow a file to be created");
             } else {
-                Log.w(TAG, "Unexpected error occured.");
+                Log.w(TAG, "Unexpected error occurred.");
+                cb.failureCallback(true,"Unexpected error occurred.");
             }
         }
     }
 
     /**
      * Get the Uri of the profile picture instead of a File.
-     * @return Callback Uri of the profile picture
+     * @return Callback Uri of the profile picture, or Failure Callback.
      */
-    public void getProfilePicDownloadUri(DatabaseCallbacks uriCb) {
+    public void getProfilePicDownloadUri(DatabaseCallbacks cb) {
         profilePicRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                uriCb.uriCallback(uri);
+                profilePicDownloadUri = uri;
+                cb.uriCallback(uri);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
+                cb.failureCallback(true, exception.getMessage());
             }
         });
     }
 
-//    TODO: setVid1();
-//    TODO: getVid1();
-//
-//    TODO: setVid2();
-//    TODO: getVid2();
-//
-//    TODO: setVid3();
-//    TODO: getVid3();
+    /**
+     * Upload Video to Firebase Storage. Get download Uri back if successful.
+     * @param context "this"
+     * @param index 0, 1, or 2.
+     * @param fileUri Uri of the file to be uploaded.
+     * @param cb Override to do something with the callbacks.
+     */
+    public void uploadVideo(Context context, int index, Uri fileUri, DatabaseCallbacks cb) {
+        // Determine MIME type is of /video and get file size (byte), file name
+        String mimeType = getMimeType(context, fileUri);
+        boolean isVideo = MimeTypeFilter.matches(mimeType, "video/*");
+        long fileSize = getFileSize(context, fileUri);
+        //
+        if (!isVideo) {
+            cb.failureCallback(true, "Not an image.");
+            Log.w(TAG, "Not an image for ProfilePic.");
+        } else if (fileSize > VID_SIZE_LIMIT ){
+            cb.failureCallback(true, "File size > 1GB.");
+            Log.w(TAG, "File size exceeds 1 GB");
+        } else {
+            // Determine which video prompt reference to use
+            StorageReference ref;
+            if (index == 0) {
+                ref = vid1Ref;
+            } else if (index == 1) {
+                ref = vid2Ref;
+            } else if (index == 2) {
+                ref = vid3Ref;
+            } else {
+                cb.failureCallback(true, "Incorrect video index.");
+                return;
+            }
+            // Proceed to upload...
+            UploadTask uploadTask = ref.putFile(fileUri);
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    cb.failureCallback(true, exception.getMessage());
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    cb.progressCallback(progress);
+                    Log.d(TAG, "Upload is " + progress + "% done");
+                }
+            }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onPaused(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.d(TAG, "Upload is paused");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    cb.failureCallback(false,"Successful upload!");
+                }
+            });
+
+            // After Upload completed, get Download URL, convert to URI.
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        cb.failureCallback(true, task.getException().getMessage());
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return ref.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        // Also store Uri in the class for faster access
+                        if (index == 0) {
+                            StorageDB.this.vid1DownloadUri = downloadUri;
+                        } else if (index == 1) {
+                            StorageDB.this.vid2DownloadUri = downloadUri;
+                        } else if (index == 2) {
+                            StorageDB.this.vid3DownloadUri = downloadUri;
+                        }
+                        // Callback to return URI
+                        cb.uriCallback(downloadUri);
+                        cb.failureCallback(false, "Download Uri retrieved.");
+                    } else {
+                        // Handle failures
+                        cb.failureCallback(false, "Upload successful, but failed to retrieve Uri.");
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * Retrieve Video Uris from Firebase.
+     * @param index 0, 1, or 2 to specify the video.
+     * @param cb See DatabaseCallbacks
+     */
+    public void getVideoDownloadUri(int index, DatabaseCallbacks cb) {
+        // Determine which video
+        StorageReference ref;
+        switch (index) {
+            case 0: ref = vid1Ref; break;
+            case 1: ref = vid2Ref; break;
+            case 2: ref = vid3Ref; break;
+            default:
+                ref = null;
+                cb.failureCallback(true, "Incorrect video index.");
+                return;
+        }
+        // Get download Uri
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                switch (index) {
+                    case 0: vid1DownloadUri = uri; break;
+                    case 1: vid2DownloadUri = uri; break;
+                    case 2: vid3DownloadUri = uri; break;
+                }
+                cb.uriCallback(uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                cb.failureCallback(true, exception.getMessage());
+            }
+        });
+    }
 
 
     /* Helper Functions */

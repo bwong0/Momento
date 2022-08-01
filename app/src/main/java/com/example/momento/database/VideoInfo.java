@@ -11,7 +11,7 @@ import java.util.Map;
 public class VideoInfo extends Object {
 
     public String url;
-    private int playCount;
+    private long playCount;
 
     // Constructors
     VideoInfo() {
@@ -24,13 +24,18 @@ public class VideoInfo extends Object {
         playCount = 0;
     }
 
+    VideoInfo(String url, long playCount) {
+        this.playCount = playCount;
+        this.url = url;
+    }
+
     // Deep Copy Constructor
     VideoInfo(VideoInfo that) {
         this.url = that.url;
         this.playCount = that.playCount;
     }
 
-    public int getPlayCount() { return playCount; }
+    public long getPlayCount() { return playCount; }
     public void incrementPlayCount() { playCount++; }
     public void resetPlayCount() { playCount = 0 ;}
 
