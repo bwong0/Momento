@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Enter your information to register"
+            android:text="@string/enter_your_information_to_register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Last Name" />
+            android:text="@string/last_name" />
 
         <EditText
             android:id="@+id/editTextLastName"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="First Name" />
+            android:text="@string/first_name" />
 
         <EditText
             android:id="@+id/editTextFirstName"
@@ -78,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Address" />
+            android:text="@string/address" />
 
         <EditText
             android:id="@+id/editTextAddress"
@@ -101,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="User ID" />
+            android:text="@string/user_id" />
 
         <EditText
             android:id="@+id/editTextID"

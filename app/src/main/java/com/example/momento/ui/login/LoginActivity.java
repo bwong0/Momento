@@ -9,9 +9,12 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,6 +22,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,6 +39,7 @@ import com.example.momento.R;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +48,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
@@ -54,6 +60,11 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener authStateListener;
     private static final String TAG = "LoginActivity";
+
+
+    //translate language Variables
+    private Button mBtZhCn;
+    private Button mBtEn;
 
 
     /* Class Constants: */
@@ -70,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         /************** UI/UX **************/
 
         //this keeps the first login user, redirect to home page for testing
@@ -77,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null) {
+                if (firebaseAuth.getCurrentUser() != null) {
                     //openHome();
                 }
             }
@@ -121,9 +133,9 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Register Button
-        adminRegister.setOnClickListener(new View.OnClickListener(){
+        adminRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 openRegister();
             }
         });
@@ -145,7 +157,6 @@ public class LoginActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 ACCESS_NETWORK_STATE_PERMISSION_CODE
         );
-
 
 
         /************** LOGIN MODEL **************/
@@ -220,7 +231,58 @@ public class LoginActivity extends AppCompatActivity {
         });
         /************** END OF LOGIN MODEL **************/
 
+        //translate to Chinese on create
+
+        binding.changeLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changelanguage();
+            }
+        });
+
+
+
+
     } // END OF onCreate()
+
+
+    //change the language
+
+    private void changelanguage() {
+        final String language[] = {"English","简体中文"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        mBuilder.setSingleChoiceItems(language, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    setLocale("");
+                    recreate();
+                }
+                else if(i == 1){
+                    setLocale("zh");
+                    recreate();
+                }
+            }
+        });
+        mBuilder.create();
+        mBuilder.show();
+
+    }
+
+    //setting the locale
+    private void setLocale(String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration,
+                getBaseContext().getResources().getDisplayMetrics());
+
+
+    }
+
+
 
 
     /* Class Methods */
