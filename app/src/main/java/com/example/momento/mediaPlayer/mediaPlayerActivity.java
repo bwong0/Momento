@@ -34,7 +34,10 @@ public class mediaPlayerActivity extends AppCompatActivity {
         player.prepare();
         // Start the playback.
         player.play();
+        // Release the player instance
+        player.release();
+        // Finish Activity
+        finish();
 
     }
-
 }
