@@ -113,13 +113,16 @@ public class LauncherActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = new Intent(this, patientCreation.class);
         intent.putExtra("uid",uid);
+        finish();
         startActivity(intent);
+
     }
 
     private void openFamilyHome(){
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = new Intent(this, ProfileCreation.class);
         intent.putExtra("uid",uid);
+        finish();
         startActivity(intent);
     }
 
@@ -127,11 +130,13 @@ public class LauncherActivity extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = new Intent(this, patientHome.class);
         intent.putExtra("uid",uid);
+        finish();
         startActivity(intent);
     }
 
     private void openLoginActivity(){
         Intent intent = new Intent(this, LoginActivity.class);
+        finish();
         startActivity(intent);
     }
 
