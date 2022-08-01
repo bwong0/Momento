@@ -38,10 +38,9 @@
     <string name="are_you_a_patient_or_a_caretaker">Are you a patient or a caretaker?</string>
     <string name ="Choose_a_Profile">Choose a Profile</string>
     <string name="Create_or_Edit_a_Profile">Create or Edit a Profile</string>
-    <string name="Create_or_Edit_a_Patient">Create or Edit a Patient</string>
-    <string name="prompt_1">Prompt #1</string>
-    <string name="prompt_2">Prompt #2</string>
-    <string name="prompt_3">Prompt #3</string>
+    <string name="prompt_1">Who are you?</string>
+    <string name="prompt_2">How are you?</string>
+    <string name="prompt_3">Favourite memory.</string>
     <string name="english">English</string>
     <string name="中文">简体中文</string>
     <string name="admin_register">Admin Register</string>
@@ -53,9 +52,9 @@
     <string name="address">Address</string>
     <string name="user_id">User ID</string>
     <string name="name">Name</string>
-    <string name="upload_prompt_1">Upload Prompt 1</string>
-    <string name="upload_prompt_2">Upload Prompt 2</string>
-    <string name="upload_prompt_3">Upload Prompt 3</string>
+    <string name="upload_prompt_1">Upload Answer: Who are you?</string>
+    <string name="upload_prompt_2">Upload Answer: How are you?</string>
+    <string name="upload_prompt_3">Upload Answer: Favourite memory.</string>
     <string name="clear">clear</string>
     <string name="update_profile">Update Profile</string>
     <string name="patient">Patient</string>
