@@ -1,9 +1,12 @@
 package com.example.momento.database;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.momento.ui.login.LoginUICallbacks;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -14,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +41,16 @@ public class FamilyDB extends AccountDB {
     private final ValueEventListener familyListener = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
-            Map<String, List<VideoInfo>> data = (Map<String, List<VideoInfo>>) snapshot.getValue();
-            FamilyDB.this.videoList = data.get(VIDEO_LIST);
+            // update Class members after success
+            Map<String, List<HashMap<String,Object>>> data
+                    = (Map<String, List<HashMap<String,Object>>>) snapshot.getValue();
+            List<HashMap<String,Object>> dataList = data.get(VIDEO_LIST);
+            videoList.clear();
+            for ( int i = 0; i < 3; i++) {
+                HashMap<String, Object> each = dataList.get(i);
+                VideoInfo newVid = new VideoInfo((String) each.get("url"), (long) each.get("playCount"));
+                videoList.add(newVid);
+            }
         }
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
@@ -68,22 +80,48 @@ public class FamilyDB extends AccountDB {
                    // if the UID is already in Firebase, fetch data members
                    if (snapshot.exists()) {
                        // update Class members after success
-                       Map<String, List<VideoInfo>> data = (Map<String, List<VideoInfo>>) snapshot.getValue();
-                       FamilyDB.this.videoList = data.get(VIDEO_LIST);
+                       Map<String, List<HashMap<String,Object>>> data
+                               = (Map<String, List<HashMap<String,Object>>>) snapshot.getValue();
+                       List<HashMap<String,Object>> dataList = data.get(VIDEO_LIST);
+                       FamilyDB.this.videoList.clear(); // reset
+                       for ( int i = 0; i < 3; i++) {
+                           HashMap<String, Object> each = dataList.get(i);
+                           VideoInfo newVid = new VideoInfo((String) each.get("url"), (long) each.get("playCount"));
+                           FamilyDB.this.videoList.add(newVid);
+                       }
                        // Initiate Listener to the Account
                        mDatabase.child(FAMILY_NODE).child(uid).addValueEventListener(familyListener);
                    } else {
-                       // add the UID to Firebase and instantiate a blank Admin?
-                       // TODO: Decide on this with team.
-                       // Map<String, Object> blankInfo =
-                       // mDatabase.child(ADMIN_NODE).child(uid).setValue(blankInfo);
+                       // if no data in Firebase Realtime Database, populate with default VideoInfo
+                       // Creates an entry in "Families" on Firebase
+                       Map<String, List<VideoInfo>> videos = new HashMap<>();
+                       // populate videoList with default Videos
+                       FamilyDB.this.videoList.add(new VideoInfo());
+                       FamilyDB.this.videoList.add(new VideoInfo());
+                       FamilyDB.this.videoList.add(new VideoInfo());
+                       videos.put(VIDEO_LIST, FamilyDB.this.videoList);
+                       mDatabase.child(FAMILY_NODE).child(FamilyDB.this.getUid()).setValue(videos)
+                           .addOnSuccessListener(new OnSuccessListener<Void>() {
+                               @Override
+                               public void onSuccess(Void aVoid) {
+                                   // Initiate Listener
+                                   mDatabase.child(FAMILY_NODE).child(uid).addValueEventListener(familyListener);
+                               }
+                           })
+                           .addOnFailureListener(new OnFailureListener() {
+                               @Override
+                               public void onFailure(@NonNull Exception e) {
+                                   // Write failed
+                                   // TODO: Handle write failure?
+                               }
+                           });
                    }
                 } else {
                    Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
                 }
                 }
            }
-            );
+        );
     }
 
     /**
@@ -126,13 +164,49 @@ public class FamilyDB extends AccountDB {
     /* Methods */
 
     /**
+     * Upload a video to the specified index (0, 1, 2)
+     * @param context
+     * @param index 0, 1, 2
+     * @param fileUri
+     * @param cb
+     */
+    public void uploadVideo(Context context, int index, Uri fileUri, DatabaseCallbacks cb) {
+        Log.d(TAG, "uploadVideo() called, current videoList: " + this.videoList.toString());
+        this.storage.uploadVideo(context, index, fileUri, new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) {
+                cb.uriCallback(uri); // can do something with the uri through cb
+                // update VideoInfo
+                try {
+                    updateVideoUrl(index, uri.toString());
+                    resetVideoPlayCount(index);
+                } catch (IndexOutOfBoundsException e) {
+                    cb.failureCallback(true, "Index Out of Bound");
+                }
+            }
+            @Override
+            public void fileCallback(File file) { // not implemented
+            }
+            @Override
+            public void progressCallback(double percentage) {
+                cb.progressCallback(percentage);
+            }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
+
+
+    /**
      * Update specific video's URL in the Video List at index 0 to 2. Updates Firebase.
      * Resets playCount for the new video.
      * @param index 0 to 2.
      * @param url String URL.
      * @throws IndexOutOfBoundsException
      */
-    public void updateVideoUrl(int index, String url) throws IndexOutOfBoundsException {
+    private void updateVideoUrl(int index, String url) throws IndexOutOfBoundsException {
         VideoInfo newVideo = new VideoInfo(url);
         VideoInfo backup = new VideoInfo(this.videoList.get(index)); // deepCopy if needing reversal
         // TODO: test if persistent
@@ -146,7 +220,7 @@ public class FamilyDB extends AccountDB {
      * @return Integer. Play count of the video.
      * @throws IndexOutOfBoundsException
      */
-    public int getVideoPlayCount(int index) throws IndexOutOfBoundsException {
+    public long getVideoPlayCount(int index) throws IndexOutOfBoundsException {
         return (this.videoList.get(index).getPlayCount());
     }
 
@@ -174,7 +248,7 @@ public class FamilyDB extends AccountDB {
     }
 
     /**
-     * Update Firebase with current properties. Reverse if update fails.
+     * Update Firebase with current VideoInfo properties. Reverse if update fails.
      * @param index Index of the video to be updated.
      * @param backup VideoInfo deep copy of starting point for reversal.
      */
@@ -186,7 +260,7 @@ public class FamilyDB extends AccountDB {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // Initiate Listener to the Family
-                        if (videoList.size() == 1) {
+                        if (videoList.size() >= 1) {
                             mDatabase.child(FAMILY_NODE).child(FamilyDB.this.getUid())
                                     .addValueEventListener(familyListener);
                         }

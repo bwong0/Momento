@@ -209,51 +209,112 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             new ActivityResultContracts.GetContent(),
             resultUri -> {
                 // Do something with resultUri
+                familyDb.uploadVideo(this, 0, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        Log.d(TAG, "Done. Upload is at " + uri.toString());
+                    }
+
+                    @Override
+                    public void fileCallback(File file) {
+
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                    @Override
+                    public void failureCallback(boolean hasFailed, String message) {
+                        if (hasFailed) {
+                            Log.d(TAG, "Failed: " + message);
+                        }
+                    }
+                });
             }
     );
 
     ActivityResultLauncher<String> launchGalleryVideo2 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Do something with resultUri
+                familyDb.uploadVideo(this, 1, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        Log.d(TAG, "Done. Upload is at " + uri.toString());
+                    }
+
+                    @Override
+                    public void fileCallback(File file) {
+
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                    @Override
+                    public void failureCallback(boolean hasFailed, String message) {
+                        if (hasFailed) {
+                            Log.d(TAG, "Failed: " + message);
+                        }
+                    }
+                });
             }
     );
 
     ActivityResultLauncher<String> launchGalleryVideo3 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Do something with resultUri
+                familyDb.uploadVideo(this, 2, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        Log.d(TAG, "Done. Upload is at " + uri.toString());
+                    }
+
+                    @Override
+                    public void fileCallback(File file) {
+
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                    @Override
+                    public void failureCallback(boolean hasFailed, String message) {
+                        if (hasFailed) {
+                            Log.d(TAG, "Failed: " + message);
+                        }
+                    }
+                });
             }
     );
 
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                // Upload profile picture for a Family account
-                familyDb.storage.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
-                    @Override
-                    public void failureCallback(boolean hasFailed, String msg) {
-                        if (hasFailed) {
-                            // TODO: Frontend. Do something if upload fails.
-                            Log.d(TAG, "Upload failed. " + msg);
-                        }
-                    }
-                    @Override
-                    public void uriCallback(Uri uri) {
-                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
-                        if (uri != null) {
-                            Log.d(TAG, "Uri after upload: " + uri.toString());
-                        }
-                    }
-                    @Override
-                    public void fileCallback(File aFile) { // Not used but have to keep it here.
-                    }
-                    @Override
-                    public void progressCallback(double progress) {
-                        // TODO: do something with the percentage. Display a busy spinning overlay?
-                        Log.d(TAG, "Upload is " + progress + "% done");
-                    }
-                });
+//                // Upload profile picture for a Family account
+//                familyDb.storage.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
+//                    @Override
+//                    public void failureCallback(boolean hasFailed, String msg) {
+//                        if (hasFailed) {
+//                            // TODO: Frontend. Do something if upload fails.
+//                            Log.d(TAG, "Upload failed. " + msg);
+//                        }
+//                    }
+//                    @Override
+//                    public void uriCallback(Uri uri) {
+//                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
+//                        if (uri != null) {
+//                            Log.d(TAG, "Uri after upload: " + uri.toString());
+//                        }
+//                    }
+//                    @Override
+//                    public void fileCallback(File aFile) { // Not used but have to keep it here.
+//                    }
+//                    @Override
+//                    public void progressCallback(double progress) {
+//                        // TODO: do something with the percentage. Display a busy spinning overlay?
+//                        Log.d(TAG, "Upload is " + progress + "% done");
+//                    }
+//                });
             }
     );
 

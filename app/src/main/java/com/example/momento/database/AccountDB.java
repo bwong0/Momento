@@ -39,7 +39,6 @@ import java.util.Map;
 public class AccountDB {
 
     private final static String TAG = "AccountDB";
-
     // Constants matching the keys on Firebase
     public final static String ACCOUNT_NODE = "Accounts";
     public final static String ACCOUNT_TYPE = "accountType";
@@ -57,6 +56,7 @@ public class AccountDB {
     private String address;
     private Boolean isActive;
 
+    protected StorageDB storage;
     protected DatabaseReference mDatabase;
     private final ValueEventListener accountListener = new ValueEventListener() {
         @Override
@@ -78,8 +78,6 @@ public class AccountDB {
             Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
         }
     };
-
-    public StorageDB storage;
 
     /* Constructors */
 

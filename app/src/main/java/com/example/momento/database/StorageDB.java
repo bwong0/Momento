@@ -108,11 +108,9 @@ public class StorageDB {
         long fileSize = getFileSize(context, fileUri);
         //
         if (!isImage) {
-            // TODO: Not an image
             cb.failureCallback(true, "Not an image.");
             Log.w(TAG, "Not an image for ProfilePic.");
         } else if (fileSize > PROFILE_PIC_SIZE_LIMIT ){
-            // TODO: File too large
             cb.failureCallback(true, "File size > 5MB.");
             Log.w(TAG, "File size exceeds 5 MB");
         } else {
@@ -122,7 +120,6 @@ public class StorageDB {
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // TODO: Handle unsuccessful uploads
                     cb.failureCallback(true, exception.getMessage());
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -224,6 +221,7 @@ public class StorageDB {
         profilePicRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+                profilePicDownloadUri = uri;
                 cb.uriCallback(uri);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -330,9 +328,42 @@ public class StorageDB {
             });
         }
     }
-//    TODO: getVid1();
-//
 
+    /**
+     * Retrieve Video Uris from Firebase.
+     * @param index 0, 1, or 2 to specify the video.
+     * @param cb See DatabaseCallbacks
+     */
+    public void getVideoDownloadUri(int index, DatabaseCallbacks cb) {
+        // Determine which video
+        StorageReference ref;
+        switch (index) {
+            case 0: ref = vid1Ref; break;
+            case 1: ref = vid2Ref; break;
+            case 2: ref = vid3Ref; break;
+            default:
+                ref = null;
+                cb.failureCallback(true, "Incorrect video index.");
+                return;
+        }
+        // Get download Uri
+        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                switch (index) {
+                    case 0: vid1DownloadUri = uri; break;
+                    case 1: vid2DownloadUri = uri; break;
+                    case 2: vid3DownloadUri = uri; break;
+                }
+                cb.uriCallback(uri);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                cb.failureCallback(true, exception.getMessage());
+            }
+        });
+    }
 
 
     /* Helper Functions */
