@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.momento.admin.admin.patientCreation;
+import com.example.momento.family.ProfileCreation;
 import com.example.momento.family.familyHome;
 import com.example.momento.patient.patientHome;
 import com.example.momento.ui.login.LoginActivity;
@@ -108,17 +110,23 @@ public class LauncherActivity extends AppCompatActivity {
      * Navigate to "adminHome" Activity
      */
     private void openAdminHome(){
-        Intent intent = new Intent(this, adminHome.class);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, patientCreation.class);
+        intent.putExtra("uid",uid);
         startActivity(intent);
     }
 
     private void openFamilyHome(){
-        Intent intent = new Intent(this, familyHome.class);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, ProfileCreation.class);
+        intent.putExtra("uid",uid);
         startActivity(intent);
     }
 
     private void openPatientHome(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Intent intent = new Intent(this, patientHome.class);
+        intent.putExtra("uid",uid);
         startActivity(intent);
     }
 
