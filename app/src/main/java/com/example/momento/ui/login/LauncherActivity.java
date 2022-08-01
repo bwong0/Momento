@@ -39,11 +39,10 @@ public class LauncherActivity extends AppCompatActivity {
             {
                 //Checks the user type and redirect.
                 getAccountType(accountType->{updateUiWithUser(accountType);});
-
             }
             else //The user must sign in register
             {
-                //TODO: Go to the Admin Login/Registeration Page
+                //TODO: Go to the Admin Login/Registration Page
                 //currently redirect to login page, user can click register to go to register page
                 openLoginActivity();
             }
