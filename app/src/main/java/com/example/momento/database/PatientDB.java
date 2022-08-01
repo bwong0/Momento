@@ -172,7 +172,30 @@ public class PatientDB extends AccountDB {
      * @param familyUid
      */
     public void addFamily(String familyUid) {
-        if (familyList.size() < MAX_NUM_FAMILIES && !(familyList.contains(familyUid))) {
+        if (familyList == null) {
+            familyList = new ArrayList<>(MAX_NUM_FAMILIES);
+            familyList.add(familyUid);
+            // Update Firebase
+            DatabaseReference thisPatientRef = mDatabase.child(PATIENT_NODE).child(this.getUid());
+            thisPatientRef.child(FAMILYLIST).setValue(familyList)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        // Re-initiate Listener to the Patient to be sure (maybe not necessary
+                        // because we have other fields that keep this entry alive on Firebase
+                        // even when "familyList" is empty.
+                        thisPatientRef.addValueEventListener(patientListener);
+                        Log.d(TAG, "added family to list successfully.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Database write failed. Revert changes.
+                        PatientDB.this.familyList.remove(familyUid);
+                    }
+                });
+        } else if (familyList.size() < MAX_NUM_FAMILIES && !(familyList.contains(familyUid))) {
             familyList.add(familyUid);
             // Update Firebase
             DatabaseReference thisPatientRef = mDatabase.child(PATIENT_NODE).child(this.getUid());
