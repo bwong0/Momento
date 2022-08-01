@@ -213,20 +213,22 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
-                    }
+                        // TODO: Stop spinning animation here. This callback happens when upload finishes.
 
+                    }
                     @Override
-                    public void fileCallback(File file) {
-
-                    }
+                    public void fileCallback(File file) { }
                     @Override
                     public void progressCallback(double progress) {
                         Log.d(TAG, "Upload is " + progress + "% done");
+                        // TODO: Control spinning animation using this callback
+                        // TODO: Start spinning animation here when progress < 100
                     }
                     @Override
                     public void failureCallback(boolean hasFailed, String message) {
                         if (hasFailed) {
                             Log.d(TAG, "Failed: " + message);
+                            // TODO: Stop spinning animation, and display pop-up warning onFailure
                         }
                     }
                 });
@@ -241,11 +243,8 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
                     }
-
                     @Override
-                    public void fileCallback(File file) {
-
-                    }
+                    public void fileCallback(File file) { }
                     @Override
                     public void progressCallback(double progress) {
                         Log.d(TAG, "Upload is " + progress + "% done");
@@ -268,11 +267,8 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
                     }
-
                     @Override
-                    public void fileCallback(File file) {
-
-                    }
+                    public void fileCallback(File file) { }
                     @Override
                     public void progressCallback(double progress) {
                         Log.d(TAG, "Upload is " + progress + "% done");
@@ -290,31 +286,31 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-//                // Upload profile picture for a Family account
-//                familyDb.storage.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
-//                    @Override
-//                    public void failureCallback(boolean hasFailed, String msg) {
-//                        if (hasFailed) {
-//                            // TODO: Frontend. Do something if upload fails.
-//                            Log.d(TAG, "Upload failed. " + msg);
-//                        }
-//                    }
-//                    @Override
-//                    public void uriCallback(Uri uri) {
-//                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
-//                        if (uri != null) {
-//                            Log.d(TAG, "Uri after upload: " + uri.toString());
-//                        }
-//                    }
-//                    @Override
-//                    public void fileCallback(File aFile) { // Not used but have to keep it here.
-//                    }
-//                    @Override
-//                    public void progressCallback(double progress) {
-//                        // TODO: do something with the percentage. Display a busy spinning overlay?
-//                        Log.d(TAG, "Upload is " + progress + "% done");
-//                    }
-//                });
+                // Upload profile picture for a Family account
+                familyDb.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
+                    @Override
+                    public void failureCallback(boolean hasFailed, String msg) {
+                        if (hasFailed) {
+                            // TODO: Frontend. Do something if upload fails.
+                            Log.d(TAG, "Upload failed. " + msg);
+                        }
+                    }
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
+                        if (uri != null) {
+                            Log.d(TAG, "Uri after upload: " + uri.toString());
+                        }
+                    }
+                    @Override
+                    public void fileCallback(File aFile) { // Not used but must keep it here.
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        // TODO: do something with the percentage. Display a busy spinning overlay?
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                    }
+                });
             }
     );
 

@@ -164,6 +164,73 @@ public class FamilyDB extends AccountDB {
     /* Methods */
 
     /**
+     * Set an Account's Profile Picture.
+     * @param context Usually "this", Activity or Service
+     * @param fileUri Uri of the file to be uploaded.
+     * @param cb Callback after completing uploadTask. uriCallback, failureCallback, progressCallback.
+     */
+    public void uploadProfilePic(Context context, Uri fileUri, DatabaseCallbacks cb) {
+        this.storage.uploadProfilePic(context, fileUri, new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) {
+                cb.uriCallback(uri);
+            }
+            @Override
+            public void fileCallback(File file) { }
+            @Override
+            public void progressCallback(double percentage) {
+                cb.progressCallback(percentage);
+            }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
+
+    /**
+     * Function calls to download profile picture from Database. A <File> object is returned via callback.
+     * @param cb fileCallback, failureCallback implemented.
+     */
+    public void getProfilePicFile(DatabaseCallbacks cb) {
+        this.storage.downloadProfilePic(new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) { }
+            @Override
+            public void fileCallback(File file) {
+                cb.fileCallback(file); // downloaded File object
+            }
+            @Override
+            public void progressCallback(double percentage) { }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
+
+    /**
+     * Function calls to get profile picture uri from Database. A <Uri> object is returned via callback.
+     * @param cb uriCallback, failureCallback implemented.
+     */
+    public void getProfilePicUri(DatabaseCallbacks cb) {
+        this.storage.getProfilePicDownloadUri(new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) {
+                cb.uriCallback(uri);
+            }
+            @Override
+            public void fileCallback(File file) { }
+            @Override
+            public void progressCallback(double percentage) { }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
+
+    /**
      * Upload a video to the specified index (0, 1, 2)
      * @param context
      * @param index 0, 1, 2
@@ -185,8 +252,7 @@ public class FamilyDB extends AccountDB {
                 }
             }
             @Override
-            public void fileCallback(File file) { // not implemented
-            }
+            public void fileCallback(File file) { }
             @Override
             public void progressCallback(double percentage) {
                 cb.progressCallback(percentage);
@@ -209,7 +275,6 @@ public class FamilyDB extends AccountDB {
     private void updateVideoUrl(int index, String url) throws IndexOutOfBoundsException {
         VideoInfo newVideo = new VideoInfo(url);
         VideoInfo backup = new VideoInfo(this.videoList.get(index)); // deepCopy if needing reversal
-        // TODO: test if persistent
         this.videoList.set(index, newVideo);
         updateFirebase(index, backup);
     }
@@ -244,7 +309,6 @@ public class FamilyDB extends AccountDB {
         VideoInfo backup = new VideoInfo(this.videoList.get(index)); // deepCopy if needing reversal
         this.videoList.get(index).incrementPlayCount();
         updateFirebase(index, backup);
-        // TODO: implement atomic server-side increment?
     }
 
     /**

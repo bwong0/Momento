@@ -1,6 +1,8 @@
 package com.example.momento.database;
 
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -319,7 +322,72 @@ public class PatientDB extends AccountDB {
     }
 
 
+    /**
+     * Set an Account's Profile Picture.
+     * @param context Usually "this", Activity or Service
+     * @param fileUri Uri of the file to be uploaded.
+     * @param cb Callback after completing uploadTask. uriCallback, failureCallback, progressCallback.
+     */
+    public void uploadProfilePic(Context context, Uri fileUri, DatabaseCallbacks cb) {
+        this.storage.uploadProfilePic(context, fileUri, new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) {
+                cb.uriCallback(uri);
+            }
+            @Override
+            public void fileCallback(File file) { }
+            @Override
+            public void progressCallback(double percentage) {
+                cb.progressCallback(percentage);
+            }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
 
+    /**
+     * Function calls to download profile picture from Database. A <File> object is returned via callback.
+     * @param cb fileCallback, failureCallback implemented.
+     */
+    public void getProfilePicFile(DatabaseCallbacks cb) {
+        this.storage.downloadProfilePic(new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) { }
+            @Override
+            public void fileCallback(File file) {
+                cb.fileCallback(file); // downloaded File object
+            }
+            @Override
+            public void progressCallback(double percentage) { }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
+
+    /**
+     * Function calls to get profile picture uri from Database. A <Uri> object is returned via callback.
+     * @param cb uriCallback, failureCallback implemented.
+     */
+    public void getProfilePicUri(DatabaseCallbacks cb) {
+        this.storage.getProfilePicDownloadUri(new DatabaseCallbacks() {
+            @Override
+            public void uriCallback(Uri uri) {
+                cb.uriCallback(uri);
+            }
+            @Override
+            public void fileCallback(File file) { }
+            @Override
+            public void progressCallback(double percentage) { }
+            @Override
+            public void failureCallback(boolean hasFailed, String message) {
+                cb.failureCallback(hasFailed, message);
+            }
+        });
+    }
 
 
 }
