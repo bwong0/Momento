@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.momento.R;
 import com.example.momento.database.AccountType;
 import com.example.momento.database.FamilyDB;
+import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.databinding.ActivityFamilyHomeBinding;
 import com.example.momento.databinding.ActivityFamilyRegisterBinding;
@@ -38,11 +39,14 @@ public class familyRegister extends AppCompatActivity {
     private AccountType family = AccountType.FAMILY;
     private static String TAG = "family register process: ";
     private boolean allFieldsPassed = false;
-
+    private String patientUid;
+    private PatientDB patientDb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_register);
+
+        patientUid = getIntent().getStringExtra("patientUid");
 
         binding = ActivityFamilyRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -246,14 +250,23 @@ public class familyRegister extends AppCompatActivity {
                                         String uid = mAuth.getCurrentUser().getUid();
                                         Log.d(TAG, "family account created, uid is : " + uid);
                                         FamilyDB newFamily = new FamilyDB(uid, family, first.getText().toString(),
-                                                last.getText().toString(), emailFamily, address.getText().toString(),
-                                                new ServerCallback() {
-                                                    @Override
-                                                    public void isReadyCallback(boolean isReady) {
-                                                        //
+                                            last.getText().toString(), emailFamily, address.getText().toString(),
+                                            new ServerCallback() {
+                                                @Override
+                                                public void isReadyCallback(boolean isReady) {
+                                                    if (isReady) {
+                                                        patientDb = new PatientDB(patientUid, new ServerCallback() {
+                                                            @Override
+                                                            public void isReadyCallback(boolean isReady) {
+                                                                if(isReady) {
+                                                                    patientDb.addFamily(uid);
+                                                                    updateUI();
+                                                                }
+                                                            }
+                                                        });
                                                     }
-                                                });
-                                        updateUI();
+                                                }
+                                            });
                                     }
                                 }
                             });
@@ -299,7 +312,7 @@ public class familyRegister extends AppCompatActivity {
     }
 
     public void updateUI(){
-        Intent intent = new Intent(this, adminHome.class);
-        startActivity(intent);
+        mAuth.signOut();
+        finish();
     }
 }
