@@ -100,7 +100,7 @@ public class PatientDB extends AccountDB {
                                 cb.isReadyCallback(true);
                             } else {
                                 // No Patient entry in Realtime Database
-                                cb.isReadyCallback(false);
+                                cb.isReadyCallback(true);
                             }
                     } else {
                         Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
