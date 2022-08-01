@@ -38,6 +38,7 @@
     <string name="are_you_a_patient_or_a_caretaker">Are you a patient or a caretaker?</string>
     <string name="Choose_a_Profile">Choose a Profile</string>
     <string name="Create_or_Edit_a_Profile">Create or Edit a Profile</string>
+    <string name="Create_or_Edit_a_Patient">Create or Edit a Patient</string>
     <string name="prompt_1">Prompt #1</string>
     <string name="prompt_2">Prompt #2</string>
     <string name="prompt_3">Prompt #3</string>

@@ -64,22 +64,6 @@ public class familyHome extends AppCompatActivity implements Serializable {
         familyProfileArrayList.add(familyprofile6);
 
 
-
-//        familyPerson1 = new Persons(findViewById(R.id.familyProfile1));
-//        familyPerson2 = new Persons(findViewById(R.id.familyProfile2));
-//        familyPerson3 = new Persons(findViewById(R.id.familyProfile3));
-//        familyPerson4 = new Persons(findViewById(R.id.familyProfile4));
-//        familyPerson5 = new Persons(findViewById(R.id.familyProfile5));
-//        familyPerson6 = new Persons(findViewById(R.id.familyProfile6));
-//
-//        ArrayList<Persons> FamilyPersons = new ArrayList<>();
-//        FamilyPersons.add(familyPerson1);
-//        FamilyPersons.add(familyPerson2);
-//        FamilyPersons.add(familyPerson3);
-//        FamilyPersons.add(familyPerson4);
-//        FamilyPersons.add(familyPerson5);
-//        FamilyPersons.add(familyPerson6);
-
         String uri = "@drawable/empty";
         int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
 
@@ -102,48 +86,7 @@ public class familyHome extends AppCompatActivity implements Serializable {
         }
 
 
-//        Intent toProfile = new Intent(this, ProfileCreation.class);
-//        toProfile.putExtra("ArrayListProfiles", ArrayListProfiles);
 
-
-
-
-//        if(person1.profilePresent == true){
-//            person1.getImage().setOnClickListener(v -> openIV1());
-//        }
-//        else {
-//            person1.getImage().setOnClickListener((v -> CreateProfile()));
-//        }
-//        if(person2.profilePresent == true){
-//            person2.getImage().setOnClickListener(v -> openIV2());
-//        }
-//        else {
-//            person2.getImage().setOnClickListener((v -> CreateProfile()));
-//        }
-//        if(person3.profilePresent == true){
-//            person3.getImage().setOnClickListener(v -> openIV3());
-//        }
-//        else {
-//            person3.getImage().setOnClickListener((v -> CreateProfile()));
-//        }
-//        if(person4.profilePresent == true){
-//            person4.getImage().setOnClickListener(v -> openIV4());
-//        }
-//        else {
-//            person4.getImage().setOnClickListener((v -> CreateProfile()));
-//        }
-//        if(person5.profilePresent == true){
-//            person5.getImage().setOnClickListener(v -> openIV5());
-//        }
-//        else {
-//            person5.getImage().setOnClickListener((v -> CreateProfile()));
-//        }
-//        if(person6.profilePresent == true){
-//            person6.getImage().setOnClickListener(v -> openIV6());
-//        }
-//        else {
-//            person6.getImage().setOnClickListener((v -> CreateProfile()));
-//        }
 
         familyprofile1.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(0)));
         familyprofile2.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(1)));
@@ -153,11 +96,7 @@ public class familyHome extends AppCompatActivity implements Serializable {
         familyprofile6.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(5)));
 
 }
-//    public void CreateProfile(){
-//
-//        Intent intent = new Intent(this, profiles.class);
-//        startActivity(intent);
-//    }
+
     public void openProfileCreation(Persons person){
 
         Intent intent = new Intent(this, ProfileCreation.class);
@@ -165,41 +104,5 @@ public class familyHome extends AppCompatActivity implements Serializable {
 
         startActivity(intent);
     }
-//    public void openIV2(Persons person){
-//
-//
-//        Intent intent = new Intent(this, profiles.class);
-//        intent.putExtra("person", person );
-//        startActivity(intent);
-//    }
-//    public void openIV3(Persons person){
-//
-//        Intent intent = new Intent(this, profiles.class);
-//        intent.putExtra("person", person );
-//        startActivity(intent);
-//    }
-//    public void openIV4(Persons person){
-//
-//
-//        Intent intent = new Intent(this, profiles.class);
-//        intent.putExtra("person", person );
-//        startActivity(intent);
-//    }
-//    public void openIV5(Person person){
-//        TextView textView1 = findViewById(R.id.personName5);
-//        String text = textView1.getText().toString();
-//
-//        Intent intent = new Intent(this, profiles.class);
-//        intent.putExtra(EXTRA_TEXT,text);
-//        startActivity(intent);
-//    }
-//    public void openIV6() {
-//        TextView textView1 = findViewById(R.id.personName6);
-//        String text = textView1.getText().toString();
-//
-//        Intent intent = new Intent(this, profiles.class);
-//        intent.putExtra(EXTRA_TEXT, text);
-//        startActivity(intent);
-
 
     }

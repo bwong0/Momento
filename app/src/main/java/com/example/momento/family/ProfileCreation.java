@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -37,13 +38,15 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
     EditText title;
     EditText relationship;
-    Persons profile;
     Button update;
     Button clear;
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
     ImageButton profileCreationImage;
+
+    String uid;
+    FamilyDB profile;
 
     FamilyDB familyDb;
 
@@ -58,22 +61,9 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
 
-        /**Temporary Authentication for Development ***/
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword("peterfan01@gmail.com", "test123")
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            firebaseUser = mAuth.getCurrentUser();
-                            familyDb = new FamilyDB(firebaseUser.getUid());
-                        } else {
-                            //
-                        }
-                    }
-                });
+        uid = getIntent().getStringExtra("uid");
+        profile = new FamilyDB(uid);
 
-        /*****/
 
         ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
@@ -83,10 +73,10 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
         profileCreationImage = (ImageButton) findViewById((R.id.profileCreationImage));
 
-        profile = (Persons) getIntent().getSerializableExtra("person");
-
         update = (Button) findViewById((R.id.updateButton));
         clear =(Button) findViewById(R.id.clearButton);
+
+        title.setText(profile.getFirstName() + " " + profile.getLastName());
         String uri = "@drawable/empty";
         if(profile.profilePresent == true){
             title.setText(profile.getName());
@@ -209,7 +199,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             new ActivityResultContracts.GetContent(),
             resultUri -> {
                 // Do something with resultUri
-                familyDb.uploadVideo(this, 0, resultUri, new DatabaseCallbacks() {
+                profile.uploadVideo(this, 0, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
@@ -238,7 +228,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     ActivityResultLauncher<String> launchGalleryVideo2 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                familyDb.uploadVideo(this, 1, resultUri, new DatabaseCallbacks() {
+                profile.uploadVideo(this, 1, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
@@ -262,7 +252,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     ActivityResultLauncher<String> launchGalleryVideo3 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
-                familyDb.uploadVideo(this, 2, resultUri, new DatabaseCallbacks() {
+                profile.uploadVideo(this, 2, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
@@ -287,7 +277,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             new ActivityResultContracts.GetContent(),
             resultUri -> {
                 // Upload profile picture for a Family account
-                familyDb.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
+                profile.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void failureCallback(boolean hasFailed, String msg) {
                         if (hasFailed) {
