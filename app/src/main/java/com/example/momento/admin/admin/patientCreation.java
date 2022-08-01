@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
 import com.example.momento.database.AdminDB;
 import com.example.momento.database.PatientDB;
+import com.example.momento.ui.login.patientRegister;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -115,10 +116,11 @@ public class patientCreation extends AppCompatActivity implements Serializable {
         imageButton6.setOnClickListener(v -> openProfileCreation(patientName6, uid));
     }
     public void openProfileCreation(TextView patient, String uid){
+        Intent intent;
         if (patient.getText() == "Create New Patient")
-            Intent intent = new Intent(this, patientRegister.class);
+            intent = new Intent(this, patientRegister.class);
         else {
-            Intent intent = new Intent(this, familyCreation.class);
+            intent = new Intent(this, familyCreation.class);
             intent.putExtra("uid", uid);
         }
 

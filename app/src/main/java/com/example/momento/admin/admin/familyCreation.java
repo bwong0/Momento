@@ -5,8 +5,10 @@ import com.example.momento.R;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.PatientDB;
+import com.example.momento.database.ServerCallback;
 import com.example.momento.family.ProfileCreation;
 import com.example.momento.ui.login.Persons;
+import com.example.momento.ui.login.familyRegister;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -87,7 +89,12 @@ public class familyCreation extends AppCompatActivity {
 
         for (int i = 0; i < size; i++) {
             String cur = familyUids.get(i);
-            FamilyDB temp = new FamilyDB(cur);
+            FamilyDB temp = new FamilyDB(cur, new ServerCallback() {
+                @Override
+                public void isReadyCallback(boolean isReady) {
+
+                }
+            });
             familyDBArrayList.add(temp);
 
             NamesArrayList.get(i).setText(temp.getFirstName()+" "+temp.getLastName());
@@ -111,11 +118,12 @@ public class familyCreation extends AppCompatActivity {
         imageButton6.setOnClickListener(v -> openProfileCreation(familyName6, uid));
     }
     public void openProfileCreation(TextView patient, String uid){
+        Intent intent;
         if (patient.getText() == "Create New Profile")
-            Intent intent = new Intent(this, familyRegister.class);
+            intent = new Intent(this, familyRegister.class);
         else {
-            Intent intent = new Intent(this, ProfileCreation.class);
-            intent.putExtra('uid',uid);
+            intent = new Intent(this, ProfileCreation.class);
+            intent.putExtra("uid",uid);
         }
 
         startActivity(intent);
