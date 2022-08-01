@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
@@ -46,6 +47,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     ImageView profileCreationImage;
     Button updateName;
     Button updatePicture;
+    ProgressBar spinning_wheel;
 
     String uid;
     FamilyDB profile;
@@ -78,13 +80,12 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
         profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage));
+        spinning_wheel = (ProgressBar) findViewById(R.id.progressBar);
+        spinning_wheel.setVisibility(View.GONE);
 
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
 //        clear =(Button) findViewById(R.id.clearButton);
-
-
-
 
         profile = new FamilyDB(uid, new ServerCallback() {
             @Override
@@ -220,84 +221,118 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     ActivityResultLauncher<String> launchGalleryVideo1 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
+                if(resultUri == null) //If the user clicks back
+                    return;
+
+                spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
+
                 // Do something with resultUri
                 profile.uploadVideo(this, 0, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
-                        // TODO: Stop spinning animation here. This callback happens when upload finishes.
-
+                        // Stop spinning animation here. This callback happens when upload finishes.
+                        spinning_wheel.setVisibility(View.GONE);
                     }
                     @Override
                     public void fileCallback(File file) { }
                     @Override
                     public void progressCallback(double progress) {
                         Log.d(TAG, "Upload is " + progress + "% done");
-                        // TODO: Control spinning animation using this callback
-                        // TODO: Start spinning animation here when progress < 100
+                        // Control spinning animation using this callback
+                        // Start spinning animation here when progress < 100
+                        if(progress < 100)
+                            spinning_wheel.setVisibility(View.VISIBLE);
                     }
                     @Override
                     public void failureCallback(boolean hasFailed, String message) {
                         if (hasFailed) {
                             Log.d(TAG, "Failed: " + message);
-                            // TODO: Stop spinning animation, and display pop-up warning onFailure
+                            // Stop spinning animation, and display pop-up warning onFailure
+                            spinning_wheel.setVisibility(View.GONE);
                         }
                     }
                 });
+                spinning_wheel.setVisibility(View.GONE);
             }
     );
 
     ActivityResultLauncher<String> launchGalleryVideo2 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
+                if(resultUri == null) //If the user clicks back
+                    return;
+
+                spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
+
                 profile.uploadVideo(this, 1, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
+                        spinning_wheel.setVisibility(View.GONE);
                     }
                     @Override
                     public void fileCallback(File file) { }
                     @Override
                     public void progressCallback(double progress) {
                         Log.d(TAG, "Upload is " + progress + "% done");
+                        if(progress < 100)
+                            spinning_wheel.setVisibility(View.VISIBLE);
                     }
                     @Override
                     public void failureCallback(boolean hasFailed, String message) {
                         if (hasFailed) {
                             Log.d(TAG, "Failed: " + message);
+                            spinning_wheel.setVisibility(View.GONE);
                         }
                     }
                 });
+                spinning_wheel.setVisibility(View.GONE);
             }
     );
 
     ActivityResultLauncher<String> launchGalleryVideo3 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
+                if(resultUri == null) //If the user clicks back
+                    return;
+
+                spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
+
                 profile.uploadVideo(this, 2, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
+                        spinning_wheel.setVisibility(View.GONE);
                     }
                     @Override
                     public void fileCallback(File file) { }
                     @Override
                     public void progressCallback(double progress) {
                         Log.d(TAG, "Upload is " + progress + "% done");
+                        if(progress < 100)
+                            spinning_wheel.setVisibility(View.VISIBLE);
                     }
                     @Override
                     public void failureCallback(boolean hasFailed, String message) {
                         if (hasFailed) {
                             Log.d(TAG, "Failed: " + message);
+                            spinning_wheel.setVisibility(View.GONE);
                         }
                     }
                 });
+                spinning_wheel.setVisibility(View.GONE);
             }
     );
 
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
+                if(resultUri == null) //If the user clicks back
+                    return;
+
+                spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
+
                 // Upload profile picture for a Family account
                 profile.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
                     @Override
@@ -305,6 +340,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                         if (hasFailed) {
                             // TODO: Frontend. Do something if upload fails.
                             Log.d(TAG, "Upload failed. " + msg);
+                            spinning_wheel.setVisibility(View.GONE);
                         }
                     }
                     @Override
@@ -312,6 +348,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                         // TODO: do something with the Uri from Firebase, download and set displayed picture?
                         if (uri != null) {
                             Log.d(TAG, "Uri after upload: " + uri.toString());
+                            spinning_wheel.setVisibility(View.GONE);
                         }
                     }
                     @Override
@@ -321,8 +358,11 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                     public void progressCallback(double progress) {
                         // TODO: do something with the percentage. Display a busy spinning overlay?
                         Log.d(TAG, "Upload is " + progress + "% done");
+                        if(progress < 100)
+                            spinning_wheel.setVisibility(View.VISIBLE);
                     }
                 });
+                spinning_wheel.setVisibility(View.GONE);
             }
     );
 
