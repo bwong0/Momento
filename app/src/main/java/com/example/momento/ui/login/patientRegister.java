@@ -52,7 +52,7 @@ public class patientRegister extends AppCompatActivity {
         binding = ActivityPatientRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        AdminUid = getIntent().getStringExtra("uid");
+        AdminUid = getIntent().getStringExtra("adminUid");
 
 
         final Button patientRegister = binding.btnRegister;
@@ -430,6 +430,7 @@ public class patientRegister extends AppCompatActivity {
     }
 
     public void updateUI(){
+        mAuth.signOut();
         finish();
     }
 

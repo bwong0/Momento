@@ -319,7 +319,7 @@ public class patientCreation extends AppCompatActivity {
                     });
                 } // end of if
                 // add one more for patientCreation
-                if (arrSize != 6) {
+                if (arrSize < 6) {
                     NamesArrayList.get(arrSize).setVisibility(View.VISIBLE);
                     ImageButtonArrayList.get(arrSize).setVisibility(View.VISIBLE);
                 }
