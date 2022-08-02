@@ -29,10 +29,8 @@ public class profiles extends AppCompatActivity {
     TextView prompt3;
     String uri = "@drawable/empty";
     Drawable res;
-
     FamilyDB familyDb;
     String familyUid;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +44,6 @@ public class profiles extends AppCompatActivity {
         res = Drawable.createFromPath(uri);
         // default values
         profileImageView.setImageDrawable(res);
-//        profileName.setText("no name");
 
         prompt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +59,6 @@ public class profiles extends AppCompatActivity {
             @Override
             public void onClick(View v) { openVidPlayer(2);}
         });
-
-
 
         familyUid = getIntent().getStringExtra("uid");
 

@@ -141,17 +141,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Test without Login Button
-        next = (Button) findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            // TODO: Remove this after finishing registration functionality
-            @Override
-            public void onClick(View view) {
-                openHome();
-            }
-        });
-
-
         /* Check App Permissions */
         checkPermission(Manifest.permission.INTERNET, INTERNET_PERMISSION_CODE);
         checkPermission(
@@ -293,14 +282,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void openRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Navigate to "Home" Activity
-     */
-    private void openHome() {
-        Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
 

@@ -18,14 +18,6 @@ import java.util.ArrayList;
 
 
 public class familyHome extends AppCompatActivity implements Serializable {
-    Persons familyPerson1;
-    Persons familyPerson2;
-    Persons familyPerson3;
-    Persons familyPerson4;
-    Persons familyPerson5;
-    Persons familyPerson6;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +46,6 @@ public class familyHome extends AppCompatActivity implements Serializable {
         ImageButton familyprofile5 = (ImageButton) findViewById(R.id.familyProfile5);
         ImageButton familyprofile6 = (ImageButton) findViewById(R.id.familyProfile6);
 
-
         ArrayList<ImageButton> familyProfileArrayList = new ArrayList<>();
         familyProfileArrayList.add(familyprofile1);
         familyProfileArrayList.add(familyprofile2);
@@ -63,10 +54,8 @@ public class familyHome extends AppCompatActivity implements Serializable {
         familyProfileArrayList.add(familyprofile5);
         familyProfileArrayList.add(familyprofile6);
 
-
         String uri = "@drawable/empty";
         int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
-
         ArrayList<Persons> ArrayListProfiles = (ArrayList<Persons>) getIntent().getSerializableExtra("ArrayListProfile");
 
         for (int i = 0; i < 6; i++){
@@ -85,24 +74,17 @@ public class familyHome extends AppCompatActivity implements Serializable {
             }
         }
 
-
-
-
         familyprofile1.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(0)));
         familyprofile2.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(1)));
         familyprofile3.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(2)));
         familyprofile4.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(3)));
         familyprofile5.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(4)));
         familyprofile6.setOnClickListener(v -> openProfileCreation(ArrayListProfiles.get(5)));
-
 }
-
     public void openProfileCreation(Persons person){
 
         Intent intent = new Intent(this, ProfileCreation.class);
         intent.putExtra("person", person );
-
         startActivity(intent);
     }
-
-    }
+}

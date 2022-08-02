@@ -298,7 +298,6 @@ public class patientHome extends AppCompatActivity {
         });
     } // End of onResume()
 
-
     public void openFamily(String uid) {
         Intent intent = new Intent(this, profiles.class);
         intent.putExtra("uid", uid);

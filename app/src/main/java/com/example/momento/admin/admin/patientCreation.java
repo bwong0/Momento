@@ -59,7 +59,6 @@ public class patientCreation extends AppCompatActivity {
     PatientDB patient5;
     PatientDB patient6;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,13 +124,11 @@ public class patientCreation extends AppCompatActivity {
         ImageButtonArrayList.get(3).setVisibility(View.INVISIBLE);
         ImageButtonArrayList.get(4).setVisibility(View.INVISIBLE);
         ImageButtonArrayList.get(5).setVisibility(View.INVISIBLE);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         // Get patientList from Server
         admin = new AdminDB(adminUid, new ServerCallback() {
             @Override
@@ -148,7 +145,6 @@ public class patientCreation extends AppCompatActivity {
                                 NamesArrayList.get(0).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(0).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(0).setOnClickListener(v -> openPatientProfileEdit(patientUids.get(0)));
-
                                 patient1.getProfilePicFile(new DatabaseCallbacks() {
                                     @Override
                                     public void uriCallback(Uri uri) {}
@@ -179,7 +175,6 @@ public class patientCreation extends AppCompatActivity {
                                 NamesArrayList.get(1).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(1).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(1).setOnClickListener(v -> openPatientProfileEdit(patientUids.get(1)));
-
                                 patient2.getProfilePicFile(new DatabaseCallbacks() {
                                     @Override
                                     public void uriCallback(Uri uri) {}
@@ -210,7 +205,6 @@ public class patientCreation extends AppCompatActivity {
                                 NamesArrayList.get(2).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(2).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(2).setOnClickListener(v -> openPatientProfileEdit(patientUids.get(2)));
-
                                 patient3.getProfilePicFile(new DatabaseCallbacks() {
                                     @Override
                                     public void uriCallback(Uri uri) {}
@@ -241,7 +235,6 @@ public class patientCreation extends AppCompatActivity {
                                 NamesArrayList.get(3).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(3).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(3).setOnClickListener(v -> openPatientProfileEdit(patientUids.get(3)));
-
                                 patient4.getProfilePicFile(new DatabaseCallbacks() {
                                     @Override
                                     public void uriCallback(Uri uri) {}
@@ -272,7 +265,6 @@ public class patientCreation extends AppCompatActivity {
                                 NamesArrayList.get(4).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(4).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(4).setOnClickListener(v -> openPatientProfileEdit(patientUids.get(4)));
-
                                 patient5.getProfilePicFile(new DatabaseCallbacks() {
                                     @Override
                                     public void uriCallback(Uri uri) {}
@@ -303,7 +295,6 @@ public class patientCreation extends AppCompatActivity {
                                 NamesArrayList.get(5).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(5).setVisibility(View.VISIBLE);
                                 ImageButtonArrayList.get(5).setOnClickListener(v -> openPatientProfileEdit(patientUids.get(5)));
-
                                 patient6.getProfilePicFile(new DatabaseCallbacks() {
                                     @Override
                                     public void uriCallback(Uri uri) {}
@@ -335,14 +326,12 @@ public class patientCreation extends AppCompatActivity {
 
     }
 
-
     public void openProfileCreation(String uid){
         Intent intent;
         intent = new Intent(this, patientRegister.class);
         intent.putExtra("adminUid", uid);
         startActivity(intent);
     }
-
     public void openPatientProfileEdit(String uid) {
         // TODO: Make an Activity based on ProfileCreation for "Register New Family" (to familyRegister form), and
         // "Manage Family" (display all 6 family, no action for now)
@@ -350,7 +339,6 @@ public class patientCreation extends AppCompatActivity {
         intent.putExtra("patientUid", uid);
         startActivity(intent);
     }
-
     public void logout() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();

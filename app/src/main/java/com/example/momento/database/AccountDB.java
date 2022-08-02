@@ -71,7 +71,6 @@ public class AccountDB {
             AccountDB.this.isActive = (Boolean) info.get(ISACTIVE);
             Log.d(TAG, "ValueEventListener called: " + info.toString());
         }
-
         @Override
         public void onCancelled(DatabaseError databaseError) {
             // Reading database failed, log a message

@@ -52,8 +52,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     String uid;
     FamilyDB profile;
 
-
-
     /****DEBUG****/
     FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
@@ -64,19 +62,14 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_creation);
-
         uid = getIntent().getStringExtra("uid");
         String uri = "@drawable/empty";
         int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
         Drawable res = getResources().getDrawable(defaultImage);
-
-
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logout());
 
-//        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
-//        relationship = (EditText) findViewById(R.id.editRelationship);
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
@@ -86,7 +79,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
-//        clear =(Button) findViewById(R.id.clearButton);
 
         profile = new FamilyDB(uid, new ServerCallback() {
             @Override
@@ -112,7 +104,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 }
             }
         });
-
 
         updateName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,13 +180,6 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         });
 
     }
-//    public void update (Persons persons){
-//
-//        Intent intent = new Intent(this, ProfileCreation.class);
-//        intent.putExtra("person", persons);
-//        startActivity(intent);
-//    }
-
 
     // this function is triggered when the Select Prompt 1 Video Button is clicked
     public void videoChooser(int n) {
@@ -224,9 +208,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             resultUri -> {
                 if(resultUri == null) //If the user clicks back
                     return;
-
                 spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
-
                 // Do something with resultUri
                 profile.uploadVideo(this, 0, resultUri, new DatabaseCallbacks() {
                     @Override
@@ -257,15 +239,12 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                 spinning_wheel.setVisibility(View.GONE);
             }
     );
-
     ActivityResultLauncher<String> launchGalleryVideo2 = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
                 if(resultUri == null) //If the user clicks back
                     return;
-
                 spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
-
                 profile.uploadVideo(this, 1, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
@@ -297,9 +276,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             resultUri -> {
                 if(resultUri == null) //If the user clicks back
                     return;
-
                 spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
-
                 profile.uploadVideo(this, 2, resultUri, new DatabaseCallbacks() {
                     @Override
                     public void uriCallback(Uri uri) {
@@ -331,9 +308,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             resultUri -> {
                 if(resultUri == null) //If the user clicks back
                     return;
-
                 spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
-
                 // Upload profile picture for a Family account
                 profile.uploadProfilePic(this, resultUri, new DatabaseCallbacks() {
                     @Override

@@ -33,7 +33,6 @@ public class patientProfile extends AppCompatActivity {
     private final static String TAG = "PatientProfile";
 
     EditText title;
-
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
@@ -50,15 +49,10 @@ public class patientProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
-
         uid = getIntent().getStringExtra("patientUid");
         String uri = "@drawable/empty";
         res = Drawable.createFromPath(uri);
 
-
-
-
-//        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
@@ -66,10 +60,8 @@ public class patientProfile extends AppCompatActivity {
         profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage));
         spinning_wheel = (ProgressBar) findViewById(R.id.progressBar);
         spinning_wheel.setVisibility(View.GONE);
-
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
-//        clear =(Button) findViewById(R.id.clearButton);
 
         updateName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +187,6 @@ public class patientProfile extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void imageChooser() {
         String i = "image/*";
         launchGalleryPhoto.launch(i);
@@ -206,7 +197,6 @@ public class patientProfile extends AppCompatActivity {
             resultUri -> {
                 if(resultUri == null) //If the user clicks back
                     return;
-
                 spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
 
                 // Upload profile picture for a Family account
@@ -241,6 +231,5 @@ public class patientProfile extends AppCompatActivity {
                 spinning_wheel.setVisibility(View.GONE);
             }
     );
-
 
 }
