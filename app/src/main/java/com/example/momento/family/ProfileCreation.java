@@ -6,6 +6,9 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,7 +23,9 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.FileProvider;
 
+import com.example.momento.BuildConfig;
 import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
@@ -33,11 +38,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
 
-public class ProfileCreation extends AppCompatActivity implements Serializable {
-    int SELECT_VIDEO = 200;
+public class ProfileCreation extends AppCompatActivity {
 
     EditText title;
     Button logoutButton;
@@ -48,17 +55,18 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button updateName;
     Button updatePicture;
     ProgressBar spinning_wheel;
+    String uri = "@drawable/empty";
+    Drawable res;
 
     String uid;
     FamilyDB profile;
 
+    Uri photoUri;
+    String uuid;
+    File outputDir;
+    File file;
 
-
-    /****DEBUG****/
-    FirebaseAuth mAuth;
-    FirebaseUser firebaseUser;
     private final static String TAG = "ProfileCreation";
-    /****DEBUG****/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,28 +74,26 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_profile_creation);
 
         uid = getIntent().getStringExtra("uid");
-        String uri = "@drawable/empty";
-        int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
-        Drawable res = getResources().getDrawable(defaultImage);
 
-
+        // UI Componenets
+        res = Drawable.createFromPath(uri);
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logout());
 
-//        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
+        profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage)); // picture
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
-//        relationship = (EditText) findViewById(R.id.editRelationship);
+
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
-        profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage));
+
         spinning_wheel = (ProgressBar) findViewById(R.id.progressBar);
         spinning_wheel.setVisibility(View.GONE);
 
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
-//        clear =(Button) findViewById(R.id.clearButton);
 
+        // Connect to Database & update profile name and picture
         profile = new FamilyDB(uid, new ServerCallback() {
             @Override
             public void isReadyCallback(boolean isReady) {
@@ -185,17 +191,78 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         });
         updatePicture.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { imageChooser(); }
+            public void onClick(View v) {
+//                imageChooser();
+                takePhoto();
+            }
         });
 
     }
-//    public void update (Persons persons){
-//
-//        Intent intent = new Intent(this, ProfileCreation.class);
-//        intent.putExtra("person", persons);
-//        startActivity(intent);
-//    }
 
+    public void takePhoto() {
+        uuid = UUID.randomUUID().toString();
+        outputDir = this.getCacheDir();
+        Log.d(TAG, "TakePhoto()" + uuid);
+
+        try {
+            file = File.createTempFile( uuid, ".jpg", outputDir );
+        } catch(IOException e ) {
+            Log.d(TAG, e.getMessage());
+            return;
+        }
+
+        photoUri = Uri.fromFile(file);
+
+
+        Log.d(TAG, photoUri.toString());
+
+
+        launchCamera.launch(photoUri);
+    }
+
+
+    ActivityResultLauncher<Uri> launchCamera = registerForActivityResult( //Launch for Videos
+            new ActivityResultContracts.TakePicture(),
+            result -> {
+                Log.d(TAG, result.toString());
+                Log.d(TAG, photoUri.toString());
+                if(!result) { //If the user clicks back
+                    return;
+                }
+
+                spinning_wheel.setVisibility(View.VISIBLE); //Loading starts when the upload activity Starts
+                // Upload profile picture for a Family account
+                profile.uploadProfilePic(this, photoUri, new DatabaseCallbacks() {
+                    @Override
+                    public void failureCallback(boolean hasFailed, String msg) {
+                        if (hasFailed) {
+                            // TODO: Frontend. Do something if upload fails.
+                            Log.d(TAG, "Upload failed. " + msg);
+                            spinning_wheel.setVisibility(View.GONE);
+                        }
+                    }
+                    @Override
+                    public void uriCallback(Uri uri) {
+                        // TODO: do something with the Uri from Firebase, download and set displayed picture?
+                        if (uri != null) {
+                            Log.d(TAG, "Uri after upload: " + uri.toString());
+                            spinning_wheel.setVisibility(View.GONE);
+                        }
+                    }
+                    @Override
+                    public void fileCallback(File aFile) { // Not used but must keep it here.
+                    }
+                    @Override
+                    public void progressCallback(double progress) {
+                        // TODO: do something with the percentage. Display a busy spinning overlay?
+                        Log.d(TAG, "Upload is " + progress + "% done");
+                        if(progress < 100)
+                            spinning_wheel.setVisibility(View.VISIBLE);
+                    }
+                });
+                spinning_wheel.setVisibility(View.GONE);
+            }
+    );
 
     // this function is triggered when the Select Prompt 1 Video Button is clicked
     public void videoChooser(int n) {
