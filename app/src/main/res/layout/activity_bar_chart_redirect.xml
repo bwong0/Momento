@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.admin.barChartRedirect">
+
+    <Button
+        android:id="@+id/btnChart1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="Family 1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnChart2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family 2"
+        app:layout_constraintBottom_toTopOf="@+id/btnChart3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChart1" />
+
+    <Button
+        android:id="@+id/btnChart3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family 3"
+        app:layout_constraintBottom_toTopOf="@+id/btnChart4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChart1"
+        app:layout_constraintVertical_bias="0.691" />
+
+    <Button
+        android:id="@+id/btnChart4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="252dp"
+        android:text="Family 4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChart1" />
+
+    <Button
+        android:id="@+id/btnChart5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family 5"
+        app:layout_constraintBottom_toTopOf="@+id/btnChart6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChart4" />
+
+    <Button
+        android:id="@+id/btnChart6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family 6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChart4"
+        app:layout_constraintVertical_bias="0.712" />
+</androidx.constraintlayout.widget.ConstraintLayout>
