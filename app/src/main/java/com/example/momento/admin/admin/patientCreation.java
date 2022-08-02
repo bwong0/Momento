@@ -8,6 +8,7 @@ import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.family.ProfileCreation;
 import com.example.momento.ui.login.patientRegister;
+import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -28,20 +30,22 @@ public class patientCreation extends AppCompatActivity {
     private static final String TAG = "PatientCreation";
 
     // UI components
-    public TextView patientName1;
-    public TextView patientName2;
-    public TextView patientName3;
-    public TextView patientName4;
-    public TextView patientName5;
-    public TextView patientName6;
+    Button logoutButton;
+
+    TextView patientName1;
+    TextView patientName2;
+    TextView patientName3;
+    TextView patientName4;
+    TextView patientName5;
+    TextView patientName6;
     ArrayList<TextView> NamesArrayList; // Array containing TextView variables
 
-    public ImageButton imageButton1;
-    public ImageButton imageButton2;
-    public ImageButton imageButton3;
-    public ImageButton imageButton4;
-    public ImageButton imageButton5;
-    public ImageButton imageButton6;
+    ImageButton imageButton1;
+    ImageButton imageButton2;
+    ImageButton imageButton3;
+    ImageButton imageButton4;
+    ImageButton imageButton5;
+    ImageButton imageButton6;
     ArrayList<ImageButton> ImageButtonArrayList; // Array containing ImageButtons
 
     // Server
@@ -65,6 +69,9 @@ public class patientCreation extends AppCompatActivity {
 
         // Set Components for Rendering
         setContentView(R.layout.activity_patient_creation);
+
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
 
         // binding Textview under profilePic to a variable (default: "Create New Patient")
         patientName1 = (TextView) findViewById(R.id.patientNameAdmin1);
@@ -342,5 +349,11 @@ public class patientCreation extends AppCompatActivity {
         Intent intent = new Intent(this, patientProfile.class);
         intent.putExtra("patientUid", uid);
         startActivity(intent);
+    }
+
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
     }
 }

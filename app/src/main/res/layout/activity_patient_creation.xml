@@ -18,7 +18,7 @@
         android:maxWidth="130sp"
         android:maxHeight="130sp"
         android:background="@drawable/empty"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
         android:adjustViewBounds="true"
         android:maxWidth="130sp"
         android:maxHeight="130sp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +43,7 @@
         android:layout_marginBottom="236dp"
         android:background="@drawable/empty"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin1"
         app:layout_constraintStart_toStartOf="@+id/patientAdmin1"
@@ -55,7 +55,7 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:background="@drawable/empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin2"
@@ -70,7 +70,7 @@
         android:layout_height="160dp"
         android:layout_marginBottom="28dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:background="@drawable/empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin3"
@@ -85,7 +85,7 @@
         android:layout_height="160dp"
         android:layout_marginBottom="28dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:background="@drawable/empty"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin4"
@@ -171,6 +171,18 @@
         app:layout_constraintEnd_toEndOf="@+id/patientAdmin6"
         app:layout_constraintStart_toStartOf="@+id/patientAdmin6"
         app:layout_constraintTop_toBottomOf="@+id/patientAdmin6" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:text="Logout"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--    <androidx.constraintlayout.widget.Barrier-->
     <!--        android:id="@+id/barrier2"-->

@@ -40,7 +40,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     int SELECT_VIDEO = 200;
 
     EditText title;
-
+    Button logoutButton;
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
@@ -71,7 +71,8 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         Drawable res = getResources().getDrawable(defaultImage);
 
 
-
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
 
 //        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
@@ -366,4 +367,9 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             }
     );
 
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
+    }
 }

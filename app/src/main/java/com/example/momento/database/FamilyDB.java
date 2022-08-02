@@ -296,6 +296,16 @@ public class FamilyDB extends AccountDB {
     }
 
     /**
+     * Get URL (String) for the video at index.
+     * @param index
+     * @return String
+     * @throws IndexOutOfBoundsException
+     */
+    public String getVideoUrl(int index) throws IndexOutOfBoundsException {
+        return (this.videoList.get(index).url);
+    }
+
+    /**
      * Reset playCount for the video at index. Update Firebase.
      * @param index
      * @throws IndexOutOfBoundsException
