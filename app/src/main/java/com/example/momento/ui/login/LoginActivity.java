@@ -73,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
     // Constants for checking App permissions; arbitrary numbers, but must be unique
     private static final int INTERNET_PERMISSION_CODE = 100;
     private static final int ACCESS_NETWORK_STATE_PERMISSION_CODE = 101;
+    private static final int ACCESS_CAMERA = 102;
+
     // TODO: Check other permissions such as file storage access
 
 
@@ -158,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 ACCESS_NETWORK_STATE_PERMISSION_CODE
         );
+        checkPermission(Manifest.permission.CAMERA, ACCESS_CAMERA);
 
 
         /************** LOGIN MODEL **************/
