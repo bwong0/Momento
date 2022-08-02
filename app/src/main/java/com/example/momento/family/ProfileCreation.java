@@ -1,5 +1,6 @@
 package com.example.momento.family;
 
+import android.content.Context;
 import android.content.DialogInterface;
 
 import androidx.appcompat.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,7 +57,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_profile_creation);
         uid = getIntent().getStringExtra("uid");
         String uri = "@drawable/empty";
-        int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
+        int defaultImage = getResources().getIdentifier(uri, null, getPackageName());
         Drawable res = getResources().getDrawable(defaultImage);
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logout());
@@ -70,6 +72,19 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
 
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
+
+
+        title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+
+
+
 
         profile = new FamilyDB(uid, new ServerCallback() {
             @Override
@@ -338,5 +353,12 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
         finish();
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

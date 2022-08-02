@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -64,7 +66,16 @@ public class patientProfile extends AppCompatActivity {
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logout());
 
+        title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         updateName.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 final String newname = title.getText().toString().trim();
@@ -239,5 +250,10 @@ public class patientProfile extends AppCompatActivity {
                 spinning_wheel.setVisibility(View.GONE);
             }
     );
-
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
