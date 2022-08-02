@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 
 import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
+import com.example.momento.database.FamilyDB;
 import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.family.familyHome;
@@ -27,6 +28,7 @@ import com.example.momento.ui.login.familyRegister;
 import com.example.momento.ui.login.patientRegister;
 
 import java.io.File;
+import java.util.List;
 
 public class patientProfile extends AppCompatActivity {
 
@@ -45,6 +47,10 @@ public class patientProfile extends AppCompatActivity {
 
     String uid;
     PatientDB patientDB;
+
+    long[] counts = new long[18];
+    List<String> familyUids;
+    FamilyDB famDB1, famDB2, famDB3, famDB4, famDB5, famDB6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +130,7 @@ public class patientProfile extends AppCompatActivity {
         // TODO: *************  remove setText after we clean up XML **************
         prompt_1_upload.setText("Register New Family");
         prompt_2_upload.setText("View Family");
-        prompt_3_upload.setText("Delete Patient");
+        prompt_3_upload.setText("Show Charts");
         prompt_1_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +150,8 @@ public class patientProfile extends AppCompatActivity {
         prompt_3_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Delete Account function
+                // TODO: Show video count charts selections
+                goToBarChartRedirect(counts);
             }
         });
         updatePicture.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +185,80 @@ public class patientProfile extends AppCompatActivity {
                             profileCreationImage.setImageDrawable(patientProfile.this.res);
                         }
                     });
+                    familyUids = patientDB.getFamilyList();
+                    int arrSize = familyUids.size();
+                    if(arrSize > 0){
+                        famDB1 = new FamilyDB(familyUids.get(0), new ServerCallback() {
+                            @Override
+                            public void isReadyCallback(boolean isReady) {
+                                if(isReady){
+                                    counts[0] = famDB1.getVideoPlayCount(0);
+                                    counts[1] = famDB1.getVideoPlayCount(1);
+                                    counts[2] = famDB1.getVideoPlayCount(2);
+                                }
+                            }
+                        });
+                    }//end of if arrSize
+                    if(arrSize > 1){
+                        famDB2 = new FamilyDB(familyUids.get(1), new ServerCallback() {
+                            @Override
+                            public void isReadyCallback(boolean isReady) {
+                                if(isReady){
+                                    counts[3] = famDB2.getVideoPlayCount(0);
+                                    counts[4] = famDB2.getVideoPlayCount(1);
+                                    counts[5] = famDB2.getVideoPlayCount(2);
+                                }
+                            }
+                        });
+                    }//end of if arrSize
+                    if(arrSize > 2){
+                        famDB3 = new FamilyDB(familyUids.get(2), new ServerCallback() {
+                            @Override
+                            public void isReadyCallback(boolean isReady) {
+                                if(isReady){
+                                    counts[6] = famDB3.getVideoPlayCount(0);
+                                    counts[7] = famDB3.getVideoPlayCount(1);
+                                    counts[8] = famDB3.getVideoPlayCount(2);
+                                }
+                            }
+                        });
+                    }//end of if arrSize
+                    if(arrSize > 3){
+                        famDB4 = new FamilyDB(familyUids.get(3), new ServerCallback() {
+                            @Override
+                            public void isReadyCallback(boolean isReady) {
+                                if(isReady){
+                                    counts[9] = famDB4.getVideoPlayCount(0);
+                                    counts[10] = famDB4.getVideoPlayCount(1);
+                                    counts[11] = famDB4.getVideoPlayCount(2);
+                                }
+                            }
+                        });
+                    }//end of if arrSize
+                    if(arrSize > 4){
+                        famDB5 = new FamilyDB(familyUids.get(4), new ServerCallback() {
+                            @Override
+                            public void isReadyCallback(boolean isReady) {
+                                if(isReady){
+                                    counts[12] = famDB5.getVideoPlayCount(0);
+                                    counts[13] = famDB5.getVideoPlayCount(1);
+                                    counts[14] = famDB5.getVideoPlayCount(2);
+                                }
+                            }
+                        });
+                    }//end of if arrSize
+                    if(arrSize > 5){
+                        famDB6 = new FamilyDB(familyUids.get(5), new ServerCallback() {
+                            @Override
+                            public void isReadyCallback(boolean isReady) {
+                                if(isReady){
+                                    counts[15] = famDB6.getVideoPlayCount(0);
+                                    counts[16] = famDB6.getVideoPlayCount(1);
+                                    counts[17] = famDB6.getVideoPlayCount(2);
+                                }
+                            }
+                        });
+                    }//end of if arrSize
                 }
             }
         });
@@ -192,6 +273,12 @@ public class patientProfile extends AppCompatActivity {
     private void goToFamilyHome(String uid) {
         Intent intent = new Intent(this, patientHome.class);
         intent.putExtra("uid", uid);
+        startActivity(intent);
+    }
+
+    private void goToBarChartRedirect(long[] videoCount){
+        Intent intent = new Intent(this, barChartRedirect.class);
+        intent.putExtra("video counts", videoCount);
         startActivity(intent);
     }
 

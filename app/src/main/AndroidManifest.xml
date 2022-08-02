@@ -17,6 +17,12 @@
         android:theme="@style/Theme.Momento.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".admin.admin.barChartDisplay"
+            android:exported="false" />
+        <activity
+            android:name=".admin.admin.barChartRedirect"
+            android:exported="false" />
+        <activity
             android:name=".admin.admin.patientProfile"
             android:exported="false" />
         <activity
@@ -58,7 +64,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:label="Login"></activity>
+            android:label="Login" />
         <activity
             android:name=".ui.login.LauncherActivity"
             android:exported="true"
