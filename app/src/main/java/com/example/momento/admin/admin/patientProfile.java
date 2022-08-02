@@ -22,6 +22,7 @@ import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.family.familyHome;
+import com.example.momento.patient.patientHome;
 import com.example.momento.ui.login.familyRegister;
 import com.example.momento.ui.login.patientRegister;
 
@@ -189,8 +190,8 @@ public class patientProfile extends AppCompatActivity {
     }
 
     private void goToFamilyHome(String uid) {
-        Intent intent = new Intent(this, familyHome.class);
-        intent.putExtra("patientUid", uid);
+        Intent intent = new Intent(this, patientHome.class);
+        intent.putExtra("uid", uid);
         startActivity(intent);
     }
 
