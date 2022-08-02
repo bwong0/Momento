@@ -35,10 +35,6 @@ public class barChartRedirect extends AppCompatActivity {
         final Button chart6 = binding.btnChart6;
 
         videoCount = getIntent().getLongArrayExtra("video counts");
-        while(count < 18){
-            Log.d(Tag, "video counts are: " + videoCount[count]);
-            count++;
-        }
 
         chart1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +53,7 @@ public class barChartRedirect extends AppCompatActivity {
                 familySpecificCount[0] = videoCount[3];
                 familySpecificCount[1] = videoCount[4];
                 familySpecificCount[2] = videoCount[5];
+                Log.d(Tag,"video counts are: "+ familySpecificCount[0] + " " + familySpecificCount[1] + " " + familySpecificCount[2]);
                 goToBarChartDisplay(familySpecificCount);
             }
         });

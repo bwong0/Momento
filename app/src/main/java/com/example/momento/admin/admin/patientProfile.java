@@ -186,7 +186,12 @@ public class patientProfile extends AppCompatActivity {
                         }
                     });
                     familyUids = patientDB.getFamilyList();
-                    int arrSize = familyUids.size();
+                    int arrSize;
+                    if(familyUids == null){
+                        arrSize = 0;
+                    }else{
+                        arrSize = familyUids.size();
+                    }
                     if(arrSize > 0){
                         famDB1 = new FamilyDB(familyUids.get(0), new ServerCallback() {
                             @Override
