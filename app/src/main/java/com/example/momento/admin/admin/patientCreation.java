@@ -97,6 +97,8 @@ public class patientCreation extends AppCompatActivity {
         imageButton5 = (ImageButton) findViewById(R.id.patientAdmin5);
         imageButton6 = (ImageButton) findViewById(R.id.patientAdmin6);
 
+        Button signOut = (Button) findViewById(R.id.btnSignOutAdmin);
+
         ImageButtonArrayList = new ArrayList<>();
         ImageButtonArrayList.add(imageButton1);
         ImageButtonArrayList.add(imageButton2);
@@ -125,6 +127,14 @@ public class patientCreation extends AppCompatActivity {
         ImageButtonArrayList.get(3).setVisibility(View.INVISIBLE);
         ImageButtonArrayList.get(4).setVisibility(View.INVISIBLE);
         ImageButtonArrayList.get(5).setVisibility(View.INVISIBLE);
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
 
     }
 

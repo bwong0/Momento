@@ -44,6 +44,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
+    Button signOut;
     ImageView profileCreationImage;
     Button updateName;
     Button updatePicture;
@@ -80,6 +81,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
         prompt_3_upload = (Button) findViewById(R.id.prompt_3_upload);
+        signOut = (Button) findViewById(R.id.btnSignOutFamily);
         profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage));
         spinning_wheel = (ProgressBar) findViewById(R.id.progressBar);
         spinning_wheel.setVisibility(View.GONE);
@@ -188,6 +190,13 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
             public void onClick(View v) { imageChooser(); }
         });
 
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
     }
 //    public void update (Persons persons){
 //
