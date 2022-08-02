@@ -23,13 +23,14 @@ import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.patient.patientHome;
 import com.example.momento.ui.login.familyRegister;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 
 public class patientProfile extends AppCompatActivity {
 
     private final static String TAG = "PatientProfile";
-
+    Button logoutButton;
     EditText title;
     Button prompt_1_upload;
     Button prompt_2_upload;
@@ -60,6 +61,8 @@ public class patientProfile extends AppCompatActivity {
         spinning_wheel.setVisibility(View.GONE);
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
 
         updateName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +191,12 @@ public class patientProfile extends AppCompatActivity {
     public void imageChooser() {
         String i = "image/*";
         launchGalleryPhoto.launch(i);
+    }
+
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
     }
 
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos

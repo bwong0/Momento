@@ -207,6 +207,7 @@ public class ProfileCreation extends AppCompatActivity implements Serializable {
                         Log.d(TAG, "Done. Upload is at " + uri.toString());
                         // Stop spinning animation here. This callback happens when upload finishes.
                         spinning_wheel.setVisibility(View.GONE);
+                        onResume();
                     }
                     @Override
                     public void fileCallback(File file) { }

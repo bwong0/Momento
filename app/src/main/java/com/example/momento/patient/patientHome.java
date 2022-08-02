@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.example.momento.database.ServerCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.momento.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class patientHome extends AppCompatActivity {
     private static final String TAG = "PatientHome";
 
     // UI Components
+    Button logoutButton;
     TextView famName1;
     TextView famName2;
     TextView famName3;
@@ -61,7 +64,8 @@ public class patientHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_home);
-
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
         patientUid = getIntent().getStringExtra("uid");
         res = Drawable.createFromPath(emptyUri);
 
@@ -302,5 +306,11 @@ public class patientHome extends AppCompatActivity {
         Intent intent = new Intent(this, profiles.class);
         intent.putExtra("uid", uid);
         startActivity(intent);
+    }
+
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
     }
 }

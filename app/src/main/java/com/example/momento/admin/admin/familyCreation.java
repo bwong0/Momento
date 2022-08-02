@@ -7,9 +7,11 @@ import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.family.ProfileCreation;
 import com.example.momento.ui.login.familyRegister;
+import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -32,10 +34,13 @@ public class familyCreation extends AppCompatActivity {
     ImageButton imageButton4;
     ImageButton imageButton5;
     ImageButton imageButton6;
+    Button logoutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_creation);
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
         uid = getIntent().getStringExtra("uid");
         patient = new PatientDB(uid, new ServerCallback() {
             @Override
@@ -102,5 +107,10 @@ public class familyCreation extends AppCompatActivity {
             intent.putExtra("uid",uid);
         }
         startActivity(intent);
+    }
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
     }
 }
