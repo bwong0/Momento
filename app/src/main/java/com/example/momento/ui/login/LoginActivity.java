@@ -22,7 +22,6 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -40,10 +39,8 @@ import com.example.momento.admin.admin.patientCreation;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
-import com.example.momento.family.familyHome;
 import com.example.momento.patient.patientHome;
 import com.example.momento.family.ProfileCreation;
-import com.example.momento.patient.patientHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

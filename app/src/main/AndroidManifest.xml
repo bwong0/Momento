@@ -44,15 +44,6 @@
             android:name=".patient.profiles"
             android:exported="false" />
         <activity
-            android:name=".ui.login.Home"
-            android:exported="false" />
-        <activity
-            android:name=".ui.login.adminHome"
-            android:exported="false" />
-        <activity
-            android:name=".family.familyHome"
-            android:exported="false" />
-        <activity
             android:name=".patient.patientHome"
             android:exported="false" />
         <activity

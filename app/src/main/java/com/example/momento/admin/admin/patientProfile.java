@@ -21,10 +21,8 @@ import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
-import com.example.momento.family.familyHome;
 import com.example.momento.patient.patientHome;
 import com.example.momento.ui.login.familyRegister;
-import com.example.momento.ui.login.patientRegister;
 
 import java.io.File;
 
@@ -215,6 +213,7 @@ public class patientProfile extends AppCompatActivity {
                         if (uri != null) {
                             Log.d(TAG, "Uri after upload: " + uri.toString());
                             spinning_wheel.setVisibility(View.GONE);
+                            onResume();
                         }
                     }
                     @Override

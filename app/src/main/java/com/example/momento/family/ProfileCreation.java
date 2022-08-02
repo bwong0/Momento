@@ -1,9 +1,7 @@
 package com.example.momento.family;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.drawable.Drawable;
@@ -13,10 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher; //For Launch Gallery Intent
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -25,16 +21,11 @@ import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.ServerCallback;
-import com.example.momento.ui.login.Persons;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class ProfileCreation extends AppCompatActivity implements Serializable {
     int SELECT_VIDEO = 200;

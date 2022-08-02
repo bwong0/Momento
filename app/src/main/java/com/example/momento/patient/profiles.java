@@ -5,8 +5,6 @@ import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.ServerCallback;
-import com.example.momento.database.VideoInfo;
-import com.example.momento.ui.login.Persons;
 
 import android.graphics.drawable.Drawable;
 import android.content.Intent;
@@ -17,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class profiles extends AppCompatActivity {
 

@@ -6,9 +6,7 @@ import android.util.Log;
 
 import com.example.momento.admin.admin.patientCreation;
 import com.example.momento.family.ProfileCreation;
-import com.example.momento.family.familyHome;
 import com.example.momento.patient.patientHome;
-import com.example.momento.ui.login.LoginActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
