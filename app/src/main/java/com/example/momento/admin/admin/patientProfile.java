@@ -5,6 +5,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,10 +24,9 @@ import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
-import com.example.momento.family.familyHome;
 import com.example.momento.patient.patientHome;
 import com.example.momento.ui.login.familyRegister;
-import com.example.momento.ui.login.patientRegister;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.util.List;
@@ -33,9 +34,8 @@ import java.util.List;
 public class patientProfile extends AppCompatActivity {
 
     private final static String TAG = "PatientProfile";
-
+    Button logoutButton;
     EditText title;
-
     Button prompt_1_upload;
     Button prompt_2_upload;
     Button prompt_3_upload;
@@ -56,15 +56,10 @@ public class patientProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_profile);
-
         uid = getIntent().getStringExtra("patientUid");
         String uri = "@drawable/empty";
         res = Drawable.createFromPath(uri);
 
-
-
-
-//        ImageView pictureProfileCreation = (ImageView) findViewById(R.id.profileCreationImage);
         title = (EditText) findViewById(R.id.ProfileCreationTitle);
         prompt_1_upload = (Button) findViewById(R.id.prompt_1_upload);
         prompt_2_upload = (Button) findViewById(R.id.prompt_2_upload);
@@ -72,11 +67,19 @@ public class patientProfile extends AppCompatActivity {
         profileCreationImage = (ImageView) findViewById((R.id.profileCreationImage));
         spinning_wheel = (ProgressBar) findViewById(R.id.progressBar);
         spinning_wheel.setVisibility(View.GONE);
-
         updateName = (Button) findViewById((R.id.updateName));
         updatePicture = (Button) findViewById((R.id.updatePicture));
-//        clear =(Button) findViewById(R.id.clearButton);
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
 
+        title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
         updateName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -288,6 +291,12 @@ public class patientProfile extends AppCompatActivity {
         launchGalleryPhoto.launch(i);
     }
 
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
+    }
+
     ActivityResultLauncher<String> launchGalleryPhoto = registerForActivityResult( //Launch for Videos
             new ActivityResultContracts.GetContent(),
             resultUri -> {
@@ -312,6 +321,7 @@ public class patientProfile extends AppCompatActivity {
                         if (uri != null) {
                             Log.d(TAG, "Uri after upload: " + uri.toString());
                             spinning_wheel.setVisibility(View.GONE);
+                            onResume();
                         }
                     }
                     @Override
@@ -328,6 +338,10 @@ public class patientProfile extends AppCompatActivity {
                 spinning_wheel.setVisibility(View.GONE);
             }
     );
-
-
+    private void hideKeyboard(View view) {
+        InputMethodManager manager =
+                (InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE
+                );
+        manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

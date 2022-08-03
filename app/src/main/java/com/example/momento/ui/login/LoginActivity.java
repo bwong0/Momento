@@ -22,7 +22,6 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -40,10 +39,8 @@ import com.example.momento.admin.admin.patientCreation;
 import com.example.momento.database.AccountDB;
 import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
-import com.example.momento.family.familyHome;
 import com.example.momento.patient.patientHome;
 import com.example.momento.family.ProfileCreation;
-import com.example.momento.patient.patientHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -140,17 +137,6 @@ public class LoginActivity extends AppCompatActivity {
                 openRegister();
             }
         });
-
-        // Test without Login Button
-        next = (Button) findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            // TODO: Remove this after finishing registration functionality
-            @Override
-            public void onClick(View view) {
-                openHome();
-            }
-        });
-
 
         /* Check App Permissions */
         checkPermission(Manifest.permission.INTERNET, INTERNET_PERMISSION_CODE);
@@ -293,14 +279,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void openRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Navigate to "Home" Activity
-     */
-    private void openHome() {
-        Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
 

@@ -5,8 +5,6 @@ import com.example.momento.R;
 import com.example.momento.database.DatabaseCallbacks;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.ServerCallback;
-import com.example.momento.database.VideoInfo;
-import com.example.momento.ui.login.Persons;
 
 import android.graphics.drawable.Drawable;
 import android.content.Intent;
@@ -17,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class profiles extends AppCompatActivity {
 
@@ -29,10 +25,8 @@ public class profiles extends AppCompatActivity {
     TextView prompt3;
     String uri = "@drawable/empty";
     Drawable res;
-
     FamilyDB familyDb;
     String familyUid;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +40,6 @@ public class profiles extends AppCompatActivity {
         res = Drawable.createFromPath(uri);
         // default values
         profileImageView.setImageDrawable(res);
-//        profileName.setText("no name");
 
         prompt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +55,6 @@ public class profiles extends AppCompatActivity {
             @Override
             public void onClick(View v) { openVidPlayer(2);}
         });
-
-
 
         familyUid = getIntent().getStringExtra("uid");
 

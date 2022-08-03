@@ -2,17 +2,16 @@ package com.example.momento.admin.admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.momento.R;
-import com.example.momento.database.AccountDB;
 import com.example.momento.database.FamilyDB;
 import com.example.momento.database.PatientDB;
 import com.example.momento.database.ServerCallback;
 import com.example.momento.family.ProfileCreation;
-import com.example.momento.ui.login.Persons;
 import com.example.momento.ui.login.familyRegister;
+import com.google.firebase.auth.FirebaseAuth;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,32 +20,27 @@ import java.util.List;
 
 public class familyCreation extends AppCompatActivity {
     String uid;
-
     PatientDB patient;
-
     List<String> familyUids;
-
     TextView familyName1;
     TextView familyName2;
     TextView familyName3;
     TextView familyName4;
     TextView familyName5;
     TextView familyName6;
-
     ImageButton imageButton1;
     ImageButton imageButton2;
     ImageButton imageButton3;
     ImageButton imageButton4;
     ImageButton imageButton5;
     ImageButton imageButton6;
-
-
-
+    Button logoutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_creation);
-
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> logout());
         uid = getIntent().getStringExtra("uid");
         patient = new PatientDB(uid, new ServerCallback() {
             @Override
@@ -64,7 +58,6 @@ public class familyCreation extends AppCompatActivity {
         familyName4 = (TextView) findViewById(R.id.familyNameAdmin4);
         familyName5 = (TextView) findViewById(R.id.familyNameAdmin5);
         familyName6 = (TextView) findViewById(R.id.familyNameAdmin6);
-
         NamesArrayList.add(familyName1);
         NamesArrayList.add(familyName2);
         NamesArrayList.add(familyName3);
@@ -79,7 +72,6 @@ public class familyCreation extends AppCompatActivity {
         imageButton4 = (ImageButton) findViewById(R.id.familyAdmin4);
         imageButton5 = (ImageButton) findViewById(R.id.familyAdmin5);
         imageButton6 = (ImageButton) findViewById(R.id.familyAdmin6);
-
         ImageButtonArrayList.add(imageButton1);
         ImageButtonArrayList.add(imageButton2);
         ImageButtonArrayList.add(imageButton3);
@@ -87,32 +79,16 @@ public class familyCreation extends AppCompatActivity {
         ImageButtonArrayList.add(imageButton5);
         ImageButtonArrayList.add(imageButton6);
 
-
-//        String uri = "@drawable/empty";
-//        int defaultImage = getResources().getIdentifier(uri,null,getPackageName());
         int size = familyUids.size();
-
         for (int i = 0; i < size; i++) {
             String cur = familyUids.get(i);
             FamilyDB temp = new FamilyDB(cur, new ServerCallback() {
                 @Override
                 public void isReadyCallback(boolean isReady) {
-
                 }
             });
             familyDBArrayList.add(temp);
-
             NamesArrayList.get(i).setText(temp.getFirstName()+" "+temp.getLastName());
-//            ImageButtonArrayList.get(i).setImageDrawable(temp.getProfile);
-//
-
-//            } else {
-//                NamesArrayList.get(i).setText(admin.getPatints().get(i).names);
-//                int profilePicture = getResources().getIdentifier(admin.getPatients.get(i).getImage(), null, getPackageName());
-//                Drawable res = getResources().getDrawable(profilePicture);
-//                ImageButtonArrayList.get(i).setImageDrawable(res);
-
-
         }
 
         imageButton1.setOnClickListener(v -> openProfileCreation(familyName1, uid));
@@ -130,7 +106,11 @@ public class familyCreation extends AppCompatActivity {
             intent = new Intent(this, ProfileCreation.class);
             intent.putExtra("uid",uid);
         }
-
         startActivity(intent);
+    }
+    public void logout() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signOut();
+        finish();
     }
 }
