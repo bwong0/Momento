@@ -87,7 +87,7 @@
             android:layout_marginTop="10dp"
             android:autofillHints=""
             android:ems="10"
-            android:hint="address"
+            android:hint="@string/address"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:textColorHint="#757575"
@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Email" />
+            android:text="@string/email" />
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:hint="email"
+            android:hint="@string/email"
             android:inputType="textPersonName" />
 
         <TextView
@@ -141,7 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Password" />
+            android:text="@string/password" />
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPersonName" />
 
         <Button
@@ -157,7 +157,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="REGISTER"
+            android:text="@string/Register"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

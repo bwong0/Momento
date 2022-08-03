@@ -57,7 +57,6 @@
     <string name="upload_prompt_2">Upload Answer: How are you?</string>
     <string name="upload_prompt_3">Upload Answer: Favourite memory.</string>
     <string name="clear">clear</string>
-    <string name="update_profile">Update Profile</string>
     <string name="patient">Patient</string>
     <string name="family">Family</string>
     <string name="admin">Admin</string>
@@ -65,4 +64,21 @@
     <string name="change_languages">change languages</string>
     <string name="create_new_patient">Create New Patient</string>
     <string name="create_new_profile">Create New Profile</string>
+    <string name="family_1">Family 1</string>
+    <string name="family_2">Family 2</string>
+    <string name="family_3">Family 3</string>
+    <string name="family_4">Family 4</string>
+    <string name="family_5">Family 5</string>
+    <string name="family_6">Family 6</string>
+    <string name="register">Register</string>
+    <string name="logout">Logout</string>
+    <string name="enter_your_patient_s_information_to_register">Enter your patient\'s information to register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="Register">REGISTER</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="health_card_number">health card number</string>
+    <string name="Logout">Logout</string>
+    <string name="update_name">Update Name</string>
+    <string name="update_picture">Update Picture</string>
 </resources>
