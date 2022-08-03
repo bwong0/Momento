@@ -37,7 +37,7 @@
     <string name="are_you_a_patient_or_a_caretaker">你是患者还是护理员?</string>
     <string name ="Choose_a_Profile">选择一个文件夹</string>
     <string name="Create_or_Edit_a_Profile">创建或编辑文件夹</string>
-    <string name="Create_or_Edit_a_Patient">Create or Edit a Patient</string>
+    <string name="Create_or_Edit_a_Patient">創建或編輯患者</string>
     <string name="prompt_1">视频 #1</string>
     <string name="prompt_2">视频 #2</string>
     <string name="prompt_3">视频 #3</string>

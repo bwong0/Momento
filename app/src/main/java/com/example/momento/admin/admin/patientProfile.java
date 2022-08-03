@@ -188,79 +188,81 @@ public class patientProfile extends AppCompatActivity {
                             profileCreationImage.setImageDrawable(patientProfile.this.res);
                         }
                     });
-                    familyUids = patientDB.getFamilyList();
-                    int arrSize = familyUids.size();
-                    if(arrSize > 0){
-                        famDB1 = new FamilyDB(familyUids.get(0), new ServerCallback() {
-                            @Override
-                            public void isReadyCallback(boolean isReady) {
-                                if(isReady){
-                                    counts[0] = famDB1.getVideoPlayCount(0);
-                                    counts[1] = famDB1.getVideoPlayCount(1);
-                                    counts[2] = famDB1.getVideoPlayCount(2);
+                    if(patientDB.getFamilyList() != null) {
+                        familyUids = patientDB.getFamilyList();
+                        int arrSize = familyUids.size();
+                        if (arrSize > 0) {
+                            famDB1 = new FamilyDB(familyUids.get(0), new ServerCallback() {
+                                @Override
+                                public void isReadyCallback(boolean isReady) {
+                                    if (isReady) {
+                                        counts[0] = famDB1.getVideoPlayCount(0);
+                                        counts[1] = famDB1.getVideoPlayCount(1);
+                                        counts[2] = famDB1.getVideoPlayCount(2);
+                                    }
                                 }
-                            }
-                        });
-                    }//end of if arrSize
-                    if(arrSize > 1){
-                        famDB2 = new FamilyDB(familyUids.get(1), new ServerCallback() {
-                            @Override
-                            public void isReadyCallback(boolean isReady) {
-                                if(isReady){
-                                    counts[3] = famDB2.getVideoPlayCount(0);
-                                    counts[4] = famDB2.getVideoPlayCount(1);
-                                    counts[5] = famDB2.getVideoPlayCount(2);
+                            });
+                        }//end of if arrSize
+                        if (arrSize > 1) {
+                            famDB2 = new FamilyDB(familyUids.get(1), new ServerCallback() {
+                                @Override
+                                public void isReadyCallback(boolean isReady) {
+                                    if (isReady) {
+                                        counts[3] = famDB2.getVideoPlayCount(0);
+                                        counts[4] = famDB2.getVideoPlayCount(1);
+                                        counts[5] = famDB2.getVideoPlayCount(2);
+                                    }
                                 }
-                            }
-                        });
-                    }//end of if arrSize
-                    if(arrSize > 2){
-                        famDB3 = new FamilyDB(familyUids.get(2), new ServerCallback() {
-                            @Override
-                            public void isReadyCallback(boolean isReady) {
-                                if(isReady){
-                                    counts[6] = famDB3.getVideoPlayCount(0);
-                                    counts[7] = famDB3.getVideoPlayCount(1);
-                                    counts[8] = famDB3.getVideoPlayCount(2);
+                            });
+                        }//end of if arrSize
+                        if (arrSize > 2) {
+                            famDB3 = new FamilyDB(familyUids.get(2), new ServerCallback() {
+                                @Override
+                                public void isReadyCallback(boolean isReady) {
+                                    if (isReady) {
+                                        counts[6] = famDB3.getVideoPlayCount(0);
+                                        counts[7] = famDB3.getVideoPlayCount(1);
+                                        counts[8] = famDB3.getVideoPlayCount(2);
+                                    }
                                 }
-                            }
-                        });
-                    }//end of if arrSize
-                    if(arrSize > 3){
-                        famDB4 = new FamilyDB(familyUids.get(3), new ServerCallback() {
-                            @Override
-                            public void isReadyCallback(boolean isReady) {
-                                if(isReady){
-                                    counts[9] = famDB4.getVideoPlayCount(0);
-                                    counts[10] = famDB4.getVideoPlayCount(1);
-                                    counts[11] = famDB4.getVideoPlayCount(2);
+                            });
+                        }//end of if arrSize
+                        if (arrSize > 3) {
+                            famDB4 = new FamilyDB(familyUids.get(3), new ServerCallback() {
+                                @Override
+                                public void isReadyCallback(boolean isReady) {
+                                    if (isReady) {
+                                        counts[9] = famDB4.getVideoPlayCount(0);
+                                        counts[10] = famDB4.getVideoPlayCount(1);
+                                        counts[11] = famDB4.getVideoPlayCount(2);
+                                    }
                                 }
-                            }
-                        });
-                    }//end of if arrSize
-                    if(arrSize > 4){
-                        famDB5 = new FamilyDB(familyUids.get(4), new ServerCallback() {
-                            @Override
-                            public void isReadyCallback(boolean isReady) {
-                                if(isReady){
-                                    counts[12] = famDB5.getVideoPlayCount(0);
-                                    counts[13] = famDB5.getVideoPlayCount(1);
-                                    counts[14] = famDB5.getVideoPlayCount(2);
+                            });
+                        }//end of if arrSize
+                        if (arrSize > 4) {
+                            famDB5 = new FamilyDB(familyUids.get(4), new ServerCallback() {
+                                @Override
+                                public void isReadyCallback(boolean isReady) {
+                                    if (isReady) {
+                                        counts[12] = famDB5.getVideoPlayCount(0);
+                                        counts[13] = famDB5.getVideoPlayCount(1);
+                                        counts[14] = famDB5.getVideoPlayCount(2);
+                                    }
                                 }
-                            }
-                        });
-                    }//end of if arrSize
-                    if(arrSize > 5){
-                        famDB6 = new FamilyDB(familyUids.get(5), new ServerCallback() {
-                            @Override
-                            public void isReadyCallback(boolean isReady) {
-                                if(isReady){
-                                    counts[15] = famDB6.getVideoPlayCount(0);
-                                    counts[16] = famDB6.getVideoPlayCount(1);
-                                    counts[17] = famDB6.getVideoPlayCount(2);
+                            });
+                        }//end of if arrSize
+                        if (arrSize > 5) {
+                            famDB6 = new FamilyDB(familyUids.get(5), new ServerCallback() {
+                                @Override
+                                public void isReadyCallback(boolean isReady) {
+                                    if (isReady) {
+                                        counts[15] = famDB6.getVideoPlayCount(0);
+                                        counts[16] = famDB6.getVideoPlayCount(1);
+                                        counts[17] = famDB6.getVideoPlayCount(2);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }//end of if arrSize
                 }
             }
