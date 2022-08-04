@@ -16,7 +16,7 @@
 
 Each family member will create their own profile and upload videos of themselves answering questions to pre-selected prompts. These videos will then be viewable on the patient side of the application. Caretakers can also access the admin side of the application to view data regarding which profile and which prompts the patient is viewing most often.
 
-Currently Momento is only available through the repository and is not available on any mobile application. Momento can be run though ndoird studio on an emulated phone (minimum android 7.0).
+Currently Momento is only available through the repository and is not available on any mobile application. Momento can be run through Andoird Studio on an emulated phone (minimum android 7.0).
 
 ## Test Accounts
 To test "Admin", use "bcw7@sfu.ca" and "test123" for login.
