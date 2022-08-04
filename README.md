@@ -6,8 +6,6 @@
 - [Current Build](README.md#Current-Build)
 - [System Requirements](README.md#System-Requirements)
 
-
-
 ## How things work
 ### Getting Started
 1. The App Experience begins with an **Administrator** registering an account with **email** and **password**.
@@ -18,24 +16,18 @@
 
 Each family member will create their own profile and upload videos of themselves answering questions to pre-selected prompts. These videos will then be viewable on the patient side of the application. Caretakers can also access the admin side of the application to view data regarding which profile and which prompts the patient is viewing most often.
 
-Currently Momento is only available through the repository and is not available on any mobile application. Momento can be run though ndoird studio on an emulated phone (minimum android 7.0).
+Currently Momento is only available through the repository and is not available on any mobile application. Momento can be run through Andoird Studio on an emulated phone (minimum android 7.0).
 
-## Current Build 
-To log into the use **"test@test.com"** **"test123"**, then click "Login"".
+## Test Accounts
+To test "Admin", use "bcw7@sfu.ca" and "test123" for login.
+To test "Family", use "johnnychen@family.com" and "johnnychen" for login.
+To test "Patient", use "dorislow@patient.com" and "dorislow" for login.
 
 ### Known Issues:
-* After successful login, if app is closed, have to re-login.
-* Registration page is not working with Firebase Authentication when form is submitted.
-* Registration page "Next" button, prompting the Activity to restart.
-  * Need to save last inputted information even after failed registration, so user does not need to re-enter everything again.
-* "FamilyHome" page incorrectly loading functionalities of Admin Home page. This page should be the "ProfileCreation" page.
-* Family "Upload" page form submission causes infinite Activity stacking. 
-* Family "Upload" page Keyboard not dismissable.
-* Upload currently not yet implemented.
-* Patient's media playback page needs automatically close upon finished playing and return to Prompts page.
-* Firebase Realtime database not implemented yet.
+* Admin is logged out from Firebase after registering a Patient or Family account.
+* Some visual glitches for transition between Actvities.
+* Images may load after a delay.
 
-After the login page you will be taken to the home page where "Family" , "Patient" or "Admind" will take you to their respective home pages. In the Family home page you can see the six possible family profiles you can create at the moment. Profile 1 has a pre-loaded profile with Lebron James. Clicking on any family profile will take you to the creation/edit page where changes can be make to each profile. This feature is to fully implmented at the moment. On the Patient home page you can see created profiles and clicking on the profiles you can see the prompts. Clicking the prompts will play a placeholder video. As for the Admin home page this feature is not implemented yet and will be completed for sprint 3.
 ## System Requirements
 minimum andoird 7.0
 

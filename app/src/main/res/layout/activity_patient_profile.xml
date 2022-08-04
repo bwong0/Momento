@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.admin.patientProfile">
+    <ImageView
+        android:id="@+id/profileCreationImage"
+        android:layout_width="280dp"
+        android:layout_height="256dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/empty"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.154" />
+
+    <EditText
+        android:selectAllOnFocus="true"
+        android:id="@+id/ProfileCreationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/profileCreationImage"
+        app:layout_constraintEnd_toEndOf="@+id/profileCreationImage"
+        app:layout_constraintStart_toStartOf="@+id/profileCreationImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <EditText-->
+    <!--        android:id="@+id/editRelationship"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:selectAllOnFocus="true"-->
+    <!--        android:ems="10"-->
+    <!--        android:gravity="center"-->
+    <!--        android:inputType="textPersonName"-->
+    <!--        android:text="Relationship"-->
+    <!--        android:textSize="25dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/profileCreationImage" />-->
+
+    <Button
+        android:id="@+id/prompt_1_upload"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginTop="325dp"
+        android:text="@string/upload_prompt_1"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/prompt_2_upload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <Button
+        android:id="@+id/prompt_2_upload"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:text="@string/upload_prompt_2"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/prompt_3_upload"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prompt_1_upload" />
+
+    <Button
+        android:id="@+id/prompt_3_upload"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_marginBottom="89dp"
+        android:text="@string/upload_prompt_3"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prompt_2_upload" />
+
+    <Button
+        android:id="@+id/updateName"
+        android:layout_width="201dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/update_profileName"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/updatePicture"
+        android:layout_width="201dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/update_profilePicutre"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/updateName" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toBottomOf="@+id/profileCreationImage"
+        app:layout_constraintEnd_toEndOf="@+id/profileCreationImage"
+        app:layout_constraintStart_toStartOf="@+id/profileCreationImage"
+        app:layout_constraintTop_toTopOf="@+id/profileCreationImage" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/logout"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/clearButton"-->
+    <!--        android:layout_width="201dp"-->
+    <!--        android:layout_height="60dp"-->
+    <!--        android:layout_marginEnd="9dp"-->
+    <!--        android:layout_marginBottom="32dp"-->
+    <!--        android:text="clear"-->
+    <!--        android:textSize="30dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/updateButton"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Momento</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="title_activity_test">test</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="are_you_a_patient_or_a_caretaker">Are you a patient or a caretaker?</string>
+    <string name ="Choose_a_Profile">Choose a Profile</string>
+    <string name="Create_or_Edit_a_Profile">Create or Edit a Profile</string>
+    <string name="Create_or_Edit_a_Patient">Create or Edit a Patient</string>
+    <string name="prompt_1">Who are you?</string>
+    <string name="prompt_2">How are you?</string>
+    <string name="prompt_3">Favourite memory.</string>
+    <string name="english">English</string>
+    <string name="中文">简体中文</string>
+    <string name="admin_register">Admin Register</string>
+    <string name="test_without_login">Test without Login</string>
+    <string name="login">Login</string>
+    <string name="enter_your_information_to_register">Enter your information to register</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="address">Address</string>
+    <string name="user_id">User ID</string>
+    <string name="name">Name</string>
+    <string name="upload_prompt_1">Upload Answer: Who are you?</string>
+    <string name="upload_prompt_2">Upload Answer: How are you?</string>
+    <string name="upload_prompt_3">Upload Answer: Favourite memory.</string>
+    <string name="clear">clear</string>
+    <string name="patient">Patient</string>
+    <string name="family">Family</string>
+    <string name="admin">Admin</string>
+    <string name="relationship">Relationship</string>
+    <string name="change_languages">change languages</string>
+    <string name="create_new_patient">Create New Patient</string>
+    <string name="create_new_profile">Create New Profile</string>
+    <string name="family_1">Family 1</string>
+    <string name="family_2">Family 2</string>
+    <string name="family_3">Family 3</string>
+    <string name="family_4">Family 4</string>
+    <string name="family_5">Family 5</string>
+    <string name="family_6">Family 6</string>
+    <string name="register">Register</string>
+    <string name="logout">Logout</string>
+    <string name="enter_your_patient_s_information_to_register">Enter your patient\'s information to register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="Register">REGISTER</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="health_card_number">health card number</string>
+    <string name="Logout">Logout</string>
+    <string name="update_name">Update Name</string>
+    <string name="update_picture">Update Picture</string>
+</resources>

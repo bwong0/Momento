@@ -1,5 +1,7 @@
 package com.example.momento.ui.login;
 
+import com.example.momento.database.AccountType;
+
 /**
  * Class exposing authenticated user details to the UI.
  */
@@ -14,4 +16,7 @@ class LoggedInUserView {
     String getDisplayName() {
         return displayName;
     }
+
+
+
 }

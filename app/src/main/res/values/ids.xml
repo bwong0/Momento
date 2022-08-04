@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textView13" type="id" />
+    <item name="editTextLName" type="id" />
+    <item name="textView14" type="id" />
+    <item name="editTextFName" type="id" />
+    <item name="textView15" type="id" />
+    <item name="editTextAddressFamily" type="id" />
+    <item name="textView16" type="id" />
+    <item name="editTextEmailFamily" type="id" />
+    <item name="textView17" type="id" />
+    <item name="editTextPasswordFamily" type="id" />
+</resources>

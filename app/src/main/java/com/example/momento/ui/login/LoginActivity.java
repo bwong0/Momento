@@ -9,9 +9,12 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -32,10 +35,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.momento.R;
-import com.example.momento.data.Result;
+import com.example.momento.admin.admin.patientCreation;
+import com.example.momento.database.AccountDB;
+import com.example.momento.database.AccountType;
 import com.example.momento.databinding.ActivityLoginBinding;
+import com.example.momento.patient.patientHome;
+import com.example.momento.family.ProfileCreation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Locale;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,7 +58,11 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
     private Button next;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener authStateListener;
     private static final String TAG = "LoginActivity";
+
+
 
 
     /* Class Constants: */
@@ -60,7 +79,19 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         /************** UI/UX **************/
+
+        //this keeps the first login user, redirect to home page for testing
+        //TODO: add log out button to revoke current user
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser() != null) {
+                    //openHome();
+                }
+            }
+        };
 
         setContentView(R.layout.activity_login);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
@@ -100,23 +131,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // Register Button
-        adminRegister.setOnClickListener(new View.OnClickListener(){
+        adminRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 openRegister();
             }
         });
-
-        // Test without Login Button
-        next = (Button) findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            // TODO: Remove this after finishing registration functionality
-            @Override
-            public void onClick(View view) {
-                openHome();
-            }
-        });
-
 
         /* Check App Permissions */
         checkPermission(Manifest.permission.INTERNET, INTERNET_PERMISSION_CODE);
@@ -124,7 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                 Manifest.permission.ACCESS_NETWORK_STATE,
                 ACCESS_NETWORK_STATE_PERMISSION_CODE
         );
-
 
 
         /************** LOGIN MODEL **************/
@@ -155,7 +174,9 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                    getAccountType(accType -> {
+                        updateUiWithUser(loginResult.getSuccess(), accType);
+                    });
                 }
 
                 setResult(Activity.RESULT_OK);
@@ -197,7 +218,58 @@ public class LoginActivity extends AppCompatActivity {
         });
         /************** END OF LOGIN MODEL **************/
 
+        //translate to Chinese on create
+
+        binding.changeLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changelanguage();
+            }
+        });
+
+
+
+
     } // END OF onCreate()
+
+
+    //change the language
+
+    private void changelanguage() {
+        final String language[] = {"English","简体中文"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        mBuilder.setSingleChoiceItems(language, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    setLocale("");
+                    recreate();
+                }
+                else if(i == 1){
+                    setLocale("zh");
+                    recreate();
+                }
+            }
+        });
+        mBuilder.create();
+        mBuilder.show();
+
+    }
+
+    //setting the locale
+    private void setLocale(String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        getBaseContext().getResources().updateConfiguration(configuration,
+                getBaseContext().getResources().getDisplayMetrics());
+
+
+    }
+
+
 
 
     /* Class Methods */
@@ -206,27 +278,89 @@ public class LoginActivity extends AppCompatActivity {
      * Navigate to "Register" Activity
      */
     private void openRegister() {
-        Intent intent = new Intent(this, register.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
     /**
-     * Navigate to "Home" Activity
+     * Navigate to "adminHome" Activity
      */
-    private void openHome() {
-        Intent intent = new Intent(this, Home.class);
+    private void openAdminHome(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, patientCreation.class);
+        intent.putExtra("uid",uid);
         startActivity(intent);
+    }
+
+    private void openFamilyHome(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, ProfileCreation.class);
+        intent.putExtra("uid",uid);
+        startActivity(intent);
+    }
+
+    private void openPatientHome(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Intent intent = new Intent(this, patientHome.class);
+        intent.putExtra("uid",uid);
+        startActivity(intent);
+    }
+
+    /**
+     * Callback function to get AccountType using currently logged in user
+     * @param accountCb Callback to return AccountType
+     */
+    private void getAccountType(LoginUICallbacks accountCb) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        String currentUID = user.getUid();
+        // Initialize database reference point
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        // Get accountType from Firebase
+        mDatabase.child(AccountDB.ACCOUNT_NODE).child(currentUID).get()
+            .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+               @Override
+               public void onComplete(@NonNull Task<DataSnapshot> task) {
+                   if (task.isSuccessful()) {
+                       // fetch value and store into a Map
+                       DataSnapshot snapshot = task.getResult();
+                       Map<String, Object> info = (Map<String, Object>) snapshot.getValue();
+                       // if the UID is already in Firebase, fetch data members
+                       if (snapshot.exists()) {
+                           // Return accountType by Callback
+                           accountCb.getAccType(
+                                AccountType.valueOf(info.get(AccountDB.ACCOUNT_TYPE).toString())
+                           );
+                       } else {
+                           // What if the uid does not exist?
+                           // TODO: Decide on this with team.
+                       }
+                   } else {
+                       Log.d(TAG, "failed: " + String.valueOf(task.getResult().getValue()));
+                   }
+               }
+            });
     }
 
     /**
      * Action after successful account authentication.
      * @param model LoggedInUserView
      */
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
+    private void updateUiWithUser(LoggedInUserView model, AccountType accountType) {
         // TODO : initiate successful logged in experience
-        openHome();
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        Log.d(TAG, accountType.toString());
+
+        if(accountType == AccountType.ADMIN){
+            Log.d(TAG, "admin type");
+            openAdminHome();
+        }
+        else if(accountType == AccountType.FAMILY) {
+            Log.d(TAG, "family type");
+            openFamilyHome();
+        }
+        else{
+            Log.d(TAG, "patient type");
+            openPatientHome();
+        }
     }
 
     /**
@@ -238,6 +372,16 @@ public class LoginActivity extends AppCompatActivity {
         // Recreate this Activity upon failed login
         finish();
         startActivity(getIntent());
+    }
+
+    /** Check for current user
+     *  if current user exists, directly goes to the correct page
+     *  currently set to home page for testing
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(authStateListener);
     }
 
     /**

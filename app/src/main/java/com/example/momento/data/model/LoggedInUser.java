@@ -1,5 +1,8 @@
 package com.example.momento.data.model;
 
+import com.example.momento.database.AccountDB;
+import com.example.momento.database.AccountType;
+
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
@@ -20,4 +23,5 @@ public class LoggedInUser {
     public String getDisplayName() {
         return displayName;
     }
+
 }

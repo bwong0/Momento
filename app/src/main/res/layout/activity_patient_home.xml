@@ -12,11 +12,12 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:layout_marginStart="30dp"
         android:layout_marginTop="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
         />
 
     <ImageButton
@@ -26,35 +27,41 @@
         android:layout_marginTop="120dp"
         android:layout_marginEnd="30dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        />
 
     <ImageButton
         android:id="@+id/patientProfile3"
         android:layout_width="160sp"
         android:layout_height="160dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/patientProfile1"
         app:layout_constraintTop_toBottomOf="@+id/patientName1"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="invisible"
+        />
 
     <ImageButton
         android:id="@+id/patientProfile4"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/patientProfile2"
         app:layout_constraintTop_toBottomOf="@+id/patientName2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="invisible"
+        />
 
     <ImageButton
         android:id="@+id/patientProfile5"
@@ -62,13 +69,15 @@
         android:layout_height="160dp"
         android:layout_marginBottom="28dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/patientProfile3"
         app:layout_constraintTop_toBottomOf="@+id/patientName3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="invisible"
+        />
 
     <ImageButton
         android:id="@+id/patientProfile6"
@@ -76,14 +85,16 @@
         android:layout_height="160dp"
         android:layout_marginBottom="48dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile4"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/patientProfile5"
         app:layout_constraintStart_toStartOf="@+id/patientProfile4"
         app:layout_constraintTop_toBottomOf="@+id/patientName4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="invisible"
+        />
 
     <TextView
         android:id="@+id/patientHomeTitle"
@@ -97,13 +108,15 @@
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+
+        />
 
     <TextView
         android:id="@+id/patientName1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="invisible"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile1"
         app:layout_constraintStart_toStartOf="@+id/patientProfile1"
@@ -113,7 +126,7 @@
         android:id="@+id/patientName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="invisible"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile2"
         app:layout_constraintStart_toStartOf="@+id/patientProfile2"
@@ -123,7 +136,7 @@
         android:id="@+id/patientName3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="invisible"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile3"
         app:layout_constraintStart_toStartOf="@+id/patientProfile3"
@@ -133,7 +146,7 @@
         android:id="@+id/patientName4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="invisible"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile4"
         app:layout_constraintStart_toStartOf="@+id/patientProfile4"
@@ -143,6 +156,7 @@
         android:id="@+id/patientName5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile5"
         app:layout_constraintStart_toStartOf="@+id/patientProfile5"
@@ -152,11 +166,23 @@
         android:id="@+id/patientName6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="invisible"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/patientProfile6"
         app:layout_constraintStart_toStartOf="@+id/patientProfile6"
         app:layout_constraintTop_toBottomOf="@+id/patientProfile6" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="80dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/logout"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--    <androidx.constraintlayout.widget.Barrier-->
     <!--        android:id="@+id/barrier2"-->

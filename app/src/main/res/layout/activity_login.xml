@@ -57,7 +57,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="64dp"
             android:enabled="false"
-            android:text="Login"
+            android:text="@string/login"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,8 +71,8 @@ xmlns:tools="http://schemas.android.com/tools"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="64dp"
-
-            android:text="Test without Login"
+            android:visibility="invisible"
+            android:text="@string/test_without_login"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,11 +97,22 @@ xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Admin Register"
+            android:text="@string/admin_register"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/next" />
+
+
+        <Button
+            android:id="@+id/changeLanguage"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:text="@string/change_languages" />
+
+
 
     </LinearLayout>
 </ScrollView>
